@@ -1,6 +1,6 @@
 <?php
 
-namespace Javanile\Producer;
+namespace Javanile;
 
 class Producer {
     
