@@ -1,0 +1,10 @@
+{
+  "name": "javanile/producer",
+  "type": "application",
+  "description": "A tool to copy a working copy",
+  "license": "MIT",
+  "authors": [{ "name": "Francesco Bianco", "email": "bianco@javanile.org" }],
+  "autoload": { "psr-0": { "Javanile\\Producer\\": "src/" } },
+  "require": { "php": "^5.3.6 || >=7.0 <7.2" },
+  "bin": ["producer"]
+}
