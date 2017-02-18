@@ -55,13 +55,19 @@ class Producer
     private function cmdClone($args)
     {
         //
-        $rep = $args[1];
+        $repo = $args[1];
 
         //
-        $out = shell_exec(__DIR__.'/../exec/clone.sh '.$this->cwd.' '.$rep);
+        $name = isset($args[2]) ? $args[2] : basename($args[1], '.git');
 
         //
-        echo $out;
+        echo shell_exec(__DIR__.'/../exec/clone.sh '.$this->cwd.' '.$repo.' '.$name);
+
+        //
+        $json = json_decode(file_get_contents($this->cwd.'/repository/'.$name.'/composer.json'));
+
+        //
+        echo shell_exec(__DIR__.'/../exec/clone-install.sh '.$this->cwd.' '.$json->name.' '.$name);
     }
 
     /**
