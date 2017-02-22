@@ -82,7 +82,18 @@ class Producer
         $comp = $this->cwd.'/repository/'.$name.'/composer.json';
 
         //
+        if (!file_exists($comp)) {
 
+            //
+            $json = [
+                'name' => $slug,
+                'version' => '0.0.1',
+                'repositories' => [['type' => 'git', 'url' => $repo ]],
+            ];
+
+            //
+            file_put_contents($comp, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        }
     }
 
     /**
