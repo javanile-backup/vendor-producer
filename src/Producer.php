@@ -103,6 +103,11 @@ class Producer
     private function cmdClone($args)
     {
         //
+        if (!isset($args[1]) || !$args[1]) {
+            return "> Producer: Repository url or package name required.\n";
+        }
+
+        //
         $repo = trim($args[1]);
 
         //
@@ -112,11 +117,17 @@ class Producer
         if (preg_match('/^(http:\/\/|https:\/\/)/i', $repo, $x)) {
             echo shell_exec(__DIR__.'/../exec/clone-url.sh '.$this->cwd.' '.$repo.' '.$name);
             $json = json_decode(file_get_contents($this->cwd.'/repository/'.$name.'/composer.json'));
-            echo shell_exec(__DIR__.'/../exec/clone-install.sh '.$this->cwd.' '.$json->name.' '.$name);
-        } else {
+            return shell_exec(__DIR__.'/../exec/clone-install.sh '.$this->cwd.' '.$json->name.' '.$name);
+        }
+
+        //
+        else if (preg_match('/^[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*$/', $repo, $x)){
             echo shell_exec(__DIR__.'/../exec/clone-require.sh '.$this->cwd.' '.$repo.' '.$name);
-            $json = json_decode(file_get_contents($this->cwd.'/vendor/'.$repo.'/composer.json'));
-            var_Dump($json);
+            $comp = $this->cwd.'/vendor/'.$repo.'/composer.json';
+            if (!file_exists($comp)) {
+                return "> Producer: Package not found.\n";
+            }
+            $json = json_decode(file_get_contents($comp));
             $pack = $repo;
             $repo = null;
             if (isset($json->repositories)) {
@@ -128,10 +139,12 @@ class Producer
                 }
             }
             if ($repo) {
-                echo shell_exec(__DIR__.'/../exec/clone-url.sh '.$this->cwd.' '.$repo.' '.$name);
+                return shell_exec(__DIR__.'/../exec/clone-url.sh '.$this->cwd.' '.$repo.' '.$name);
             } else {
-                echo "\n---\nError repository not found on composer.json.";
+                return "> Producer: repository not found on composer.json.";
             }
+        } else {
+            return "> Producer: Malformed url or package name.\n";
         }
     }
 
@@ -193,7 +206,7 @@ class Producer
                 }
             }
         } else {
-            echo shell_exec(__DIR__.'/../exec/publish.sh '.$this->cwd.' '.$args[1]);
+            return shell_exec(__DIR__.'/../exec/publish.sh '.$this->cwd.' '.$args[1]);
         }
     }
 
