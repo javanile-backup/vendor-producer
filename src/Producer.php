@@ -141,7 +141,7 @@ class Producer
             if ($repo) {
                 return shell_exec(__DIR__.'/../exec/clone-url.sh '.$this->cwd.' '.$repo.' '.$name);
             } else {
-                return "> Producer: repository not found on composer.json.";
+                return "> Producer: repository not found on composer.json.\n";
             }
         } else {
             return "> Producer: Malformed url or package name.\n";
