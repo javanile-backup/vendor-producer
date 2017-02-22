@@ -1,11 +1,12 @@
 {
   "name": "javanile/producer",
   "description": "Produce vendor code everywhere",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "license": "MIT",
   "type": "application",
   "authors": [{ "name": "Francesco Bianco", "email": "bianco@javanile.org" }],
+  "repositories": [{ "type": "git", "url": "https://github.com/Javanile/Producer" }],
   "autoload": { "classmap": [ "src/Producer.php" ] },
   "require": { "php": "^5.3.6 || >=7.0 <7.2" },
-  "bin": ["bin/producer-install", "bin/producer"]
+  "bin": ["bin/producer"]
 }
