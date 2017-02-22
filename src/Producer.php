@@ -45,6 +45,7 @@ class Producer
         switch ($cmd) {
             case 'init': return $this->cmdInit($args);
             case 'clone': return $this->cmdClone($args);
+            case 'purge': return $this->cmdPurge($args);
             case 'install': return $this->cmdInstall($args);
             case 'publish': return $this->cmdPublish($args);
             default: return "> Producer: undefined '{$cmd}' command.\n";
@@ -132,6 +133,38 @@ class Producer
                 echo "\n---\nError repository not found on composer.json.";
             }
         }
+    }
+
+    /**
+     *
+     *
+     */
+    private function cmdPurge($args)
+    {
+        //
+        if (!isset($args[1]) || !$args[1]) {
+            return "> Producer: Project directory required.\n";
+        }
+
+        //
+        $name = trim($args[1]);
+
+        //
+        if (!is_dir($this->cwd.'/repository/'.$name)) {
+            return "> Producer: Project directory 'repository/{$name}' not found.\n";
+        }
+
+        //
+        $comp = $this->cwd.'/repository/'.$name.'/composer.json';
+
+        //
+        if (file_exists($comp)) {
+            $json = json_decode(file_get_contents($comp));
+            echo shell_exec(__DIR__.'/../exec/purge-remove.sh '.$this->cwd.' '.$json->name);
+        }
+
+        //
+        return shell_exec(__DIR__.'/../exec/purge-rm.sh '.$this->cwd.' '.$name);
     }
 
     /**
