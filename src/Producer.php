@@ -21,7 +21,7 @@ class Producer
     {
         global $argv;
         $producer = new Producer();
-        $producer->run(array_slice($argv,1));
+        echo $producer->run(array_slice($argv,1));
     }
 
     /**
@@ -43,9 +43,37 @@ class Producer
 
         //
         switch ($cmd) {
+            case 'init': return $this->cmdInit($args);
             case 'clone': return $this->cmdClone($args);
             case 'publish': return $this->cmdPublish($args);
-            default: echo "Error undefined command: {$cmd}\n";
+            default: echo "> Producer: undefined '{$cmd}' command.\n";
+        }
+    }
+
+    /**
+     *
+     */
+    private function cmdInit($args)
+    {
+        //
+        if (!isset($args[1]) || !$args[1]) {
+            return "> Producer: repository url required.\n";
+        }
+
+        //
+        $repo = trim($args[1]);
+
+        //
+        $name = isset($args[2]) ? $args[2] : basename($args[1], '.git');
+
+        //
+        $slug = $this->getSlug($args[1]);
+
+        //
+        if (preg_match('/^(http:\/\/|https:\/\/)/i', $repo, $x)) {
+            echo shell_exec(__DIR__.'/../exec/clone-url.sh '.$this->cwd.' '.$repo.' '.$name);
+        } else {
+            return "> Producer: malformed repository url.\n";
         }
     }
 
@@ -93,12 +121,33 @@ class Producer
     private function cmdPublish($args)
     {
         //
-        $rep = $args[1];
+        if (!isset($args[1]) || !$args[1]) {
+
+            //
+            $path = $this->cwd.'/repository';
+
+            //
+            foreach (scandir($path) as $name) {
+                if ($name[0] != '.' && is_dir($path.'/'.$name)) {
+                    echo shell_exec(__DIR__.'/../exec/publish.sh '.$this->cwd.' '.$name);
+                }
+            }
+        } else {
+            echo shell_exec(__DIR__.'/../exec/publish.sh '.$this->cwd.' '.$args[1]);
+        }
+    }
+
+    /**
+     *
+     *
+     */
+    private function getSlug($repo)
+    {
+        //
+        $package = basename($repo, '.git');
+        $vendor  = basename(dirname($repo), '.git');
 
         //
-        $out = shell_exec(__DIR__.'/../exec/publish.sh '.$this->cwd.' '.$rep);
-
-        //
-        echo $out;
+        return strtolower($vendor.'/'.$package);
     }
 }
