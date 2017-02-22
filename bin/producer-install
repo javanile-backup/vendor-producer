@@ -1,6 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env php
+<?php
 
-mkdir repository > /dev/null 2>&1
+mkdir("repository);
 
-echo <?php require 'vendor/autoload.php'; Javanile\Producer::cli(); > producer 2>&1
+file_put_content('producer', "<?php require 'vendor/autoload.php'; Javanile\Producer::cli();");
 
