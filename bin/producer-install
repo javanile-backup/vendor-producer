@@ -2,5 +2,5 @@
 
 mkdir repository > /dev/null 2>&1
 
-echo <?php require 'vendor/autoload.php'; Javanile\Producer::cli(); > producer
+echo <?php require 'vendor/autoload.php'; Javanile\Producer::cli(); > producer 2>&1
 

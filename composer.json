@@ -1,11 +1,11 @@
 {
   "name": "javanile/producer",
   "description": "A tool to copy a working copy",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "MIT",
   "type": "application",
   "authors": [{ "name": "Francesco Bianco", "email": "bianco@javanile.org" }],
   "autoload": { "classmap": [ "src/Producer.php" ] },
   "require": { "php": "^5.3.6 || >=7.0 <7.2" },
-  "bin": ["bin/producer"]
+  "bin": ["bin/producer-install", "bin/producer"]
 }
