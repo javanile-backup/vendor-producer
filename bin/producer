@@ -2,6 +2,13 @@
 <?php
 
 //
+global $argv;
+if (isset($argv[1]) && $argv[1] == 'install') {
+    if (!is_dir('repository')) { mkdir('repository'); }
+    file_put_contents('producer', "<?php require 'vendor/autoload.php'; Javanile\\Producer::cli();");
+}
+
+//
 require __DIR__.'/../../autoload.php';
 
 //

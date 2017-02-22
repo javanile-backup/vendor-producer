@@ -1,7 +1,0 @@
-#!/usr/bin/env php
-<?php
-
-mkdir("repository);
-
-file_put_content('producer', "<?php require 'vendor/autoload.php'; Javanile\Producer::cli();");
-

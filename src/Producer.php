@@ -45,8 +45,9 @@ class Producer
         switch ($cmd) {
             case 'init': return $this->cmdInit($args);
             case 'clone': return $this->cmdClone($args);
+            case 'install': return $this->cmdInstall($args);
             case 'publish': return $this->cmdPublish($args);
-            default: echo "> Producer: undefined '{$cmd}' command.\n";
+            default: return "> Producer: undefined '{$cmd}' command.\n";
         }
     }
 
@@ -70,11 +71,18 @@ class Producer
         $slug = $this->getSlug($args[1]);
 
         //
-        if (preg_match('/^(http:\/\/|https:\/\/)/i', $repo, $x)) {
-            echo shell_exec(__DIR__.'/../exec/clone-url.sh '.$this->cwd.' '.$repo.' '.$name);
-        } else {
+        if (!preg_match('/^(http:\/\/|https:\/\/)/i', $repo, $x)) {
             return "> Producer: malformed repository url.\n";
         }
+
+        //
+        echo shell_exec(__DIR__.'/../exec/clone-url.sh '.$this->cwd.' '.$repo.' '.$name);
+
+        //
+        $comp = $this->cwd.'/repository/'.$name.'/composer.json';
+
+        //
+
     }
 
     /**
@@ -113,6 +121,14 @@ class Producer
                 echo "\n---\nError repository not found on composer.json.";
             }
         }
+    }
+
+    /**
+     *
+     *
+     */
+    public function cmdInstall($args) {
+        return "\n";
     }
 
     /**
