@@ -31,12 +31,12 @@ class Producer
     private function run($args)
     {
         //
-        $this->cwd = getcwd();
+        if (!isset($args[0])) {
+            return "> Producer: Command required.\n";
+        }
 
         //
-        if (!isset($args[0])) {
-
-        }
+        $this->cwd = getcwd();
 
         //
         $cmd = $args[0];
@@ -53,6 +53,7 @@ class Producer
     }
 
     /**
+     *
      *
      */
     private function cmdInit($args)
@@ -139,7 +140,7 @@ class Producer
                 }
             }
             if ($repo) {
-                return shell_exec(__DIR__.'/../exec/clone-url.sh '.$this->cwd.' '.$repo.' '.$name);
+                return shell_exec(__DIR__.'/../exec/clone-complete.sh '.$this->cwd.' '.$repo.' '.$name.' '.$pack);
             } else {
                 return "> Producer: repository not found on composer.json.\n";
             }
