@@ -115,6 +115,11 @@ class Producer
         $name = isset($args[2]) ? $args[2] : basename($args[1], '.git');
 
         //
+        if (is_dir($this->cwd.'/repository/'.$name)) {
+            return "> Producer: Project directory 'repository/{$name}' already exists.\n";
+        }
+
+        //
         if (preg_match('/^(http:\/\/|https:\/\/)/i', $repo, $x)) {
             echo shell_exec(__DIR__.'/../exec/clone-url.sh '.$this->cwd.' '.$repo.' '.$name);
             $json = json_decode(file_get_contents($this->cwd.'/repository/'.$name.'/composer.json'));

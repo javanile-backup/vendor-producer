@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#
+# Clone repository and create symbolic link
 # $1 - working directory
 # $2 - repository url
 # $3 - project name
