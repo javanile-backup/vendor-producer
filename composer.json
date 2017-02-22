@@ -1,7 +1,7 @@
 {
   "name": "javanile/producer",
-  "description": "A tool to copy a working copy",
-  "version": "0.0.4",
+  "description": "Produce vendor code everywhere",
+  "version": "0.0.5",
   "license": "MIT",
   "type": "application",
   "authors": [{ "name": "Francesco Bianco", "email": "bianco@javanile.org" }],
