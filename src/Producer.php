@@ -70,7 +70,7 @@ class Producer
         $name = isset($args[2]) ? $args[2] : basename($args[1], '.git');
 
         //
-        $slug = $this->getSlug($args[1]);
+        $pack = $this->getPackage($args[1]);
 
         //
         if (!preg_match('/^(http:\/\/|https:\/\/)/i', $repo, $x)) {
@@ -147,7 +147,7 @@ class Producer
             if ($repo) {
                 return shell_exec(__DIR__.'/../exec/clone-complete.sh '.$this->cwd.' '.$repo.' '.$name.' '.$pack);
             } else {
-                return "> Producer: repository not found on composer.json.\n";
+                return "> Producer: Repository not found on composer.json.\n";
             }
         } else {
             return "> Producer: Malformed url or package name.\n";
@@ -190,11 +190,12 @@ class Producer
      *
      *
      */
-    public function cmdInstall($args) {
+    private function cmdInstall($args) {
         return "\n";
     }
 
     /**
+     *
      *
      */
     private function cmdPublish($args)
@@ -220,7 +221,7 @@ class Producer
      *
      *
      */
-    private function getSlug($repo)
+    private function getPackage($repo)
     {
         //
         $package = basename($repo, '.git');
