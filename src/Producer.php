@@ -1,7 +1,22 @@
 <?php
 /**
+ * Short description for file
  *
+ * Long description for file (if any)...
  *
+ * PHP version 5
+ *
+ * @category   CategoryName
+ * @package    PackageName
+ * @author     Original Author <author@example.com>
+ * @author     Another Author <another@example.com>
+ * @copyright  1997-2005 The PHP Group
+ * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @version    SVN: $Id$
+ * @link       http://pear.php.net/package/PackageName
+ * @see        NetOther, Net_Sample::Net_Sample()
+ * @since      File available since Release 1.2.0
+ * @deprecated File deprecated in Release 2.0.0
  */
 
 namespace Javanile;
@@ -9,24 +24,22 @@ namespace Javanile;
 class Producer
 {
     /**
-     *
+     * Current working directory for running script.
      */
     private $cwd = null;
 
     /**
-     *
-     *
+     * Entry point for command-line tool.
      */
     public static function cli()
     {
         global $argv;
-        $producer = new Producer();
-        echo $producer->run(array_slice($argv,1));
+        $producer = new self();
+        echo $producer->run(array_slice($argv, 1));
     }
 
     /**
-     *
-     *
+     * Script runner.
      */
     private function run($args)
     {
@@ -53,8 +66,7 @@ class Producer
     }
 
     /**
-     *
-     *
+     * Init script.
      */
     private function cmdInit($args)
     {
@@ -88,8 +100,8 @@ class Producer
 
             //
             $json = [
-                'name' => $slug,
-                'version' => '0.0.1',
+                'name'         => $slug,
+                'version'      => '0.0.1',
                 'repositories' => [['type' => 'git', 'url' => $repo ]],
             ];
 
@@ -99,7 +111,7 @@ class Producer
     }
 
     /**
-     *
+     * Clone script.
      */
     private function cmdClone($args)
     {
@@ -127,7 +139,7 @@ class Producer
         }
 
         //
-        else if (preg_match('/^[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*$/', $repo, $x)){
+        elseif (preg_match('/^[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*$/', $repo, $x)){
             echo shell_exec(__DIR__.'/../exec/clone-require.sh '.$this->cwd.' '.$repo.' '.$name);
             $comp = $this->cwd.'/vendor/'.$repo.'/composer.json';
             if (!file_exists($comp)) {
@@ -137,7 +149,7 @@ class Producer
             $pack = $repo;
             $repo = null;
             if (isset($json->repositories)) {
-                foreach($json->repositories as $item) {
+                foreach ($json->repositories as $item) {
                     if ($item->type == 'git') {
                         $repo = $item->url;
                         break;
@@ -155,8 +167,7 @@ class Producer
     }
 
     /**
-     *
-     *
+     * Purge script.
      */
     private function cmdPurge($args)
     {
@@ -187,16 +198,14 @@ class Producer
     }
 
     /**
-     *
-     *
+     * Install script.
      */
     private function cmdInstall($args) {
         return "\n";
     }
 
     /**
-     *
-     *
+     * Publish script.
      */
     private function cmdPublish($args)
     {
@@ -218,14 +227,13 @@ class Producer
     }
 
     /**
-     *
-     *
+     * Get package name by repository url
      */
     private function getPackage($repo)
     {
         //
         $package = basename($repo, '.git');
-        $vendor  = basename(dirname($repo), '.git');
+        $vendor = basename(dirname($repo), '.git');
 
         //
         return strtolower($vendor.'/'.$package);
