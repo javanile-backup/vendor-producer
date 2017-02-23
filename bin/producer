@@ -9,7 +9,7 @@ if (isset($argv[1]) && $argv[1] == 'install') {
 }
 
 //
-require __DIR__.'/../../autoload.php';
+require __DIR__.'/../../../autoload.php';
 
 //
 Javanile\Producer::cli();
