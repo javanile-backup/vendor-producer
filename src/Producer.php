@@ -194,16 +194,19 @@ class Producer
         }
 
         //
+        $json = null;
         $comp = $this->cwd.'/repository/'.$name.'/composer.json';
-
-        //
         if (file_exists($comp)) {
             $json = json_decode(file_get_contents($comp));
-            echo shell_exec(__DIR__.'/../exec/purge-remove.sh '.$this->cwd.' '.$json->name);
         }
 
         //
-        return shell_exec(__DIR__.'/../exec/purge-rm.sh '.$this->cwd.' '.$name);
+        echo shell_exec(__DIR__.'/../exec/purge-rm.sh '.$this->cwd.' '.$name);
+
+        //
+        if (isset($json->name)) {
+            echo shell_exec(__DIR__.'/../exec/purge-remove.sh '.$this->cwd.' '.$json->name);
+        }
     }
 
     /**

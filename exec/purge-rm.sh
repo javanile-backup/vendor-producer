@@ -2,7 +2,7 @@
 
 # Remove project folder
 # $1 - working directory
-# $2-- project name
+# $2 - project name
 
 ##
 cd $1
