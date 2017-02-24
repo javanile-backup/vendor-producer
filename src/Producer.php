@@ -1,22 +1,14 @@
 <?php
 /**
- * Short description for file
- *
- * Long description for file (if any)...
+ * Command line tool for vendor code.
  *
  * PHP version 5
  *
  * @category   CategoryName
  * @package    PackageName
- * @author     Original Author <author@example.com>
- * @author     Another Author <another@example.com>
- * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
- * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PackageName
- * @see        NetOther, Net_Sample::Net_Sample()
- * @since      File available since Release 1.2.0
- * @deprecated File deprecated in Release 2.0.0
+ * @author     Francesco Bianco <bianco@javanile.org>
+ * @copyright  2015-2017 Javanile.org
+ * @license    https://github.com/Javanile/Producer/blob/master/LICENSE  MIT License
  */
 
 namespace Javanile;
@@ -59,6 +51,7 @@ class Producer
             case 'init': return $this->cmdInit($args);
             case 'clone': return $this->cmdClone($args);
             case 'purge': return $this->cmdPurge($args);
+            case 'update': return $this->cmdUpdate($args);
             case 'install': return $this->cmdInstall($args);
             case 'publish': return $this->cmdPublish($args);
             default: return "> Producer: undefined '{$cmd}' command.\n";
@@ -102,7 +95,7 @@ class Producer
             $json = [
                 'name'         => $pack,
                 'version'      => '0.0.1',
-                'repositories' => [['type' => 'git', 'url' => $repo ]],
+                'repositories' => [['type' => 'git', 'url' => $repo]],
             ];
 
             //
@@ -141,7 +134,7 @@ class Producer
         }
 
         //
-        elseif (preg_match('/^[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*$/', $repo, $x)){
+        elseif (preg_match('/^[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*$/', $repo, $x)) {
             echo shell_exec(__DIR__.'/../exec/clone-require.sh '.$this->cwd.' '.$repo);
             $comp = $this->cwd.'/vendor/'.$repo.'/composer.json';
             if (!file_exists($comp)) {
@@ -166,6 +159,7 @@ class Producer
                 if (is_dir($this->cwd.'/repository/'.$name)) {
                     return "> Producer: Project directory 'repository/{$name}' already exists.\n";
                 }
+
                 return shell_exec(__DIR__.'/../exec/clone-complete.sh '.$this->cwd.' '.$repo.' '.$name.' '.$pack);
             } else {
                 return "> Producer: Repository not found on composer.json.\n";
@@ -210,9 +204,33 @@ class Producer
     }
 
     /**
+     * Publish script.
+     */
+    private function cmdUpdate($args)
+    {
+        //
+        if (!isset($args[1]) || !$args[1]) {
+
+            //
+            $path = $this->cwd.'/repository';
+
+            //
+            foreach (scandir($path) as $name) {
+                if ($name[0] != '.' && is_dir($path.'/'.$name)) {
+                    echo shell_exec(__DIR__.'/../exec/update.sh '.$this->cwd.' '.$name);
+                }
+            }
+        } else {
+            return shell_exec(__DIR__.'/../exec/update.sh '.$this->cwd.' '.$args[1]);
+        }
+    }
+
+
+    /**
      * Install script.
      */
-    private function cmdInstall($args) {
+    private function cmdInstall($args)
+    {
         return "\n";
     }
 
@@ -239,7 +257,7 @@ class Producer
     }
 
     /**
-     * Get package name by repository url
+     * Get package name by repository url.
      */
     private function getPackage($repo)
     {
