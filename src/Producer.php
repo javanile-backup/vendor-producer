@@ -100,7 +100,7 @@ class Producer
 
             //
             $json = [
-                'name'         => $slug,
+                'name'         => $pack,
                 'version'      => '0.0.1',
                 'repositories' => [['type' => 'git', 'url' => $repo ]],
             ];
