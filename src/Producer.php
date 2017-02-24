@@ -124,15 +124,17 @@ class Producer
         $repo = trim($args[1]);
 
         //
-        $name = isset($args[2]) ? $args[2] : basename($args[1], '.git');
-
-        //
-        if (is_dir($this->cwd.'/repository/'.$name)) {
-            return "> Producer: Project directory 'repository/{$name}' already exists.\n";
-        }
-
-        //
         if (preg_match('/^(http:\/\/|https:\/\/)/i', $repo, $x)) {
+
+            //
+            $name = isset($args[2]) ? $args[2] : basename($args[1], '.git');
+
+            //
+            if (is_dir($this->cwd.'/repository/'.$name)) {
+                return "> Producer: Project directory 'repository/{$name}' already exists.\n";
+            }
+
+            //
             echo shell_exec(__DIR__.'/../exec/clone-url.sh '.$this->cwd.' '.$repo.' '.$name);
             $json = json_decode(file_get_contents($this->cwd.'/repository/'.$name.'/composer.json'));
             return shell_exec(__DIR__.'/../exec/clone-install.sh '.$this->cwd.' '.$json->name.' '.$name);
@@ -140,7 +142,7 @@ class Producer
 
         //
         elseif (preg_match('/^[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*$/', $repo, $x)){
-            echo shell_exec(__DIR__.'/../exec/clone-require.sh '.$this->cwd.' '.$repo.' '.$name);
+            echo shell_exec(__DIR__.'/../exec/clone-require.sh '.$this->cwd.' '.$repo);
             $comp = $this->cwd.'/vendor/'.$repo.'/composer.json';
             if (!file_exists($comp)) {
                 return "> Producer: Package not found.\n";
@@ -157,6 +159,13 @@ class Producer
                 }
             }
             if ($repo) {
+                //
+                $name = isset($args[2]) ? $args[2] : basename($repo, '.git');
+
+                //
+                if (is_dir($this->cwd.'/repository/'.$name)) {
+                    return "> Producer: Project directory 'repository/{$name}' already exists.\n";
+                }
                 return shell_exec(__DIR__.'/../exec/clone-complete.sh '.$this->cwd.' '.$repo.' '.$name.' '.$pack);
             } else {
                 return "> Producer: Repository not found on composer.json.\n";
