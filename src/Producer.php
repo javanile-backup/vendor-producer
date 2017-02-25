@@ -68,42 +68,28 @@ class Producer
      */
     private function cmdInit($args)
     {
-        //
         if (!isset($args[1]) || !$args[1]) {
             return "> Producer: repository url required.\n";
         }
 
-        //
         $repo = trim($args[1]);
-
-        //
         $name = isset($args[2]) ? $args[2] : basename($args[1], '.git');
-
-        //
         $pack = $this->getPackage($args[1]);
 
-        //
         if (!preg_match('/^(http:\/\/|https:\/\/)/i', $repo, $x)) {
             return "> Producer: malformed repository url.\n";
         }
 
-        //
         echo shell_exec(__DIR__.'/../exec/clone-url.sh '.$this->cwd.' '.$repo.' '.$name);
 
         //
         $comp = $this->cwd.'/repository/'.$name.'/composer.json';
-
-        //
         if (!file_exists($comp)) {
-
-            //
             $json = [
                 'name'         => $pack,
                 'version'      => '0.0.1',
                 'repositories' => [['type' => 'git', 'url' => $repo]],
             ];
-
-            //
             file_put_contents($comp, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
         }
     }
