@@ -156,7 +156,19 @@ class Producer
                 return shell_exec(__DIR__.'/../exec/test-dox.sh '.$this->cwd.' '.$name.' '.$test);
             }
             require_once $file;
+            $class = $args[1];
+            if (!class_exists($class)) {
+                return "> Producer: Test class '{$class}' not found.";
+            }
+            $methods = array_filter(get_class_methods($class), function($method){
+                return preg_match('/^test[A-Z]/',$method);
+            });
+            if (!isset($methods[$item-1])) {
+                return "> Producer: Test class '{$class}' have less than '{$item}' methods.\n";
+            }
+            $filter = "'/::".$methods[$item-1]."/'";
 
+            return shell_exec(__DIR__.'/../exec/test-filter.sh '.$this->cwd.' '.$name.' '.$test.' '.$filter);
         }
     }
 
