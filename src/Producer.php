@@ -113,27 +113,50 @@ class Producer
      */
     private function cmdTest($args)
     {
+        // test if phpunit are installed
         $phpunit = $this->cwd.'/vendor/bin/phpunit';
         if (!file_exists($phpunit)) {
             return "> Producer: Install phpunit via composer.\n";
         }
 
+        // run all tests on all repository projects
         if (!isset($args[1]) || !$args[1]) {
+            $test = 'tests';
             $path = $this->cwd.'/repository';
 
             foreach (scandir($path) as $name) {
                 if ($name[0] != '.' && is_dir($path.'/'.$name)) {
-                    echo shell_exec(__DIR__.'/../exec/test-dox.sh '.$this->cwd.' '.$name);
+                    echo shell_exec(__DIR__.'/../exec/test-dox.sh '.$this->cwd.' '.$name.' '.$test);
                 }
             }
 
             return;
         }
 
-        $test = $args[1];
+        // run all tests on one repository project
+        $name = $args[1];
+        $test = 'tests';
+        $path = $this->cwd.'/repository';
+        if (is_dir($path.'/'.$name)) {
+            return shell_exec(__DIR__.'/../exec/test-dox.sh '.$this->cwd.' '.$name.' '.$test);
+        }
 
-        if (is_dir($this->cwd.'/repository/'.$test)) {
-            return shell_exec(__DIR__.'/../exec/test-dox.sh '.$this->cwd.' '.$test);
+        // run single unit test
+        $test = 'tests/'.$args[1];
+        foreach (scandir($path) as $name) {
+            if ($name[0] == '.' || !is_dir($path.'/'.$name)) {
+                continue;
+            }
+            $file = $path.'/'.$name.'/'.$test.'.php';
+            if (!file_exists($file)){
+                continue;
+            }
+            $item = isset($args[2]) ? intval($args[2]) : null;
+            if (!$item) {
+                return shell_exec(__DIR__.'/../exec/test-dox.sh '.$this->cwd.' '.$name.' '.$test);
+            }
+            require_once $file;
+
         }
     }
 
