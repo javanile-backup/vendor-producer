@@ -7,8 +7,8 @@
  * @category   CommandLine
  *
  * @author     Francesco Bianco <bianco@javanile.org>
- * @copyright  2015-2017 Javanile.org
  * @license    https://github.com/Javanile/Producer/blob/master/LICENSE  MIT License
+ * @copyright  2015-2017 Javanile.org
  */
 
 namespace Javanile;
@@ -53,6 +53,7 @@ class Producer
         //
         switch ($cmd) {
             case 'init': return $this->cmdInit($args);
+            case 'test': return $this->cmdTest($args);
             case 'clone': return $this->cmdClone($args);
             case 'purge': return $this->cmdPurge($args);
             case 'update': return $this->cmdUpdate($args);
@@ -104,6 +105,27 @@ class Producer
 
             //
             file_put_contents($comp, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        }
+    }
+
+    /**
+     * Test script.
+     */
+    private function cmdTest($args)
+    {
+        $phpunit = $this->cwd.'/vendor/bin/phpunit';
+        if (!file_exists($phpunit)) {
+            return "> Producer: Install phpunit via composer.\n";
+        }
+
+        if (!isset($args[1]) || !$args[1]) {
+            $path = $this->cwd.'/repository';
+
+            foreach (scandir($path) as $name) {
+                if ($name[0] != '.' && is_dir($path.'/'.$name)) {
+                    echo shell_exec(__DIR__.'/../exec/test.sh '.$this->cwd.' '.$name);
+                }
+            }
         }
     }
 
