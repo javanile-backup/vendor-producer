@@ -2,7 +2,7 @@
 
 # Remove via composer a package
 # $1 - working directory
-# $2-- complete package name
+# $2 - complete package name
 
 ##
 cd $1

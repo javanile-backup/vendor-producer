@@ -4,8 +4,8 @@
  *
  * PHP version 5
  *
- * @category   CategoryName
- * @package    PackageName
+ * @category   CommandLine
+ *
  * @author     Francesco Bianco <bianco@javanile.org>
  * @copyright  2015-2017 Javanile.org
  * @license    https://github.com/Javanile/Producer/blob/master/LICENSE  MIT License
@@ -13,6 +13,10 @@
 
 namespace Javanile;
 
+/**
+ * Class Producer
+ * @package Javanile
+ */
 class Producer
 {
     /**
@@ -130,6 +134,7 @@ class Producer
             //
             echo shell_exec(__DIR__.'/../exec/clone-url.sh '.$this->cwd.' '.$repo.' '.$name);
             $json = json_decode(file_get_contents($this->cwd.'/repository/'.$name.'/composer.json'));
+
             return shell_exec(__DIR__.'/../exec/clone-install.sh '.$this->cwd.' '.$json->name.' '.$name);
         }
 
@@ -224,7 +229,6 @@ class Producer
             return shell_exec(__DIR__.'/../exec/update.sh '.$this->cwd.' '.$args[1]);
         }
     }
-
 
     /**
      * Install script.
