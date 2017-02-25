@@ -144,7 +144,7 @@ class Producer
             require_once $file;
             $class = $args[1];
             if (!class_exists($class)) {
-                return "> Producer: Test class '{$class}' not found.";
+                return "> Producer: Test class '{$class}' not found.\n";
             }
             $methods = array_filter(get_class_methods($class), function($method){
                 return preg_match('/^test[A-Z]/',$method);
