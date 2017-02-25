@@ -123,9 +123,17 @@ class Producer
 
             foreach (scandir($path) as $name) {
                 if ($name[0] != '.' && is_dir($path.'/'.$name)) {
-                    echo shell_exec(__DIR__.'/../exec/test.sh '.$this->cwd.' '.$name);
+                    echo shell_exec(__DIR__.'/../exec/test-dox.sh '.$this->cwd.' '.$name);
                 }
             }
+
+            return;
+        }
+
+        $test = $args[1];
+
+        if (is_dir($this->cwd.'/repository/'.$test)) {
+            return shell_exec(__DIR__.'/../exec/test-dox.sh '.$this->cwd.' '.$test);
         }
     }
 
