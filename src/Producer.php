@@ -36,7 +36,7 @@ class Producer
     /**
      * Script runner.
      */
-    private function run($args)
+    protected function run($args)
     {
         if (!isset($args[0])) {
             return "> Producer: Command required.\n";
@@ -136,8 +136,10 @@ class Producer
             if (!$item) {
                 return shell_exec(__DIR__.'/../exec/test-dox.sh '.$this->cwd.' '.$name.' '.$test);
             }
+            $classes = get_declared_classes();
             require_once $file;
-            $class = $args[1];
+            $diff = array_diff(get_declared_classes(), $classes);
+            $class = array_pop($diff);
             if (!class_exists($class)) {
                 return "> Producer: Test class '{$class}' not found.\n";
             }

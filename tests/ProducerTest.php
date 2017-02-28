@@ -1,15 +1,14 @@
 <?php
 
+namespace Javanile\Producer\Tests;
+
 use PHPUnit\Framework\TestCase;
 
 final class ProducerTest extends TestCase
 {
     public function testCloneGitHubProject()
     {
-        $url = Javanile\Urlman\Urlman::current();
-
-        echo $url;
-
-        $this->assertEquals($yaml, ['item' => 'one']);
+        $cli = new ProducerMock();
+        $cli->run(['prova']);
     }
 }
