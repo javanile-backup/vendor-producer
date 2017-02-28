@@ -269,6 +269,7 @@ class Producer
             //
             foreach (scandir($path) as $name) {
                 if ($name[0] != '.' && is_dir($path.'/'.$name)) {
+                    echo "\n> $name\n--------------\n";
                     echo shell_exec(__DIR__.'/../exec/update.sh '.$this->cwd.' '.$name);
                 }
             }
@@ -299,7 +300,7 @@ class Producer
             //
             foreach (scandir($path) as $name) {
                 if ($name[0] != '.' && is_dir($path.'/'.$name)) {
-                    echo "\n> $name\n--------------------\n";
+                    echo "\n> $name\n--------------\n";
                     echo shell_exec(__DIR__.'/../exec/publish.sh '.$this->cwd.' '.$name);
                 }
             }
