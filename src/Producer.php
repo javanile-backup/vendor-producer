@@ -14,8 +14,7 @@
 namespace Javanile;
 
 /**
- * Class Producer
- * @package Javanile
+ * Class Producer.
  */
 class Producer
 {
@@ -142,7 +141,7 @@ class Producer
             if (!class_exists($class)) {
                 return "> Producer: Test class '{$class}' not found.\n";
             }
-            $methods = array_filter(get_class_methods($class), function($method){
+            $methods = array_filter(get_class_methods($class), function($method) {
                 return preg_match('/^test[A-Z]/',$method);
             });
             if (!isset($methods[$item-1])) {
@@ -326,11 +325,9 @@ class Producer
      */
     private function getPackage($repo)
     {
-        //
         $package = basename($repo, '.git');
         $vendor = basename(dirname($repo), '.git');
 
-        //
         return strtolower($vendor.'/'.$package);
     }
 }
