@@ -8,5 +8,9 @@
   "repositories": [{ "type": "git", "url": "https://github.com/Javanile/Producer" }],
   "autoload": { "classmap": [ "src/Producer.php" ] },
   "require": { "php": "^5.3.6 || >=7.0 <7.2" },
+  "require-dev": {
+    "phpunit/phpunit": "^5.7",
+    "codeclimate/php-test-reporter": "dev-master"
+  }
   "bin": ["bin/producer"]
 }
