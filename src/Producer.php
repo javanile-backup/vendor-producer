@@ -39,19 +39,13 @@ class Producer
      */
     private function run($args)
     {
-        //
         if (!isset($args[0])) {
             return "> Producer: Command required.\n";
         }
 
-        //
         $this->cwd = getcwd();
 
-        //
-        $cmd = $args[0];
-
-        //
-        switch ($cmd) {
+        switch (trim($args[0])) {
             case 'init': return $this->cmdInit($args);
             case 'test': return $this->cmdTest($args);
             case 'clone': return $this->cmdClone($args);
@@ -59,6 +53,8 @@ class Producer
             case 'update': return $this->cmdUpdate($args);
             case 'install': return $this->cmdInstall($args);
             case 'publish': return $this->cmdPublish($args);
+            case '--version': return $this->cmdVersion($args);
+            case '--help': return $this->cmdHelp($args);
             default: return "> Producer: undefined '{$cmd}' command.\n";
         }
     }
@@ -309,6 +305,23 @@ class Producer
         } else {
             return shell_exec(__DIR__.'/../exec/publish.sh '.$this->cwd.' '.$args[1]);
         }
+    }
+
+    /**
+     *
+     */
+    private function cmdVersion($args)
+    {
+        $json = json_decode(file_get_contents(__DIR__.'/../composer.json'));
+        return "> Producer: version {$json->version}\n";
+    }
+
+    /**
+     *
+     */
+    private function cmdHelp($args)
+    {
+        return file_get_contents(__DIR__.'/../reference.txt');
     }
 
     /**

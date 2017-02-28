@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ProducerTest extends TestCase
 {
-    public function testLoadOneItemFile()
+    public function testCloneGitHubProject()
     {
         $url = Javanile\Urlman\Urlman::current();
 
