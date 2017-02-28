@@ -1,5 +1,9 @@
 #!/usr/bin/env php
 <?php
+/**
+ *
+ *
+ */
 
 //
 global $argv;
@@ -9,8 +13,5 @@ if (isset($argv[1]) && $argv[1] == 'install') {
 }
 
 //
-require __DIR__.'/../../../autoload.php';
-
-//
-Javanile\Producer::cli();
+require __DIR__.'/../../../autoload.php'; Javanile\Producer::cli();
 
