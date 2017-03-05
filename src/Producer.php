@@ -371,6 +371,7 @@ class Producer
     {
         $cwd = getcwd();
         $log = $cwd.'/producer.log';
+
         file_put_contents($log, $object, FILE_APPEND);
     }
 }
