@@ -126,7 +126,32 @@ class Producer
             return shell_exec(__DIR__.'/../exec/test-dox.sh '.$this->cwd.' '.$name.' '.$test);
         }
 
-        // run single unit test
+        // run env test if exist
+        $file = $this->cwd.'/tests/'.$name.'.php';
+        if (file_exists($file)) {
+            $item = isset($args[2]) ? intval($args[2]) : null;
+            if (!$item) {
+                return shell_exec(__DIR__.'/../exec/test-env-dox.sh '.$this->cwd.' '.$name);
+            }
+            $classes = get_declared_classes();
+            require_once $file;
+            $diff = array_diff(get_declared_classes(), $classes);
+            $class = array_pop($diff);
+            if (!class_exists($class)) {
+                return "> Producer: Test class '{$class}' not found.\n";
+            }
+            $methods = array_filter(get_class_methods($class), function($method) {
+                return preg_match('/^test[A-Z]/',$method);
+            });
+            if (!isset($methods[$item-1])) {
+                return "> Producer: Test class '{$class}' have less than '{$item}' methods.\n";
+            }
+            $filter = "'/::".$methods[$item-1]."/'";
+
+            return shell_exec(__DIR__.'/../exec/test-env-filter.sh '.$this->cwd.' '.$name.' '.$filter);
+        }
+
+        // run single unit test throught repository projects
         $test = 'tests/'.$args[1];
         foreach (scandir($path) as $name) {
             if ($name[0] == '.' || !is_dir($path.'/'.$name)) {
@@ -337,5 +362,15 @@ class Producer
         $vendor = basename(dirname($repo), '.git');
 
         return strtolower($vendor.'/'.$package);
+    }
+
+    /**
+     *
+     */
+    public static function log($object)
+    {
+        $cwd = getcwd();
+        $log = $cwd.'/producer.log';
+        file_put_contents($log, $object, FILE_APPEND);
     }
 }
