@@ -90,14 +90,18 @@ class Producer
     }
 
     /**
-     * Test script.
+     * Test runner command.
+     *
+     * @param array $args  Arguments from command line
+     *
+     * @return string|void
      */
     private function cmdTest($args)
     {
         // test if phpunit are installed
         $phpunit = $this->cwd.'/vendor/bin/phpunit';
         if (!file_exists($phpunit)) {
-            return "> Producer: Install phpunit via composer.\n";
+            return "> Producer: Install phpunit via composer (not global).\n";
         }
 
         // run all tests on all repository projects
@@ -153,6 +157,8 @@ class Producer
 
             return shell_exec(__DIR__.'/../exec/test-filter.sh '.$this->cwd.' '.$name.' '.$test.' '.$filter);
         }
+
+        return "> Producer: Test case '{$args[1]}' not found.\n";
     }
 
     /**
