@@ -279,7 +279,7 @@ class Producer
      */
     private function cmdInstall($args)
     {
-        return "\n";
+        return "> Producer: Installation complete.\n";
     }
 
     /**
