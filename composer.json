@@ -1,13 +1,16 @@
 {
   "name": "javanile/producer",
   "description": "Produce your vendor code everywhere",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "license": "MIT",
   "type": "application",
   "authors": [{ "name": "Francesco Bianco", "email": "bianco@javanile.org" }],
   "repositories": [{ "type": "git", "url": "https://github.com/Javanile/Producer" }],
-  "autoload": { "classmap": [ "src/Producer.php" ] },
   "autoload-dev": { "psr-4": { "Javanile\\Producer\\Tests\\": "tests" } },
+  "autoload": {
+    "classmap": [ "src/Producer.php" ],
+    "psr-4": { "Javanile\\Producer\\Commands\\": "cmd" }
+  },
   "require": {
     "php": "^5.3.6 || >=7.0 <7.2"
   },

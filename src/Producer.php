@@ -24,13 +24,26 @@ class Producer
     private $cwd = null;
 
     /**
+     * Producer constructor.
+     *
+     * @param string $cwd current working directory
+     */
+    public function __construct($cwd)
+    {
+        $this->cwd = $cwd;
+    }
+
+    /**
      * Entry point for command-line tool.
      */
     public static function cli()
     {
         global $argv;
-        $producer = new self();
-        echo $producer->run(array_slice($argv, 1));
+
+        $cwd = getcwd();
+        $cli = new self($cwd);
+
+        echo $cli->run(array_slice($argv, 1));
     }
 
     /**
@@ -42,10 +55,8 @@ class Producer
             return "> Producer: Command required.\n";
         }
 
-        $this->cwd = getcwd();
-
         switch (trim($args[0])) {
-            case 'init': return $this->cmdInit($args);
+            case 'init': return $this->runInit($args);
             case 'test': return $this->cmdTest($args);
             case 'clone': return $this->cmdClone($args);
             case 'purge': return $this->cmdPurge($args);
@@ -61,32 +72,11 @@ class Producer
     /**
      * Init script.
      */
-    private function cmdInit($args)
+    private function runInit($args)
     {
-        if (!isset($args[1]) || !$args[1]) {
-            return "> Producer: repository url required.\n";
-        }
+        $cmd = new InitCommand($this->cwd);
 
-        $repo = trim($args[1]);
-        $name = isset($args[2]) ? $args[2] : basename($args[1], '.git');
-        $pack = $this->getPackage($args[1]);
-
-        if (!preg_match('/^(http:\/\/|https:\/\/)/i', $repo, $x)) {
-            return "> Producer: malformed repository url.\n";
-        }
-
-        echo shell_exec(__DIR__.'/../exec/clone-url.sh '.$this->cwd.' '.$repo.' '.$name);
-
-        //
-        $comp = $this->cwd.'/repository/'.$name.'/composer.json';
-        if (!file_exists($comp)) {
-            $json = [
-                'name'         => $pack,
-                'version'      => '0.0.1',
-                'repositories' => [['type' => 'git', 'url' => $repo]],
-            ];
-            file_put_contents($comp, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
-        }
+        return $cmd->run(array_slice($args, 1));
     }
 
     /**
@@ -207,7 +197,8 @@ class Producer
 
             //
             if (is_dir($this->cwd.'/repository/'.$name)) {
-                return "> Producer: Project directory 'repository/{$name}' already exists.\n";
+                return "> Producer: Projec    #if (!is_dir('repository')) { mkdir('repository'); }
+t directory 'repository/{$name}' already exists.\n";
             }
 
             //
