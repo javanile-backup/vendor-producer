@@ -38,15 +38,13 @@ class InitCommand
      */
     public function run($args)
     {
-
-
-
         // init env
         if (!isset($args[0]) || !$args[0]) {
-            $repo = shell_exec(__DIR__.'/../exec/init-origin.sh '.$this->cwd);
+            $repo = shell_exec(__DIR__.'/../exec/init-env-origin.sh '.$this->cwd);
             $this->initComposerJson($this->cwd, $repo);
-
-            return;
+            $this->initPhpUnitXml($this->cwd, $repo);
+            echo shell_exec(__DIR__.'/../exec/init-env-update.sh '.$this->cwd);
+            return "> Producer: Environment project initialized.\n";
         }
 
         // init by
@@ -58,8 +56,6 @@ class InitCommand
         }
 
         return "> Producer: malformed repository url.\n";
-
-
     }
 
     /**
@@ -92,6 +88,18 @@ class InitCommand
     }
 
     /**
+     *
+     */
+    private function initPhpUnitXml($path)
+    {
+        $file = $path.'/phpunit.xml';
+        if (file_exists($file)) {
+            return;
+        }
+        copy(__DIR__.'/../tpl/phpunit.xml.tpl', $file);
+    }
+
+    /**
      * Get package name by repository url.
      */
     private function getPackage($repo)
@@ -101,6 +109,7 @@ class InitCommand
 
         return strtolower($vendor.'/'.$package);
     }
+
 
 
 }
