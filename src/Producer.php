@@ -347,17 +347,6 @@ t directory 'repository/{$name}' already exists.\n";
     }
 
     /**
-     * Get package name by repository url.
-     */
-    private function getPackage($repo)
-    {
-        $package = basename($repo, '.git');
-        $vendor = basename(dirname($repo), '.git');
-
-        return strtolower($vendor.'/'.$package);
-    }
-
-    /**
      *
      */
     public static function log($object)

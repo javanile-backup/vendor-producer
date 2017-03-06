@@ -38,10 +38,12 @@ class InitCommand
      */
     public function run($args)
     {
+
+
+
         // init env
         if (!isset($args[0]) || !$args[0]) {
-            $repo = shell_exec(__DIR__.'/../exec/clone-url.sh '.$this->cwd);
-
+            $repo = shell_exec(__DIR__.'/../exec/init-origin.sh '.$this->cwd);
             $this->initComposerJson($this->cwd, $repo);
 
             return;
@@ -87,6 +89,17 @@ class InitCommand
         }
 
         file_put_contents($file, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+    }
+
+    /**
+     * Get package name by repository url.
+     */
+    private function getPackage($repo)
+    {
+        $package = basename($repo, '.git');
+        $vendor = basename(dirname($repo), '.git');
+
+        return strtolower($vendor.'/'.$package);
     }
 
 
