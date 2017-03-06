@@ -1,4 +1,15 @@
 <?php
+/**
+ * Init Command for Producer.
+ *
+ * PHP version 5
+ *
+ * @category   ProducerCommand
+ *
+ * @author     Francesco Bianco <bianco@javanile.org>
+ * @license    https://goo.gl/KPZ2qI  MIT License
+ * @copyright  2015-2017 Javanile.org
+ */
 
 namespace Javanile\Producer\Commands;
 
@@ -27,29 +38,56 @@ class InitCommand
      */
     public function run($args)
     {
+        // init env
         if (!isset($args[0]) || !$args[0]) {
-            return "> Producer: repository url required.\n";
+            $repo = shell_exec(__DIR__.'/../exec/clone-url.sh '.$this->cwd);
+
+            $this->initComposerJson($this->cwd, $repo);
+
+            return;
         }
 
-        $repo = trim($args[1]);
-        $name = isset($args[2]) ? $args[2] : basename($args[1], '.git');
-        $pack = $this->getPackage($args[1]);
+        // init by
+        $repo = trim($args[0]);
+        if (preg_match('/^(http:\/\/|https:\/\/)/i', $repo, $x)) {
+            $name = isset($args[1]) ? $args[1] : basename($args[0], '.git');
 
-        if (!preg_match('/^(http:\/\/|https:\/\/)/i', $repo, $x)) {
-            return "> Producer: malformed repository url.\n";
+            echo shell_exec(__DIR__.'/../exec/clone-url.sh '.$this->cwd.' '.$repo.' '.$name);
         }
 
-        echo shell_exec(__DIR__.'/../exec/clone-url.sh '.$this->cwd.' '.$repo.' '.$name);
+        return "> Producer: malformed repository url.\n";
 
-        //
-        $comp = $this->cwd.'/repository/'.$name.'/composer.json';
-        if (!file_exists($comp)) {
-            $json = [
-                'name'         => $pack,
-                'version'      => '0.0.1',
-                'repositories' => [['type' => 'git', 'url' => $repo]],
-            ];
-            file_put_contents($comp, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
-        }
+
     }
+
+    /**
+     *
+     */
+    private function initComposerJson($path, $repo)
+    {
+        // init composer.json
+        $json = [];
+        $file = $path.'/composer.json';
+        $pack = $this->getPackage($repo);
+
+        if (file_exists($file)) {
+            $json = json_decode(file_get_contents($file));
+        }
+
+        if (!isset($json->name)) {
+            $json->name = $pack;
+        }
+
+        if (!isset($json->version)) {
+            $json->version = '0.0.1';
+        }
+
+        if (!isset($json->repositories)) {
+            $json->repositories = [['type' => 'git', 'url' => $repo]];
+        }
+
+        file_put_contents($file, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+    }
+
+
 }

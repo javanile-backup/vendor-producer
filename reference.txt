@@ -1,6 +1,8 @@
 > Producer: command-line tool to develop vendor code
 
-  producer clone <git-clone-url>
+  Usage: php producer <command> ...
 
-  producer init <git-clone-url>
+  init
+  init <url>
+  clone <url>
 

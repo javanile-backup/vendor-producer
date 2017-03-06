@@ -7,11 +7,13 @@
  * @category   CommandLine
  *
  * @author     Francesco Bianco <bianco@javanile.org>
- * @license    https://github.com/Javanile/Producer/blob/master/LICENSE  MIT License
+ * @license    https://goo.gl/KPZ2qI  MIT License
  * @copyright  2015-2017 Javanile.org
  */
 
 namespace Javanile;
+
+use Javanile\Producer\Commands\InitCommand;
 
 /**
  * Class Producer.
