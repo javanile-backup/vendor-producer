@@ -14,6 +14,7 @@
 namespace Javanile;
 
 use Javanile\Producer\Commands\InitCommand;
+use Javanile\Producer\Commands\UpdateCommand;
 
 /**
  * Class Producer.
@@ -62,7 +63,7 @@ class Producer
             case 'test': return $this->cmdTest($args);
             case 'clone': return $this->cmdClone($args);
             case 'purge': return $this->cmdPurge($args);
-            case 'update': return $this->cmdUpdate($args);
+            case 'update': return $this->runUpdate($args);
             case 'install': return $this->cmdInstall($args);
             case 'publish': return $this->cmdPublish($args);
             case '--version': return $this->cmdVersion($args);
@@ -285,7 +286,9 @@ t directory 'repository/{$name}' already exists.\n";
      */
     private function runUpdate($args)
     {
+        $cmd = new UpdateCommand($this->cwd);
 
+        return $cmd->run(array_slice($args, 1));
     }
 
     /**
