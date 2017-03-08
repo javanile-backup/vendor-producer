@@ -16,4 +16,4 @@ $1/vendor/bin/phpunit \
     tests/$2 | tail -n +7
 
 ##
-cat producer.log
+[ -f producer.log ] && cat producer.log

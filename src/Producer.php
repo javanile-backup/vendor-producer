@@ -13,6 +13,7 @@
 
 namespace Javanile;
 
+use Composer\Autoload\ClassLoader;
 use Javanile\Producer\Commands\InitCommand;
 use Javanile\Producer\Commands\UpdateCommand;
 
@@ -68,7 +69,7 @@ class Producer
             case 'publish': return $this->cmdPublish($args);
             case '--version': return $this->cmdVersion($args);
             case '--help': return $this->cmdHelp($args);
-            default: return "> Producer: undefined '{$cmd}' command.\n";
+            default: return "> Producer: undefined '{$args[0]}' command.\n";
         }
     }
 
@@ -341,12 +342,27 @@ t directory 'repository/{$name}' already exists.\n";
 
     /**
      *
+     *
+     */
+    public static function addPsr4($paths)
+    {
+        $loader = new ClassLoader();
+
+        foreach ($paths as $namespace => $path) {
+            $loader->addPsr4($namespace, $path);
+        }
+
+        $loader->register();
+    }
+
+    /**
+     *
      */
     public static function log($object)
     {
         $cwd = getcwd();
         $log = $cwd.'/producer.log';
 
-        file_put_contents($log, $object, FILE_APPEND);
+        file_put_contents($log, "> ".trim($object)."\n", FILE_APPEND);
     }
 }
