@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ##
-cd $1/repository/$2
+cd $1
 git add .
 git add *
 git config push.default simple

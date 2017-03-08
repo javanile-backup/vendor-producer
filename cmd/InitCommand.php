@@ -13,7 +13,7 @@
 
 namespace Javanile\Producer\Commands;
 
-class InitCommand
+class InitCommand extends Command
 {
     /**
      * Current working directory for running script.
