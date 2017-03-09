@@ -15,6 +15,7 @@ namespace Javanile;
 
 use Composer\Autoload\ClassLoader;
 use Javanile\Producer\Commands\InitCommand;
+use Javanile\Producer\Commands\PurgeCommand;
 use Javanile\Producer\Commands\UpdateCommand;
 
 /**
@@ -60,16 +61,26 @@ class Producer
         }
 
         switch (trim($args[0])) {
-            case 'init': return $this->runInit($args);
-            case 'test': return $this->cmdTest($args);
-            case 'clone': return $this->cmdClone($args);
-            case 'purge': return $this->cmdPurge($args);
-            case 'update': return $this->runUpdate($args);
-            case 'install': return $this->cmdInstall($args);
-            case 'publish': return $this->cmdPublish($args);
-            case '--version': return $this->cmdVersion($args);
-            case '--help': return $this->cmdHelp($args);
-            default: return "> Producer: undefined '{$args[0]}' command.\n";
+            case 'init':
+                return $this->runInit($args);
+            case 'test':
+                return $this->cmdTest($args);
+            case 'clone':
+                return $this->cmdClone($args);
+            case 'purge':
+                return $this->cmdPurge($args);
+            case 'update':
+                return $this->runUpdate($args);
+            case 'install':
+                return $this->cmdInstall($args);
+            case 'publish':
+                return $this->cmdPublish($args);
+            case '--version':
+                return $this->cmdVersion($args);
+            case '--help':
+                return $this->cmdHelp($args);
+            default:
+                return "> Producer: undefined '{$args[0]}' command.\n";
         }
     }
 
@@ -134,7 +145,7 @@ class Producer
             if (!class_exists($class)) {
                 return "> Producer: Test class '{$class}' not found.\n";
             }
-            $methods = array_filter(get_class_methods($class), function($method) {
+            $methods = array_filter(get_class_methods($class), function ($method) {
                 return preg_match('/^test[A-Z]/',$method);
             });
             if (!isset($methods[$item-1])) {
@@ -166,7 +177,7 @@ class Producer
             if (!class_exists($class)) {
                 return "> Producer: Test class '{$class}' not found.\n";
             }
-            $methods = array_filter(get_class_methods($class), function($method) {
+            $methods = array_filter(get_class_methods($class), function ($method) {
                 return preg_match('/^test[A-Z]/',$method);
             });
             if (!isset($methods[$item-1])) {
@@ -194,15 +205,14 @@ class Producer
         $repo = trim($args[1]);
 
         //
-        if (preg_match('/^(http:\/\/|https:\/\/)/i', $repo, $x)) {
+        if (preg_match('/^(http:\/\/|https:\/\/)/i', $repo)) {
 
             //
             $name = isset($args[2]) ? $args[2] : basename($args[1], '.git');
 
             //
             if (is_dir($this->cwd.'/repository/'.$name)) {
-                return "> Producer: Projec    #if (!is_dir('repository')) { mkdir('repository'); }
-t directory 'repository/{$name}' already exists.\n";
+                return "> Producer: Project 'repository/{$name}' already exists.\n";
             }
 
             //
@@ -253,33 +263,9 @@ t directory 'repository/{$name}' already exists.\n";
      */
     private function cmdPurge($args)
     {
-        //
-        if (!isset($args[1]) || !$args[1]) {
-            return "> Producer: Project directory required.\n";
-        }
+        $cmd = new PurgeCommand($this->cwd);
 
-        //
-        $name = trim($args[1]);
-
-        //
-        if (!is_dir($this->cwd.'/repository/'.$name)) {
-            return "> Producer: Project directory 'repository/{$name}' not found.\n";
-        }
-
-        //
-        $json = null;
-        $comp = $this->cwd.'/repository/'.$name.'/composer.json';
-        if (file_exists($comp)) {
-            $json = json_decode(file_get_contents($comp));
-        }
-
-        //
-        echo shell_exec(__DIR__.'/../exec/purge-rm.sh '.$this->cwd.' '.$name);
-
-        //
-        if (isset($json->name)) {
-            echo shell_exec(__DIR__.'/../exec/purge-remove.sh '.$this->cwd.' '.$json->name);
-        }
+        return $cmd->run(array_slice($args, 1));
     }
 
     /**
