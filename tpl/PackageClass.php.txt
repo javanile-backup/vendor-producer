@@ -16,12 +16,10 @@ namespace %%NAMESPACE%%;
 /**
  * Class description.
  */
-class %%NAMESPACE%%
+class %%CLASS%%
 {
     /**
      * Constructor.
-     *
-     * @param string $cwd current working directory
      */
     public function __construct()
     {
