@@ -20,6 +20,7 @@ use Javanile\Producer\Commands\CloneCommand;
 use Javanile\Producer\Commands\PurgeCommand;
 use Javanile\Producer\Commands\UpdateCommand;
 use Javanile\Producer\Commands\PublishCommand;
+
 /**
  * Class Producer.
  */
