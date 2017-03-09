@@ -34,6 +34,7 @@ class TestCommand extends Command
      * Run test command.
      *
      * @param $args
+     *
      * @return string
      */
     public function run($args)

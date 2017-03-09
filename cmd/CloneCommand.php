@@ -34,6 +34,7 @@ class CloneCommand extends Command
      * Run clone command.
      *
      * @param $args
+     *
      * @return string
      */
     public function run($args)

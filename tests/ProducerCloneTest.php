@@ -5,7 +5,7 @@ namespace Javanile\Producer\Tests;
 use Javanile\Producer;
 use PHPUnit\Framework\TestCase;
 
-Producer::addPsr4(["Javanile\\Producer\\Tests\\" => __DIR__]);
+Producer::addPsr4(['Javanile\\Producer\\Tests\\' => __DIR__]);
 
 final class ProducerCloneTest extends TestCase
 {
@@ -13,7 +13,7 @@ final class ProducerCloneTest extends TestCase
     {
         $cli = new ProducerMock(__DIR__);
         $cli->runMock(['prova']);
-        Producer::log("Hello World!");
+        Producer::log('Hello World!');
         $this->assertEquals(0, 0);
     }
 }

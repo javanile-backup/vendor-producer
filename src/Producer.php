@@ -72,11 +72,11 @@ class Producer
             case 'update':
                 return $this->runUpdate($args);
             case 'install':
-                return $this->cmdInstall($args);
+                return $this->cmdInstall();
             case 'publish':
                 return $this->cmdPublish($args);
             case '--version':
-                return $this->cmdVersion($args);
+                return $this->cmdVersion();
             case '--help':
                 return $this->cmdHelp($args);
             default:
@@ -141,7 +141,7 @@ class Producer
     /**
      * Install script.
      */
-    private function cmdInstall($args)
+    private function cmdInstall()
     {
         // Installation process are performed
         // throught 'bin/producer' scripting file
@@ -173,15 +173,27 @@ class Producer
     private function cmdVersion()
     {
         $json = json_decode(file_get_contents(__DIR__.'/../composer.json'));
+
         return "> Producer: version {$json->version}\n";
     }
 
     /**
      * Return commanline helps.
+     *
+     * @param array $args help arguments
+     *
+     * @return string
      */
     private function cmdHelp($args)
     {
-        return file_get_contents(__DIR__.'/../help/help.txt');
+        $help = isset($args[1]) ? $args[1] : 'help';
+        $file = __DIR__.'/../help/'.$help.'.txt';
+
+        if (!file_exists($file)) {
+            return "> Producer: Not found help for '{$help}' command.\n";
+        }
+
+        return file_get_contents(__DIR__.'/../help/'.$help.'.txt');
     }
 
     /**

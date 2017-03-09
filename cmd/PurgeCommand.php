@@ -31,9 +31,10 @@ class PurgeCommand extends Command
     }
 
     /**
-     * Run init command.
+     * Run purge command.
      *
      * @param $args
+     *
      * @return string
      */
     public function run($args)

@@ -33,7 +33,8 @@ class UpdateCommand extends Command
     /**
      * Run update command.
      *
-     * @param $args
+     * @param array $args
+     *
      * @return string
      */
     public function run($args)

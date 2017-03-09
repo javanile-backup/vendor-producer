@@ -6,7 +6,8 @@ use Javanile\Producer;
 
 class ProducerMock extends Producer
 {
-    public function __construct($cwd) {
+    public function __construct($cwd)
+    {
         parent::__construct($cwd);
     }
 

@@ -34,6 +34,7 @@ class InitCommand extends Command
      * Run init command.
      *
      * @param $args
+     *
      * @return string
      */
     public function run($args)
@@ -49,7 +50,7 @@ class InitCommand extends Command
 
         // init by
         $repo = trim($args[0]);
-        if (preg_match('/^(http:\/\/|https:\/\/)/i', $repo, $x)) {
+        if (preg_match('/^(http:\/\/|https:\/\/)/i', $repo)) {
             $name = isset($args[1]) ? $args[1] : basename($args[0], '.git');
 
             echo shell_exec(__DIR__.'/../exec/clone-url.sh '.$this->cwd.' '.$repo.' '.$name);
@@ -109,7 +110,4 @@ class InitCommand extends Command
 
         return strtolower($vendor.'/'.$package);
     }
-
-
-
 }
