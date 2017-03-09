@@ -19,7 +19,7 @@ use Javanile\Producer\Commands\TestCommand;
 use Javanile\Producer\Commands\CloneCommand;
 use Javanile\Producer\Commands\PurgeCommand;
 use Javanile\Producer\Commands\UpdateCommand;
-
+use Javanile\Producer\Commands\PublishCommand;
 /**
  * Class Producer.
  */
@@ -153,18 +153,9 @@ class Producer
      */
     private function cmdPublish($args)
     {
-        if (!isset($args[1]) || !$args[1]) {
-            $path = $this->cwd.'/repository';
+        $cmd = new PublishCommand($this->cwd);
 
-            foreach (scandir($path) as $name) {
-                if ($name[0] != '.' && is_dir($path.'/'.$name)) {
-                    echo "\n> $name\n--------------\n";
-                    echo shell_exec(__DIR__.'/../exec/publish.sh '.$this->cwd.' '.$name);
-                }
-            }
-        } else {
-            return shell_exec(__DIR__.'/../exec/publish.sh '.$this->cwd.' '.$args[1]);
-        }
+        return $cmd->run(array_slice($args, 1));
     }
 
     /**
