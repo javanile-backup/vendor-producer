@@ -80,7 +80,7 @@ class Producer
             case '--help':
                 return $this->cmdHelp($args);
             default:
-                return "> Producer: undefined '{$args[0]}' command.\n";
+                return "> Producer: Undefined '{$args[0]}' command.\n";
         }
     }
 
