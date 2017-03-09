@@ -45,13 +45,15 @@ class UpdateCommand extends Command
         }
 
         // update env
-        $repo = shell_exec(__DIR__.'/../exec/update-env.sh '.$this->cwd);
+        $env = basename($this->cwd);
+        echo "\n> $env\n----------------------------\n";
+        echo shell_exec(__DIR__.'/../exec/update-env.sh '.$this->cwd);
 
         // update all repositories
         $path = $this->cwd.'/repository';
         foreach (scandir($path) as $name) {
             if ($name[0] != '.' && is_dir($path.'/'.$name)) {
-                echo "\n> $name\n--------------\n";
+                echo "\n> $name\n----------------------------\n";
                 echo shell_exec(__DIR__.'/../exec/update.sh '.$this->cwd.' '.$name);
             }
         }
