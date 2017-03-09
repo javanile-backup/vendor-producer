@@ -15,6 +15,7 @@ namespace Javanile;
 
 use Composer\Autoload\ClassLoader;
 use Javanile\Producer\Commands\InitCommand;
+use Javanile\Producer\Commands\CloneCommand;
 use Javanile\Producer\Commands\PurgeCommand;
 use Javanile\Producer\Commands\UpdateCommand;
 
@@ -146,7 +147,7 @@ class Producer
                 return "> Producer: Test class '{$class}' not found.\n";
             }
             $methods = array_filter(get_class_methods($class), function ($method) {
-                return preg_match('/^test[A-Z]/',$method);
+                return preg_match('/^test[A-Z]/', $method);
             });
             if (!isset($methods[$item-1])) {
                 return "> Producer: Test class '{$class}' have less than '{$item}' methods.\n";
@@ -178,7 +179,7 @@ class Producer
                 return "> Producer: Test class '{$class}' not found.\n";
             }
             $methods = array_filter(get_class_methods($class), function ($method) {
-                return preg_match('/^test[A-Z]/',$method);
+                return preg_match('/^test[A-Z]/', $method);
             });
             if (!isset($methods[$item-1])) {
                 return "> Producer: Test class '{$class}' have less than '{$item}' methods.\n";
@@ -196,66 +197,9 @@ class Producer
      */
     private function cmdClone($args)
     {
-        //
-        if (!isset($args[1]) || !$args[1]) {
-            return "> Producer: Repository url or package name required.\n";
-        }
+        $cmd = new CloneCommand($this->cwd);
 
-        //
-        $repo = trim($args[1]);
-
-        //
-        if (preg_match('/^(http:\/\/|https:\/\/)/i', $repo)) {
-
-            //
-            $name = isset($args[2]) ? $args[2] : basename($args[1], '.git');
-
-            //
-            if (is_dir($this->cwd.'/repository/'.$name)) {
-                return "> Producer: Project 'repository/{$name}' already exists.\n";
-            }
-
-            //
-            echo shell_exec(__DIR__.'/../exec/clone-url.sh '.$this->cwd.' '.$repo.' '.$name);
-            $json = json_decode(file_get_contents($this->cwd.'/repository/'.$name.'/composer.json'));
-
-            return shell_exec(__DIR__.'/../exec/clone-install.sh '.$this->cwd.' '.$json->name.' '.$name);
-        }
-
-        //
-        elseif (preg_match('/^[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*$/', $repo, $x)) {
-            echo shell_exec(__DIR__.'/../exec/clone-require.sh '.$this->cwd.' '.$repo);
-            $comp = $this->cwd.'/vendor/'.$repo.'/composer.json';
-            if (!file_exists($comp)) {
-                return "> Producer: Package not found.\n";
-            }
-            $json = json_decode(file_get_contents($comp));
-            $pack = $repo;
-            $repo = null;
-            if (isset($json->repositories)) {
-                foreach ($json->repositories as $item) {
-                    if ($item->type == 'git') {
-                        $repo = $item->url;
-                        break;
-                    }
-                }
-            }
-            if ($repo) {
-                //
-                $name = isset($args[2]) ? $args[2] : basename($repo, '.git');
-
-                //
-                if (is_dir($this->cwd.'/repository/'.$name)) {
-                    return "> Producer: Project directory 'repository/{$name}' already exists.\n";
-                }
-
-                return shell_exec(__DIR__.'/../exec/clone-complete.sh '.$this->cwd.' '.$repo.' '.$name.' '.$pack);
-            } else {
-                return "> Producer: Repository not found on composer.json.\n";
-            }
-        } else {
-            return "> Producer: Malformed url or package name.\n";
-        }
+        return $cmd->run(array_slice($args, 1));
     }
 
     /**
@@ -283,6 +227,8 @@ class Producer
      */
     private function cmdInstall($args)
     {
+        // Installation process are performed
+        // throught 'bin/producer' scripting file
         return "> Producer: Installation complete.\n";
     }
 
@@ -291,13 +237,9 @@ class Producer
      */
     private function cmdPublish($args)
     {
-        //
         if (!isset($args[1]) || !$args[1]) {
-
-            //
             $path = $this->cwd.'/repository';
 
-            //
             foreach (scandir($path) as $name) {
                 if ($name[0] != '.' && is_dir($path.'/'.$name)) {
                     echo "\n> $name\n--------------\n";
@@ -310,25 +252,26 @@ class Producer
     }
 
     /**
-     *
+     * Return version.
      */
-    private function cmdVersion($args)
+    private function cmdVersion()
     {
         $json = json_decode(file_get_contents(__DIR__.'/../composer.json'));
         return "> Producer: version {$json->version}\n";
     }
 
     /**
-     *
+     * Return commanline helps.
      */
     private function cmdHelp($args)
     {
-        return file_get_contents(__DIR__.'/../reference.txt');
+        return file_get_contents(__DIR__.'/../help/help.txt');
     }
 
     /**
+     * Tool to register Psr4 'namespaces vs paths'.
      *
-     *
+     * @param array $paths a pairs of namespace and path to register
      */
     public static function addPsr4($paths)
     {
@@ -342,6 +285,8 @@ class Producer
     }
 
     /**
+     * Log messages on 'producer.log' file.
+     *
      *
      */
     public static function log($object)
