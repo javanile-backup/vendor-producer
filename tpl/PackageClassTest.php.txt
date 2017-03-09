@@ -1,0 +1,20 @@
+<?php
+
+namespace %%NAMESPACE%%\Tests;
+
+use Javanile\Producer;
+use PHPUnit\Framework\TestCase;
+
+Producer::addPsr4(['%%NAMESPACE%%\\Tests\\' => __DIR__]);
+
+final class %%CLASS%%Test extends TestCase
+{
+    public function testCliStaticMethod()
+    {
+        $object = new %%CLASS%%();
+        $this->assertInstanceOf('%%CLASS%%', $object);
+
+        $output = "Hello World!";
+        $this->assertRegexp('/World/i', $output);
+    }
+}
