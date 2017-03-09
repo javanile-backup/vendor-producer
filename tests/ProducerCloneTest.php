@@ -7,15 +7,8 @@ use PHPUnit\Framework\TestCase;
 
 Producer::addPsr4(["Javanile\\Producer\\Tests\\" => __DIR__]);
 
-final class ProducerTest extends TestCase
+final class ProducerCloneTest extends TestCase
 {
-    public function testCliStaticMethod()
-    {
-        $output = Producer::cli([__FILE__, '--version']);
-
-        $this->assertRegexp('/version/', $output);
-    }
-
     public function testCloneGitHubProject()
     {
         $cli = new ProducerMock(__DIR__);
