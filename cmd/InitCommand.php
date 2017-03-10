@@ -46,6 +46,8 @@ class InitCommand extends Command
             $this->initPhpUnitXml($this->cwd, $repo);
             $this->initPackageClassPhp($this->cwd, $repo);
             $this->initPackageClassTestPhp($this->cwd, $repo);
+            $this->initCodeclimateYml($this->cwd, $repo);
+            $this->initTravisYml($this->cwd, $repo);
             echo shell_exec(__DIR__.'/../exec/init-env-update.sh '.$this->cwd);
             return "> Producer: Environment project initialized.\n";
         }
@@ -138,6 +140,30 @@ class InitCommand extends Command
             mkdir($path.'/tests');
         }
         file_put_contents($file, $code);
+    }
+
+    /**
+     *
+     */
+    private function initCodeclimateYml($path, $repo)
+    {
+        $file = $path.'/.codeclimate.yml';
+        if (file_exists($file)) {
+            return;
+        }
+        copy(__DIR__.'/../tpl/.codeclimate.yml.txt', $file);
+    }
+
+    /**
+     *
+     */
+    private function initTravisYml($path, $repo)
+    {
+        $file = $path.'/.travis.yml';
+        if (file_exists($file)) {
+            return;
+        }
+        copy(__DIR__.'/../tpl/.travis.yml.txt', $file);
     }
 
     /**
