@@ -216,6 +216,8 @@ class Producer
 
         if (is_object($object) && !method_exists($object, '__toString')) {
             $msg = 'object('.get_class($object).'):'.json_encode($object);
+        } else {
+            $msg = $object;
         }
 
         file_put_contents($log, '>  '.trim($msg)."\n", FILE_APPEND);
