@@ -214,12 +214,15 @@ class Producer
         $cwd = getcwd();
         $log = $cwd.'/producer.log';
 
-        if (is_object($object) && !method_exists($object, '__toString')) {
-            $msg = 'object('.get_class($object).'):'.json_encode($object);
-        } else {
-            $msg = $object;
+        foreach (func_get_args() as $object) {
+            if (is_array($object)) {
+                $msg = 'array('.count($object).'):'.json_encode($object);
+            } else if (is_object($object) && !method_exists($object, '__toString')) {
+                $msg = 'object('.get_class($object).'):'.json_encode($object);
+            } else {
+                $msg = $object;
+            }
+            file_put_contents($log, '>  '.trim($msg)."\n", FILE_APPEND);
         }
-
-        file_put_contents($log, '>  '.trim($msg)."\n", FILE_APPEND);
     }
 }
