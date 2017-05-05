@@ -93,7 +93,7 @@ class TestCommand extends Command
         }
 
         // run single unit test throught repository projects
-        $test = 'tests/'.$args[0];
+        $test = 'tests/'.str_replace('\\', '/', $args[0]);
         foreach (scandir($path) as $name) {
             if ($name[0] == '.' || !is_dir($path.'/'.$name)) {
                 continue;
