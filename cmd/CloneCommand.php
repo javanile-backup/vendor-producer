@@ -61,10 +61,8 @@ class CloneCommand extends Command
             $json = json_decode(file_get_contents($this->cwd.'/repository/'.$name.'/composer.json'));
 
             return shell_exec(__DIR__.'/../exec/clone-install.sh '.$this->cwd.' '.$json->name.' '.$name);
-        }
 
-        //
-        elseif (preg_match('/^[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*$/', $repo)) {
+        } elseif (preg_match('/^[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*$/', $repo)) {
             echo shell_exec(__DIR__.'/../exec/clone-require.sh '.$this->cwd.' '.$repo);
             $comp = $this->cwd.'/vendor/'.$repo.'/composer.json';
             if (!file_exists($comp)) {
