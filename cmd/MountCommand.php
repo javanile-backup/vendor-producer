@@ -42,8 +42,9 @@ class MountCommand extends Command
             return $this->error('&package-not-found');
         }
 
+        $pack = $args[0];
         $name = isset($args[1]) ? $args[1] : basename($args[0]);
 
-        return $this->exec('mount', [$this->cwd, $args[0], $name]);
+        return $this->exec('mount', [$pack, $name]);
     }
 }

@@ -45,6 +45,31 @@ class Command
     }
 
     /**
+     * Test if progect has composer.json file.
+     */
+    protected function hasComposerJson($name)
+    {
+        return file_exists($this->cwd.'/repository/'.$name.'/composer.json');
+    }
+
+    /**
+     *
+     */
+    protected function getPackageNameByComposerJson($name)
+    {
+        $file = $this->cwd.'/repository/'.$name.'/composer.json';
+        $json = json_decode(file_get_contents($file));
+
+        if (!isset($json->name) || !$this->isPackageName($json->name)) {
+            $this->error("Package name not found or malformed into '{$file}'.");
+            exit(1);
+        }
+
+        return $json->name;
+    }
+
+
+    /**
      * Return error message.
      */
     public function error($error)
@@ -58,6 +83,14 @@ class Command
         }
 
         return $message;
+    }
+
+    /**
+     *
+     */
+    protected function info($line)
+    {
+        return '> Producer: '.$line."\n";
     }
 
     /**
@@ -76,7 +109,7 @@ class Command
             $params = implode(' ', $args);
         }
 
-        return shell_exec($script.' '.$params);
+        return shell_exec($script.' '.$this->cwd.' '.$params);
     }
 
     /**
