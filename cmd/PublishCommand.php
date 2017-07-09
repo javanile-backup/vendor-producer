@@ -48,7 +48,7 @@ class PublishCommand extends Command
             }
         } else {
             $name = $args[0];
-            $this->info("Publish project '{$name}'");
+            echo $this->info("Publish project '{$name}'");
             return $this->exec('publish', [$name]);
         }
     }
