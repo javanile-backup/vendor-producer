@@ -73,7 +73,7 @@ class InitCommand extends Command
         // init composer.json
         $json = [];
         $file = $path.'/composer.json';
-        $pack = $this->getPackage($repo);
+        $pack = $this->getPackageNameByUrl($repo);
 
         if (file_exists($file)) {
             $json = json_decode(file_get_contents($file));
@@ -166,17 +166,6 @@ class InitCommand extends Command
             return;
         }
         copy(__DIR__.'/../tpl/.travis.yml.txt', $file);
-    }
-
-    /**
-     * Get package name by repository url.
-     */
-    private function getPackage($repo)
-    {
-        $package = trim(basename($repo, '.git'));
-        $vendor = trim(basename(dirname($repo), '.git'));
-
-        return strtolower($vendor.'/'.$package);
     }
 
     /**

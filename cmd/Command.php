@@ -68,6 +68,16 @@ class Command
         return $json->name;
     }
 
+    /**
+     * Get package name by repository url.
+     */
+    protected function getPackageNameByUrl($url)
+    {
+        $package = trim(basename($url, '.git'));
+        $vendor = trim(basename(dirname($url), '.git'));
+
+        return strtolower($vendor.'/'.$package);
+    }
 
     /**
      * Return error message.

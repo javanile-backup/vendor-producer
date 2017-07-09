@@ -69,7 +69,9 @@ class CloneCommand extends Command
             return $this->exec('clone-install', [$pack, $name]);
         }
 
-        return shell_exec(__DIR__.'/../exec/clone-install.sh '.$this->cwd.' '.$json->name.' '.$name);
+        $pack = $this->getPackageNameByUrl($repo);
+
+        return $this->exec('clone-mount', [$pack, $name]);
     }
 
     /**
