@@ -1,4 +1,4 @@
-# Producer
+# javanile/producer
 
 [![Build Status](https://travis-ci.org/Javanile/Producer.svg?branch=master)](https://travis-ci.org/Javanile/Producer)
 [![Code Climate](https://codeclimate.com/github/Javanile/Producer/badges/gpa.svg)](https://codeclimate.com/github/Javanile/Producer)
@@ -9,16 +9,22 @@ Produce your vendor code everywhere
 
 ## Install Producer
 
-install via composer
+Install via composer copy and paste the follow commands into console
 
 ```bash
-$ composer require javanile/producer
+$ composer require javanile/producer && ./vendor/bin/producer install
 ```
-after run this to prepare your environment 
+
+## Working with Producer
+
+Producer provide to different macro/task ready for development process
+
+### Clone repository
+
+You can clone a repository and mount it as vendor code, 
+but you continue to develop it without 
+switch between diffent projects
 
 ```bash
-$ ./vendor/bin/producer install
+$ php producer clone https://github.com/javanile/urlman
 ```
-
-
-

@@ -16,18 +16,13 @@ namespace Javanile\Producer\Commands;
 class InitCommand extends Command
 {
     /**
-     * Current working directory for running script.
-     */
-    private $cwd = null;
-
-    /**
      * InitCommand constructor.
      *
      * @param $cwd
      */
     public function __construct($cwd)
     {
-        $this->cwd = $cwd;
+        parent::__construct($cwd);
     }
 
     /**
@@ -39,32 +34,39 @@ class InitCommand extends Command
      */
     public function run($args)
     {
-        // init env
+        // init root project
         if (!isset($args[0]) || !$args[0]) {
-            $repo = shell_exec(__DIR__.'/../exec/init-env-origin.sh '.$this->cwd);
-            $this->initComposerJson($this->cwd, $repo);
-            $this->initPhpUnitXml($this->cwd, $repo);
-            $this->initPackageClassPhp($this->cwd, $repo);
-            $this->initPackageClassTestPhp($this->cwd, $repo);
-            $this->initCodeclimateYml($this->cwd, $repo);
-            $this->initTravisYml($this->cwd, $repo);
-            echo shell_exec(__DIR__.'/../exec/init-env-update.sh '.$this->cwd);
-            return "> Producer: Environment project initialized.\n";
+            return $this->initPath($this->cwd, $args);
         }
 
-        // init by
-        $repo = trim($args[0]);
-        if (preg_match('/^(http:\/\/|https:\/\/)/i', $repo)) {
-            $name = isset($args[1]) ? $args[1] : basename($args[0], '.git');
-
-            echo shell_exec(__DIR__.'/../exec/clone-url.sh '.$this->cwd.' '.$repo.' '.$name);
+        // init repo project
+        if (is_dir($path = $this->cwd.'/repository/'.$args[0])) {
+            return $this->initPath($path, $args);
         }
 
-        return "> Producer: malformed repository url.\n";
+        // clone url and init
+        #if (preg_match('/^(http:\/\/|https:\/\/)/i', $repo)) {
+        #    $name = isset($args[1]) ? $args[1] : basename($args[0], '.git');
+        #    echo shell_exec(__DIR__.'/../exec/clone-url.sh '.$this->cwd.' '.$repo.' '.$name);
+        #}
+
+        return "> Producer: malformed init command.\n";
+    }
+
+    private function initPath($path, $args)
+    {
+        //$repo = shell_exec(__DIR__.'/../exec/init-env-origin.sh '.$this->cwd);
+        $this->initComposerJson($path, $repo);
+        $this->initPhpUnitXml($path, $repo);
+        $this->initPackageClassPhp($path, $repo);
+        $this->initPackageClassTestPhp($path, $repo);
+        $this->initCodeclimateYml($path, $repo);
+        $this->initTravisYml($path, $repo);
+        //echo shell_exec(__DIR__.'/../exec/init-env-update.sh '.$this->cwd);
     }
 
     /**
-     *
+     * Initialize composer.json file.
      */
     private function initComposerJson($path, $repo)
     {
@@ -93,7 +95,7 @@ class InitCommand extends Command
     }
 
     /**
-     *
+     * Initialize phpunit.xml file.
      */
     private function initPhpUnitXml($path)
     {
@@ -105,7 +107,7 @@ class InitCommand extends Command
     }
 
     /**
-     *
+     * Initialize sample Class.
      */
     private function initPackageClassPhp($path, $repo)
     {
@@ -124,7 +126,7 @@ class InitCommand extends Command
     }
 
     /**
-     *
+     * Initialize sample Test.
      */
     private function initPackageClassTestPhp($path, $repo)
     {
@@ -143,7 +145,7 @@ class InitCommand extends Command
     }
 
     /**
-     *
+     * Initialize .codeclimate.yml file.
      */
     private function initCodeclimateYml($path, $repo)
     {
@@ -155,7 +157,7 @@ class InitCommand extends Command
     }
 
     /**
-     *
+     * Initialie .travis.yml file.
      */
     private function initTravisYml($path, $repo)
     {

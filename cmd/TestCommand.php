@@ -16,11 +16,6 @@ namespace Javanile\Producer\Commands;
 class TestCommand extends Command
 {
     /**
-     * Current working directory for running script.
-     */
-    private $cwd = null;
-
-    /**
      * InitCommand constructor.
      *
      * @param $cwd
@@ -47,83 +42,86 @@ class TestCommand extends Command
 
         // run all tests on all repository projects
         if (!isset($args[0]) || !$args[0]) {
-            $test = 'tests';
-            $path = $this->cwd.'/repository';
-
-            foreach (scandir($path) as $name) {
-                if ($name[0] != '.' && is_dir($path.'/'.$name)) {
-                    echo shell_exec(__DIR__.'/../exec/test-dox.sh '.$this->cwd.' '.$name.' '.$test);
-                }
-            }
-
-            return;
+            return $this->rulAllTests();
         }
 
-        // run all tests on one repository project
-        $name = $args[0];
-        $test = 'tests';
-        $path = $this->cwd.'/repository';
-        if (is_dir($path.'/'.$name)) {
-            return shell_exec(__DIR__.'/../exec/test-dox.sh '.$this->cwd.' '.$name.' '.$test);
+        // run all tests on one project
+        if (is_dir($this->cwd.'/repository/'.$args[0])) {
+            return $this->runProjectTests($args);
         }
 
-        // run env test if exist
-        $file = $this->cwd.'/tests/'.$name.'.php';
-        if (file_exists($file)) {
-            $item = isset($args[1]) ? intval($args[1]) : null;
-            if (!$item) {
-                return shell_exec(__DIR__.'/../exec/test-env-dox.sh '.$this->cwd.' '.$name);
-            }
-            $classes = get_declared_classes();
-            require_once $file;
-            $diff = array_diff(get_declared_classes(), $classes);
-            $class = array_pop($diff);
-            if (!class_exists($class)) {
-                return "> Producer: Test class '{$class}' not found.\n";
-            }
-            $methods = array_filter(get_class_methods($class), function ($method) {
-                return preg_match('/^test[A-Z]/', $method);
-            });
-            if (!isset($methods[$item-1])) {
-                return "> Producer: Test class '{$class}' have less than '{$item}' methods.\n";
-            }
-            $filter = "'/::".$methods[$item-1]."/'";
+        //
+        $test = str_replace('\\', '/', $args[0]);
 
-            return shell_exec(__DIR__.'/../exec/test-env-filter.sh '.$this->cwd.' '.$name.' '.$filter);
+        // run root-project test file if exist
+        if (file_exists($file = $this->cwd.'/tests/'.$test.'Test.php')) {
+            return $this->runFileTests($file, $args);
         }
 
         // run single unit test throught repository projects
-        $test = 'tests/'.str_replace('\\', '/', $args[0]);
         foreach (scandir($path) as $name) {
             if ($name[0] == '.' || !is_dir($path.'/'.$name)) {
                 continue;
             }
-            $file = $path.'/'.$name.'/'.$test.'.php';
-            if (!file_exists($file)) {
-                continue;
+            if (file_exists($file = $this->cwd.'/'.$name.'/tests/'.$test.'Test.php')) {
+                return $this->runFileTests($file, $args);
             }
-            $item = isset($args[1]) ? intval($args[1]) : null;
-            if (!$item) {
-                return shell_exec(__DIR__.'/../exec/test-dox.sh '.$this->cwd.' '.$name.' '.$test);
-            }
-            $classes = get_declared_classes();
-            require_once $file;
-            $diff = array_diff(get_declared_classes(), $classes);
-            $class = array_pop($diff);
-            if (!class_exists($class)) {
-                return "> Producer: Test class '{$class}' not found.\n";
-            }
-            $methods = array_filter(get_class_methods($class), function ($method) {
-                return preg_match('/^test[A-Z]/', $method);
-            });
-            if (!isset($methods[$item-1])) {
-                return "> Producer: Test class '{$class}' have less than '{$item}' methods.\n";
-            }
-            $filter = "'/::".$methods[$item-1]."/'";
-
-            return shell_exec(__DIR__.'/../exec/test-filter.sh '.$this->cwd.' '.$name.' '.$test.' '.$filter);
         }
 
         return "> Producer: Test case class '{$args[0]}' not found.\n";
+    }
+
+    /**
+     *
+     */
+    private function runAllTests()
+    {
+        $test = 'tests';
+        $path = $this->cwd.'/repository';
+
+        foreach (scandir($path) as $name) {
+            if ($name[0] != '.' && is_dir($path.'/'.$name)) {
+                echo shell_exec(__DIR__.'/../exec/test-dox.sh '.$this->cwd.' '.$name.' '.$test);
+            }
+        }
+    }
+
+    /**
+     * Run project tests.
+     */
+    private function runProjectTests($args)
+    {
+        $name = $args[0];
+        $test = 'tests';
+        $path = ;
+
+        return shell_exec(__DIR__.'/../exec/test-dox.sh '.$this->cwd.' '.$name.' '.$test);
+    }
+
+    /**
+     *
+     */
+    private function runFileTests($file, $args)
+    {
+        $item = isset($args[1]) ? intval($args[1]) : null;
+        if (!$item) {
+            return shell_exec(__DIR__.'/../exec/test-dox.sh '.$this->cwd.' '.$name.' '.$test);
+        }
+        $classes = get_declared_classes();
+        require_once $file;
+        $diff = array_diff(get_declared_classes(), $classes);
+        $class = array_pop($diff);
+        if (!class_exists($class)) {
+            return "> Producer: Test class '{$class}' not found.\n";
+        }
+        $methods = array_filter(get_class_methods($class), function ($method) {
+            return preg_match('/^test[A-Z]/', $method);
+        });
+        if (!isset($methods[$item - 1])) {
+            return "> Producer: Test class '{$class}' have less than '{$item}' methods.\n";
+        }
+        $filter = "'/::".$methods[$item - 1]."/'";
+
+        return shell_exec(__DIR__.'/../exec/test-filter.sh '.$this->cwd.' '.$name.' '.$test.' '.$filter);
     }
 }

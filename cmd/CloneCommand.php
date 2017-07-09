@@ -39,30 +39,24 @@ class CloneCommand extends Command
      */
     public function run($args)
     {
-        //
         if (!isset($args[0]) || !$args[0]) {
-            return "> Producer: Repository url or package name required.\n";
+            return $this->error('&require-package-or-repository');
         }
 
-        //
         $repo = trim($args[0]);
 
-        //
-        if (preg_match('/^(http:\/\/|https:\/\/)/i', $repo)) {
+        if ($this->isUrl($repo)) {
             $name = isset($args[1]) ? $args[1] : basename($args[0], '.git');
-
-            //
             if (is_dir($this->cwd.'/repository/'.$name)) {
                 return "> Producer: Project 'repository/{$name}' already exists.\n";
             }
 
-            //
             echo shell_exec(__DIR__.'/../exec/clone-url.sh '.$this->cwd.' '.$repo.' '.$name);
             $json = json_decode(file_get_contents($this->cwd.'/repository/'.$name.'/composer.json'));
 
             return shell_exec(__DIR__.'/../exec/clone-install.sh '.$this->cwd.' '.$json->name.' '.$name);
 
-        } elseif (preg_match('/^[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*$/', $repo)) {
+        } elseif ($this->isPackageName($repo)) {
             echo shell_exec(__DIR__.'/../exec/clone-require.sh '.$this->cwd.' '.$repo);
             $comp = $this->cwd.'/vendor/'.$repo.'/composer.json';
             if (!file_exists($comp)) {

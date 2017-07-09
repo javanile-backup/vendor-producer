@@ -16,3 +16,4 @@ bootstrap/cache/
 
 # Other
 composer.lock
+producer.log

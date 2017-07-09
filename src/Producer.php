@@ -14,12 +14,12 @@
 namespace Javanile;
 
 use Composer\Autoload\ClassLoader;
-use Javanile\Producer\Commands\InitCommand;
-use Javanile\Producer\Commands\TestCommand;
 use Javanile\Producer\Commands\CloneCommand;
-use Javanile\Producer\Commands\PurgeCommand;
-use Javanile\Producer\Commands\UpdateCommand;
+use Javanile\Producer\Commands\InitCommand;
 use Javanile\Producer\Commands\PublishCommand;
+use Javanile\Producer\Commands\PurgeCommand;
+use Javanile\Producer\Commands\TestCommand;
+use Javanile\Producer\Commands\UpdateCommand;
 
 /**
  * Class Producer.
@@ -206,8 +206,6 @@ class Producer
 
     /**
      * Log messages on 'producer.log' file.
-     *
-     *
      */
     public static function log($object)
     {

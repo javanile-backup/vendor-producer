@@ -16,18 +16,13 @@ namespace Javanile\Producer\Commands;
 class PublishCommand extends Command
 {
     /**
-     * Current working directory for running script.
-     */
-    private $cwd = null;
-
-    /**
-     * InitCommand constructor.
+     * PublishCommand constructor.
      *
      * @param $cwd
      */
     public function __construct($cwd)
     {
-        $this->cwd = $cwd;
+        parent::__construct($cwd);
     }
 
     /**

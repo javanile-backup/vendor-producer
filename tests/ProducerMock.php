@@ -16,5 +16,3 @@ class ProducerMock extends Producer
         $this->run($args);
     }
 }
-
-
