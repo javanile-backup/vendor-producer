@@ -96,12 +96,12 @@ class Command
     /**
      * Exec specific script.
      */
-    protected function exec($exec, $args)
+    protected function exec($exec, $args = null)
     {
         $script = __DIR__.'/../exec/'.$exec.'.sh';
         $params = '';
 
-        if (count($args) > 0) {
+        if ($args && count($args) > 0) {
             foreach ($args as &$value) {
                 // TODO: fix argument with opportune escapes
             }
