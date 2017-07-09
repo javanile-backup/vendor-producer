@@ -15,6 +15,7 @@ namespace Javanile;
 
 use Composer\Autoload\ClassLoader;
 use Javanile\Producer\Commands\CloneCommand;
+use Javanile\Producer\Commands\MountCommand;
 use Javanile\Producer\Commands\InitCommand;
 use Javanile\Producer\Commands\PublishCommand;
 use Javanile\Producer\Commands\PurgeCommand;
@@ -68,6 +69,8 @@ class Producer
                 return $this->cmdTest($args);
             case 'clone':
                 return $this->cmdClone($args);
+            case 'mount':
+                return $this->cmdMount($args);
             case 'purge':
                 return $this->cmdPurge($args);
             case 'update':
@@ -115,6 +118,16 @@ class Producer
     private function cmdClone($args)
     {
         $cmd = new CloneCommand($this->cwd);
+
+        return $cmd->run(array_slice($args, 1));
+    }
+
+    /**
+     * Mount script.
+     */
+    private function cmdMount($args)
+    {
+        $cmd = new MountCommand($this->cwd);
 
         return $cmd->run(array_slice($args, 1));
     }

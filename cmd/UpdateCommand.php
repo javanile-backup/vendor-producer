@@ -1,6 +1,6 @@
 <?php
 /**
- * Init Command for Producer.
+ * Update command for producer.
  *
  * PHP version 5
  *

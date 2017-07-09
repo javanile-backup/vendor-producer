@@ -61,6 +61,25 @@ class Command
     }
 
     /**
+     * Exec specific script.
+     */
+    protected function exec($exec, $args)
+    {
+        $script = __DIR__.'/../exec/'.$exec.'.sh';
+        $params = '';
+
+        if (count($args) > 0) {
+            foreach ($args as &$value) {
+                // TODO: fix argument with opportune escapes
+            }
+
+            $params = implode(' ', $args);
+        }
+
+        return shell_exec($script.' '.$params);
+    }
+
+    /**
      * Override this method.
      */
     public function run($args)

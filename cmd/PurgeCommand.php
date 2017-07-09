@@ -1,6 +1,6 @@
 <?php
 /**
- * Purge Command for Producer.
+ * Purge command for producer.
  *
  * PHP version 5
  *

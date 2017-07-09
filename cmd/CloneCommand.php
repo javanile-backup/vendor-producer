@@ -1,6 +1,6 @@
 <?php
 /**
- * Init Command for Producer.
+ * Clone command for producer.
  *
  * PHP version 5
  *
@@ -16,18 +16,13 @@ namespace Javanile\Producer\Commands;
 class CloneCommand extends Command
 {
     /**
-     * Current working directory for running script.
-     */
-    private $cwd = null;
-
-    /**
-     * InitCommand constructor.
+     * CloneCommand constructor.
      *
      * @param $cwd
      */
     public function __construct($cwd)
     {
-        $this->cwd = $cwd;
+        parent::__construct($cwd);
     }
 
     /**
