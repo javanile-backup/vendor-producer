@@ -34,18 +34,17 @@ class PurgeCommand extends Command
      */
     public function run($args)
     {
-        //
         if (!isset($args[0]) || !$args[0]) {
             return "> Producer: Project directory required.\n";
         }
 
-        //
         $name = trim($args[0]);
 
-        //
         if (!is_dir($this->cwd.'/repository/'.$name)) {
             return "> Producer: Project directory 'repository/{$name}' not found.\n";
         }
+
+        echo $this->info("Purge project '{$name}'");
 
         //
         $json = null;

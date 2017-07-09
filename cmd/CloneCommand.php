@@ -58,7 +58,7 @@ class CloneCommand extends Command
         $name = isset($args[1]) ? $args[1] : basename($args[0], '.git');
 
         if (is_dir($this->cwd.'/repository/'.$name)) {
-            return "> Producer: Project 'repository/{$name}' already exists.\n";
+            return "> Producer: Project 'repository/{$name}' already exists during clone.\n";
         }
 
         echo $this->info("Clone by url '{$repo}'");

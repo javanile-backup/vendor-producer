@@ -48,9 +48,9 @@ class ResetCommand extends Command
         $repo = trim($this->exec('reset-origin', [$path]));
 
         $purge = new PurgeCommand($this->cwd);
-        $purge->run([$name]);
+        echo $purge->run([$name]);
 
-        $clone = new CloneCommand($this->cwd);
-        $clone->run([$repo, $name]);
+        //$clone = new CloneCommand($this->cwd);
+        //echo $clone->run([$repo, $name]);
     }
 }
