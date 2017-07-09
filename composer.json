@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "application",
   "authors": [{ "name": "Francesco Bianco", "email": "bianco@javanile.org" }],
-  "repositories": [{ "type": "git", "url": "https://github.com/Javanile/Producer" }],
+  "repositories": [{ "type": "git", "url": "https://github.com/javanile/producer" }],
   "autoload-dev": { "psr-4": { "Javanile\\Producer\\Tests\\": "tests" } },
   "autoload": {
     "classmap": [ "src/Producer.php" ],
