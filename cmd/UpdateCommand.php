@@ -57,7 +57,7 @@ class UpdateCommand extends Command
         // update env
         $env = basename($this->cwd);
         echo "\n> $env\n----------------------------\n";
-        echo shell_exec(__DIR__.'/../exec/update-env.sh '.$this->cwd);
+        echo shell_exec(__DIR__.'/../exec/update-root.sh '.$this->cwd);
 
         // update all repositories
         $path = $this->cwd.'/repository';
