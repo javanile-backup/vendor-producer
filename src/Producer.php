@@ -19,6 +19,7 @@ use Javanile\Producer\Commands\MountCommand;
 use Javanile\Producer\Commands\InitCommand;
 use Javanile\Producer\Commands\PublishCommand;
 use Javanile\Producer\Commands\PurgeCommand;
+use Javanile\Producer\Commands\ResetCommand;
 use Javanile\Producer\Commands\TestCommand;
 use Javanile\Producer\Commands\UpdateCommand;
 
@@ -73,6 +74,8 @@ class Producer
                 return $this->cmdMount($args);
             case 'purge':
                 return $this->cmdPurge($args);
+            case 'reset':
+                return $this->cmdReset($args);
             case 'update':
                 return $this->runUpdate($args);
             case 'install':
@@ -128,6 +131,16 @@ class Producer
     private function cmdMount($args)
     {
         $cmd = new MountCommand($this->cwd);
+
+        return $cmd->run(array_slice($args, 1));
+    }
+
+    /**
+     * Mount script.
+     */
+    private function cmdReset($args)
+    {
+        $cmd = new ResetCommand($this->cwd);
 
         return $cmd->run(array_slice($args, 1));
     }
