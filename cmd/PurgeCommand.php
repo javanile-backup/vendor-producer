@@ -1,6 +1,6 @@
 <?php
 /**
- * Init Command for Producer.
+ * Purge Command for Producer.
  *
  * PHP version 5
  *
@@ -16,18 +16,13 @@ namespace Javanile\Producer\Commands;
 class PurgeCommand extends Command
 {
     /**
-     * Current working directory for running script.
-     */
-    private $cwd = null;
-
-    /**
-     * InitCommand constructor.
+     * PurgeCommand constructor.
      *
      * @param $cwd
      */
     public function __construct($cwd)
     {
-        $this->cwd = $cwd;
+        parent::__construct($cwd);
     }
 
     /**
