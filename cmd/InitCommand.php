@@ -71,7 +71,7 @@ class InitCommand extends Command
         $this->initComposerJson();
         #$this->initPhpUnitXml($path, $repo);
         #$this->initPackageClassPhp($path, $repo);
-        #$this->initPackageClassTestPhp($path, $repo);
+        $this->initPackageClassTestPhp();
         #$this->initCodeclimateYml($path, $repo);
         #$this->initTravisYml($path, $repo);
         //echo shell_exec(__DIR__.'/../exec/init-env-update.sh '.$this->cwd);
@@ -139,20 +139,24 @@ class InitCommand extends Command
     /**
      * Initialize sample Test.
      */
-    private function initPackageClassTestPhp($path, $repo)
+    private function initPackageClassTestPhp()
     {
-        $class = $this->getClass($repo);
-        $namespace = $this->getNamespace($repo);
-        $file = $path.'/tests/'.$class.'Test.php';
-        if (file_exists($file)) {
-            return;
+        $class = $this->getClass($this->repo);
+        $namespace = $this->getNamespace($this->repo);
+
+        if (!file_exists($file = $this->path.'/tests/'.$class.'Test.php')) {
+            $code = str_replace(
+                ['%%CLASS%%', '%%NAMESPACE%%'],
+                [$class, $namespace],
+                file_get_contents(__DIR__.'/../tpl/PackageClassTest.php.txt')
+            );
+
+            if (!is_dir($this->path.'/tests')) {
+                mkdir($this->path.'/tests');
+            }
+
+            $size = file_put_contents($file, $code);
         }
-        $code = file_get_contents(__DIR__.'/../tpl/PackageClassTest.php.txt');
-        $code = str_replace(['%%CLASS%%', '%%NAMESPACE%%'], [$class, $namespace], $code);
-        if (!is_dir($path.'/tests')) {
-            mkdir($path.'/tests');
-        }
-        file_put_contents($file, $code);
     }
 
     /**
