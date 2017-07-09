@@ -16,18 +16,13 @@ namespace Javanile\Producer\Commands;
 class UpdateCommand extends Command
 {
     /**
-     * Current working directory for running script.
-     */
-    private $cwd = null;
-
-    /**
      * InitCommand constructor.
      *
      * @param $cwd
      */
     public function __construct($cwd)
     {
-        $this->cwd = $cwd;
+        parent::__construct($cwd);
     }
 
     /**
@@ -39,11 +34,26 @@ class UpdateCommand extends Command
      */
     public function run($args)
     {
-        // update specific repository
-        if (isset($args[1]) && $args[1]) {
-            return shell_exec(__DIR__.'/../exec/update.sh '.$this->cwd.' '.$args[1]);
+        if (!isset($args[0]) || !$args[0]) {
+            return $this->updateEverything();
         }
 
+        $name = $args[0];
+
+        if (!is_dir($this->cwd.'/repository/'.$name)) {
+            return $this->error('&required-project');
+        }
+
+        echo $this->info("Update project '{$name}'");
+
+        return $this->exec('update', [$name]);
+    }
+
+    /**
+     *
+     */
+    private function updateEverything()
+    {
         // update env
         $env = basename($this->cwd);
         echo "\n> $env\n----------------------------\n";
