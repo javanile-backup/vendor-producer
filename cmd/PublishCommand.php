@@ -48,7 +48,7 @@ class PublishCommand extends Command
             }
         } else {
             $name = $args[0];
-            echo $this->info("Publish project '{$name}'");
+            echo $this->info("Publish project '{$name}' (git login)");
             return $this->exec('publish', [$name]);
         }
     }
