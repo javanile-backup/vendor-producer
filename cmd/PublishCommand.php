@@ -47,7 +47,9 @@ class PublishCommand extends Command
                 }
             }
         } else {
-            return shell_exec(__DIR__.'/../exec/publish.sh '.$this->cwd.' '.$args[0]);
+            $name = $args[0];
+            $this->info("Publish project '{$name}'");
+            return $this->exec('publish', [$name]);
         }
     }
 }
