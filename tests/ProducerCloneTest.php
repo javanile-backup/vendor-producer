@@ -11,6 +11,7 @@ final class ProducerCloneTest extends TestCase
 {
     public function testCloneGitHubProject()
     {
+        // test clone
         $cli = new ProducerMock(__DIR__);
         $cli->runMock(['prova']);
         Producer::log('Hello World!');
