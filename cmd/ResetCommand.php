@@ -1,6 +1,6 @@
 <?php
 /**
- * Purge command for producer.
+ * Reset command for producer.
  *
  * PHP version 5
  *
@@ -16,7 +16,7 @@ namespace Javanile\Producer\Commands;
 class ResetCommand extends Command
 {
     /**
-     * PurgeCommand constructor.
+     * Reset command constructor.
      *
      * @param $cwd
      */
@@ -26,7 +26,7 @@ class ResetCommand extends Command
     }
 
     /**
-     * Run purge command.
+     * Run reset command.
      *
      * @param $args
      *
