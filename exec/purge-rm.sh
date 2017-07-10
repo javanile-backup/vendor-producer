@@ -6,4 +6,4 @@
 
 ##
 cd $1
-rm -fr $1/repository/$2
+rm -fr repository/$2

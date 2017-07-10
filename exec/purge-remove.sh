@@ -8,3 +8,4 @@
 cd $1
 composer remove $2
 rm -fr vendor/$2
+sleep 1

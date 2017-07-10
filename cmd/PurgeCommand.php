@@ -54,11 +54,10 @@ class PurgeCommand extends Command
         }
 
         //
-        echo shell_exec(__DIR__.'/../exec/purge-rm.sh '.$this->cwd.' '.$name);
-
-        //
         if (isset($json->name)) {
             echo shell_exec(__DIR__.'/../exec/purge-remove.sh '.$this->cwd.' '.$json->name);
         }
+
+        echo shell_exec(__DIR__.'/../exec/purge-rm.sh '.$this->cwd.' '.$name);
     }
 }

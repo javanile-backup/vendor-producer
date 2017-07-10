@@ -50,7 +50,7 @@ class ResetCommand extends Command
         $purge = new PurgeCommand($this->cwd);
         echo $purge->run([$name]);
 
-        //$clone = new CloneCommand($this->cwd);
-        //echo $clone->run([$repo, $name]);
+        $clone = new CloneCommand($this->cwd);
+        echo $clone->run([$repo, $name]);
     }
 }
