@@ -51,20 +51,21 @@ class TestCommand extends Command
         }
 
         //
-        $test = str_replace('\\', '/', $args[0]);
+        $test = str_replace('\\', '/', $args[0]).'Test';
 
         // run root-project test file if exist
-        if (file_exists($file = $this->cwd.'/tests/'.$test.'Test.php')) {
+        if (file_exists($file = $this->cwd.'/tests/'.$test.'.php')) {
             return $this->runFileTests($file, $args);
         }
 
         // run single unit test throught repository projects
+        $path = $this->cwd.'/repository/';
         foreach (scandir($path) as $name) {
             if ($name[0] == '.' || !is_dir($path.'/'.$name)) {
                 continue;
             }
-            if (file_exists($file = $this->cwd.'/'.$name.'/tests/'.$test.'Test.php')) {
-                return $this->runFileTests($file, $args);
+            if (file_exists($file = $path.'/'.$name.'/tests/'.$test.'.php')) {
+                return $this->runFileTests($name, $test, $file, $args);
             }
         }
 
@@ -92,16 +93,14 @@ class TestCommand extends Command
     private function runProjectTests($args)
     {
         $name = $args[0];
-        $test = 'tests';
-        $path = ;
 
-        return shell_exec(__DIR__.'/../exec/test-dox.sh '.$this->cwd.' '.$name.' '.$test);
+        return $this->exec('test-dox', [$name, 'tests']);
     }
 
     /**
      *
      */
-    private function runFileTests($file, $args)
+    private function runFileTests($name, $test, $file, $args)
     {
         $item = isset($args[1]) ? intval($args[1]) : null;
         if (!$item) {
@@ -120,8 +119,9 @@ class TestCommand extends Command
         if (!isset($methods[$item - 1])) {
             return "> Producer: Test class '{$class}' have less than '{$item}' methods.\n";
         }
+
         $filter = "'/::".$methods[$item - 1]."/'";
 
-        return shell_exec(__DIR__.'/../exec/test-filter.sh '.$this->cwd.' '.$name.' '.$test.' '.$filter);
+        return $this->exec('test-filter', [$name, 'tests/'.$test, $filter]);
     }
 }

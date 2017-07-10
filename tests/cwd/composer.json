@@ -1,0 +1,5 @@
+{
+    "require": {
+        "javanile/urlman": "^0.0.5"
+    }
+}

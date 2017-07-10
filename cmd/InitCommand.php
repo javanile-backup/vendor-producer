@@ -69,12 +69,17 @@ class InitCommand extends Command
         $this->repo = trim($this->exec('init-origin', [$this->path]));
 
         $this->initComposerJson();
-        #$this->initPhpUnitXml($path, $repo);
         #$this->initPackageClassPhp($path, $repo);
-        $this->initPackageClassTestPhp();
-        #$this->initCodeclimateYml($path, $repo);
-        #$this->initTravisYml($path, $repo);
-        //echo shell_exec(__DIR__.'/../exec/init-env-update.sh '.$this->cwd);
+
+        if (!in_array('--no-tests', $args)) {
+            #$this->initPhpUnitXml($path, $repo);
+            $this->initPackageClassTestPhp();
+        }
+
+        if (!in_array('--no-ci', $args)) {
+            #$this->initCodeclimateYml($path, $repo);
+            #$this->initTravisYml($path, $repo);
+        }
     }
 
     /**
@@ -103,6 +108,10 @@ class InitCommand extends Command
         }
 
         $size = file_put_contents($file, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+
+        if (!$size) {
+            $this->error("Error to write file '{$file}'.");
+        }
     }
 
     /**

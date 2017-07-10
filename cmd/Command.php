@@ -114,6 +114,7 @@ class Command
         if ($args && count($args) > 0) {
             foreach ($args as &$value) {
                 // TODO: fix argument with opportune escapes
+                $value = trim($value);
             }
 
             $params = implode(' ', $args);
@@ -127,6 +128,8 @@ class Command
      */
     public function run($args)
     {
-        return "> Producer: You are wellcome!\n";
+        $args = "'".implode("' '", $args)."'";
+
+        return "> Producer: Sample command with arguments ({$args})\n";
     }
 }
