@@ -17,10 +17,12 @@ final class PublishCommandTest extends TestCase
     {
         $cwd = __DIR__.'/cwd';
         $clone = new CloneCommand($cwd);
-        $clone->run(["https://{$this->gitUser}:{$this->gitPass}@github.com/php-source-code/simple-psr-1"]);
+        $clone->run(['https://$PRODUCER_GIT_USER:$PRODUCER_GIT_PASS@github.com/php-source-code/simple-psr-1']);
 
         $publish = new PublishCommand($cwd);
         file_put_contents($cwd.'/repository/simple-psr-1/TIMESTAMP.txt', time());
-        $publish->run(['simple-psr-1']);
+        $msg = $publish->run(['simple-psr-1']);
+
+        $this->assertRegexp('/1 file changed/i', $msg);
     }
 }

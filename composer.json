@@ -1,7 +1,7 @@
 {
     "name": "javanile/producer",
     "description": "Produce your vendor code everywhere",
-    "version": "0.0.22",
+    "version": "0.0.23",
     "license": "MIT",
     "type": "application",
     "authors": [
