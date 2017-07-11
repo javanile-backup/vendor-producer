@@ -75,13 +75,13 @@ class PublishCommand extends Command
     private function getNextVersion($path)
     {
         if (!file_exists($path.'/composer.json')) {
-            return 'Commit';
+            return 'Initial commit';
         }
 
         $json = json_decode(file_get_contents($path.'/composer.json'));
 
         if (!isset($json->version)) {
-            return 'Commit';
+            return 'Initial commit';
         }
 
         $ver = explode('.', trim($json->version));
