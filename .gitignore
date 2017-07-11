@@ -17,3 +17,5 @@ bootstrap/cache/
 # Other
 composer.lock
 producer.log
+/tests/cwd/*
+!tests/cwd/.gitkeep
