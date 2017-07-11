@@ -4,17 +4,25 @@ namespace Javanile\Producer\Tests;
 
 use Javanile\Producer;
 use PHPUnit\Framework\TestCase;
+use Javanile\Producer\Commands\CloneCommand;
+use Javanile\Producer\Commands\PublishCommand;
 
 Producer::addPsr4(['Javanile\\Producer\\Tests\\' => __DIR__]);
 
-final class ProducerCloneTest extends TestCase
+final class PublishCommandTest extends TestCase
 {
-    public function testCloneGitHubProject()
+    public function testPublishGitHubProject()
     {
-        // test clone
-        $cli = new ProducerMock(__DIR__);
-        $cli->runMock(['prova']);
-        Producer::log('Hello World!');
-        $this->assertEquals(0, 0);
+        $cwd = __DIR__.'/cwd';
+
+        $clone = new CloneCommand($cwd);
+
+        echo $clone->run(['https://github.com/php-source-code/simple-psr-1']);
+
+        $publish = new PublishCommand($cwd);
+
+        file_put_contents($cwd.'/repository/simple-psr-1/TIMESTAP.txt', time());
+
+        echo $publish->run(['simple-psr-1']);
     }
 }

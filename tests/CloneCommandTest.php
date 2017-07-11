@@ -17,5 +17,14 @@ final class CloneCommandTest extends TestCase
         $clone = new CloneCommand(__DIR__.'/cwd');
         $clone->run(['https://github.com/javanile/urlman']);
         $this->assertDirectoryExists(__DIR__.'/cwd/repository/urlman');
+        $this->assertDirectoryExists(__DIR__.'/cwd/vendor/javanile/urlman');
+    }
+
+    public function testCloneGitHubEmptyProject()
+    {
+        $clone = new CloneCommand(__DIR__.'/cwd');
+        $clone->run(['https://github.com/php-source-code/simple-psr-1']);
+        $this->assertDirectoryExists(__DIR__.'/cwd/repository/simple-psr-1');
+        $this->assertDirectoryExists(__DIR__.'/cwd/vendor/php-source-code/simple-psr-1');
     }
 }

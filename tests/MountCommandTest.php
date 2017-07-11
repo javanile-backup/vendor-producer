@@ -7,14 +7,21 @@ use PHPUnit\Framework\TestCase;
 
 Producer::addPsr4(['Javanile\\Producer\\Tests\\' => __DIR__]);
 
-final class ProducerCloneTest extends TestCase
+final class MountCommandTest extends TestCase
 {
-    public function testCloneGitHubProject()
+    use CwdTrait;
+
+    public function testMountGitHubProject()
     {
-        // test clone
-        $cli = new ProducerMock(__DIR__);
-        $cli->runMock(['prova']);
-        Producer::log('Hello World!');
-        $this->assertEquals(0, 0);
+        $cwd = __DIR__.'/cwd';
+        $out = shell_exec("cd {$cwd}; composer require");
+
+        Producer::log($out);
+
+        //$mount = new CloneCommand();
+        //$mount->run(['https://github.com/javanile/urlman']);
+
+        //$this->assertDirectoryExists(__DIR__.'/cwd/repository/urlman');
+        //$this->assertDirectoryExists(__DIR__.'/cwd/vendor/javanile/urlman');
     }
 }
