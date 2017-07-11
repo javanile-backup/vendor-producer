@@ -16,7 +16,7 @@ namespace Javanile\Producer\Commands;
 class PurgeCommand extends Command
 {
     /**
-     * PurgeCommand constructor.
+     * Purge command constructor.
      *
      * @param $cwd
      */
@@ -46,14 +46,13 @@ class PurgeCommand extends Command
 
         echo $this->info("Purge project '{$name}'");
 
-        //
         $json = null;
         $comp = $this->cwd.'/repository/'.$name.'/composer.json';
+
         if (file_exists($comp)) {
             $json = json_decode(file_get_contents($comp));
         }
 
-        //
         if (isset($json->name)) {
             echo shell_exec(__DIR__.'/../exec/purge-remove.sh '.$this->cwd.' '.$json->name);
         }

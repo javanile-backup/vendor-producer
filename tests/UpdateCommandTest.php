@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 Producer::addPsr4(['Javanile\\Producer\\Tests\\' => __DIR__]);
 
-final class ProducerCloneTest extends TestCase
+final class UpdateCommandTest extends TestCase
 {
     public function testCloneGitHubProject()
     {

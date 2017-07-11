@@ -107,7 +107,10 @@ class InitCommand extends Command
             $json['repositories'] = [['type' => 'git', 'url' => $this->repo]];
         }
 
-        $size = file_put_contents($file, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        $size = file_put_contents(
+            $file,
+            json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
+        );
 
         if (!$size) {
             $this->error("Error to write file '{$file}'.");

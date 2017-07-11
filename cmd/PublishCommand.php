@@ -90,8 +90,10 @@ class PublishCommand extends Command
         $min = array_pop($ver);
         $ver[] = $min + 1;
         $json->version = implode('.', $ver);
-
-        $size = file_put_contents($file, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        $size = file_put_contents(
+            $file,
+            json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
+        );
 
         if (!$size) {
             $this->error("Error to write file '{$file}'.");

@@ -103,9 +103,11 @@ class TestCommand extends Command
     private function runFileTests($name, $test, $file, $args)
     {
         $item = isset($args[1]) ? intval($args[1]) : null;
+
         if (!$item) {
-            return shell_exec(__DIR__.'/../exec/test-dox.sh '.$this->cwd.' '.$name.' '.$test);
+            return $this->exec('test-dox', [$name, 'tests/'.$test]);
         }
+
         $classes = get_declared_classes();
         require_once $file;
         $diff = array_diff(get_declared_classes(), $classes);
@@ -120,7 +122,7 @@ class TestCommand extends Command
             return "> Producer: Test class '{$class}' have less than '{$item}' methods.\n";
         }
 
-        $filter = "'/::".$methods[$item - 1]."/'";
+        $filter = "/::".$methods[$item - 1]."/";
 
         return $this->exec('test-filter', [$name, 'tests/'.$test, $filter]);
     }
