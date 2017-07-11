@@ -10,6 +10,9 @@ trait CwdTrait
 {
     public function setUp()
     {
+        $this->gitUser = getenv('PRODUCER_GIT_USER');
+        $this->gitPass = getenv('PRODUCER_GIT_PASS');
+
         $files = __DIR__.'/cwd/*';
         shell_exec("rm -fr {$files}");
     }

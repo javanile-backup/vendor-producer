@@ -2,10 +2,10 @@
 
 ##
 cd $1/repository/$2
-ver=$(cat composer.json | grep version | tr -d ',":')
+git config push.default simple
+git pull
 git add .
 git add *
-git config push.default simple
-git commit -m "$ver"
+git commit -m "$3"
 git pull
 git push

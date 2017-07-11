@@ -39,8 +39,11 @@ class PublishCommand extends Command
         }
 
         $name = $args[0];
+        $version = $this->getNextVersion($this->cwd.'/repository/'.$name);
+
         echo $this->info("Publish project '{$name}' (git login)");
-        return $this->exec('publish', [$name]);
+
+        return $this->exec('publish', [$name, $version]);
     }
 
     /**
@@ -50,16 +53,41 @@ class PublishCommand extends Command
     {
         $root = basename($this->cwd);
         $path = $this->cwd.'/repository';
+        $version = $this->getNextVersion($this->cwd);
 
         echo $this->info("Publish root project '{$root}' (git login)");
-        echo $this->exec('publish-root');
+        echo $this->exec('publish-root', [$version]);
 
         foreach (scandir($path) as $name) {
             if ($name[0] != '.' && is_dir($path.'/'.$name)) {
+                $version = $this->getNextVersion($path.'/'.$name);
+
                 echo "\n";
                 echo $this->info("Publish project '{$name}' (git login)");
-                echo $this->exec('publish', [$name]);
+                echo $this->exec('publish', [$name, $version]);
             }
         }
+    }
+
+    /**
+     *
+     */
+    private function getNextVersion($path)
+    {
+        if (!file_exists($path.'/composer.json')) {
+            return 'Commit';
+        }
+
+        $json = json_decode(file_get_contents($path.'/composer.json'));
+
+        if (!isset($json->version)) {
+            return 'Commit';
+        }
+
+        $ver = explode('.', trim($json->version));
+        $min = array_pop($ver);
+        $ver[] = $min + 1;
+
+        return 'Version '.implode('.', $ver);
     }
 }
