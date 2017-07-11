@@ -14,7 +14,7 @@ final class MountCommandTest extends TestCase
     public function testMountGitHubProject()
     {
         $cwd = __DIR__.'/cwd';
-        $out = shell_exec("cd {$cwd}; composer require");
+        $out = shell_exec("cd {$cwd}; composer require javanile/urlman");
 
         Producer::log($out);
 
