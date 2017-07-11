@@ -114,13 +114,17 @@ class Command
         if ($args && count($args) > 0) {
             foreach ($args as &$value) {
                 // TODO: fix argument with opportune escapes
-                $value = trim($value);
+                $value = '"'.trim($value).'"';
             }
 
             $params = implode(' ', $args);
         }
 
-        return shell_exec($script.' '.$this->cwd.' '.$params);
+        $cmd = $script.' '.$this->cwd.' '.$params;
+
+        echo $cmd."\n";
+
+        return shell_exec($cmd);
     }
 
     /**
