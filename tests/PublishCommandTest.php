@@ -17,12 +17,13 @@ final class PublishCommandTest extends TestCase
     {
         $cwd = __DIR__.'/cwd';
         $clone = new CloneCommand($cwd);
-        $clone->run(['https://$PRODUCER_GIT_USER:$PRODUCER_GIT_PASS@github.com/php-source-code/simple-psr-1']);
+        $clone->run(['https://php-source-code:$PRODUCER_GIT_PASS@github.com/php-source-code/simple-psr-1']);
 
         $publish = new PublishCommand($cwd);
-        file_put_contents($cwd.'/repository/simple-psr-1/TIMESTAMP.txt', time());
+        $size = file_put_contents($cwd.'/repository/simple-psr-1/TIMESTAMP.txt', time());
         $msg = $publish->run(['simple-psr-1']);
 
         $this->assertRegexp('/Already up-to-date/i', $msg);
+        $this->assertGreaterThan($size, 0);
     }
 }
