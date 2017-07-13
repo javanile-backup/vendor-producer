@@ -23,6 +23,6 @@ final class PublishCommandTest extends TestCase
         file_put_contents($cwd.'/repository/simple-psr-1/TIMESTAMP.txt', time());
         $msg = $publish->run(['simple-psr-1']);
 
-        $this->assertRegexp('/1 file changed/i', $msg);
+        $this->assertRegexp('/Already up-to-date/i', $msg);
     }
 }
