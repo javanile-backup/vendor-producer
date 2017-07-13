@@ -24,6 +24,6 @@ final class PublishCommandTest extends TestCase
         $msg = $publish->run(['simple-psr-1']);
 
         $this->assertRegexp('/Already up-to-date/i', $msg);
-        $this->assertGreaterThan($size, 0);
+        $this->assertGreaterThan(0, $size);
     }
 }
