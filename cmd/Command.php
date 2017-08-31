@@ -22,6 +22,8 @@ class Command
 
     /**
      * Command base constructor.
+     *
+     * @param mixed $cwd
      */
     public function __construct($cwd)
     {
@@ -30,6 +32,8 @@ class Command
 
     /**
      * Test is url.
+     *
+     * @param mixed $repo
      */
     public function isUrl($repo)
     {
@@ -38,6 +42,8 @@ class Command
 
     /**
      * Test is package name.
+     *
+     * @param mixed $repo
      */
     public function isPackageName($repo)
     {
@@ -46,6 +52,8 @@ class Command
 
     /**
      * Test if progect has composer.json file.
+     *
+     * @param mixed $name
      */
     protected function hasComposerJson($name)
     {
@@ -54,6 +62,8 @@ class Command
 
     /**
      * Get package name by composer.json file.
+     *
+     * @param mixed $name
      */
     protected function getPackageNameByComposerJson($name)
     {
@@ -70,6 +80,8 @@ class Command
 
     /**
      * Get package name by repository url.
+     *
+     * @param mixed $url
      */
     protected function getPackageNameByUrl($url)
     {
@@ -81,6 +93,8 @@ class Command
 
     /**
      * Return error message.
+     *
+     * @param mixed $error
      */
     public function error($error)
     {
@@ -97,6 +111,8 @@ class Command
 
     /**
      * Get an info line.
+     *
+     * @param mixed $line
      */
     protected function info($line)
     {
@@ -105,6 +121,9 @@ class Command
 
     /**
      * Exec specific script.
+     *
+     * @param mixed      $exec
+     * @param null|mixed $args
      */
     protected function exec($exec, $args = null)
     {
@@ -127,6 +146,8 @@ class Command
 
     /**
      * Override this method.
+     *
+     * @param mixed $args
      */
     public function run($args)
     {

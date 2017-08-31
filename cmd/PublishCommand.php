@@ -71,6 +71,8 @@ class PublishCommand extends Command
 
     /**
      * Get next version number.
+     *
+     * @param mixed $path
      */
     private function getNextVersion($path)
     {
