@@ -15,8 +15,8 @@ namespace Javanile;
 
 use Composer\Autoload\ClassLoader;
 use Javanile\Producer\Commands\CloneCommand;
-use Javanile\Producer\Commands\MountCommand;
 use Javanile\Producer\Commands\InitCommand;
+use Javanile\Producer\Commands\MountCommand;
 use Javanile\Producer\Commands\PublishCommand;
 use Javanile\Producer\Commands\PurgeCommand;
 use Javanile\Producer\Commands\ResetCommand;
@@ -104,7 +104,7 @@ class Producer
     /**
      * Test runner command.
      *
-     * @param array $args  Arguments from command line
+     * @param array $args Arguments from command line
      *
      * @return string|void
      */
@@ -241,7 +241,7 @@ class Producer
         foreach (func_get_args() as $object) {
             if (is_array($object)) {
                 $msg = 'array('.count($object).'):'.json_encode($object);
-            } else if (is_object($object) && !method_exists($object, '__toString')) {
+            } elseif (is_object($object) && !method_exists($object, '__toString')) {
                 $msg = 'object('.get_class($object).'):'.json_encode($object);
             } else {
                 $msg = $object;

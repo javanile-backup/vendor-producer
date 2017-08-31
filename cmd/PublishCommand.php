@@ -69,9 +69,6 @@ class PublishCommand extends Command
         }
     }
 
-    /**
-     *
-     */
     private function getNextVersion($path)
     {
         $file = $path.'/composer.json';

@@ -20,9 +20,6 @@ class Command
      */
     protected $cwd = null;
 
-    /**
-     *
-     */
     public function __construct($cwd)
     {
         $this->cwd = $cwd;
@@ -52,9 +49,6 @@ class Command
         return file_exists($this->cwd.'/repository/'.$name.'/composer.json');
     }
 
-    /**
-     *
-     */
     protected function getPackageNameByComposerJson($name)
     {
         $file = $this->cwd.'/repository/'.$name.'/composer.json';
@@ -95,9 +89,6 @@ class Command
         return $message;
     }
 
-    /**
-     *
-     */
     protected function info($line)
     {
         return '> Producer: '.$line."\n";
