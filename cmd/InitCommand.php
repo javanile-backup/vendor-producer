@@ -61,6 +61,8 @@ class InitCommand extends Command
 
     /**
      * Init script.
+     *
+     * @param mixed $args
      */
     private function init($args)
     {
@@ -69,16 +71,16 @@ class InitCommand extends Command
         $this->repo = trim($this->exec('init-origin', [$this->path]));
 
         $this->initComposerJson();
-        #$this->initPackageClassPhp($path, $repo);
+        //$this->initPackageClassPhp($path, $repo);
 
         if (!in_array('--no-tests', $args)) {
-            #$this->initPhpUnitXml($path, $repo);
+            //$this->initPhpUnitXml($path, $repo);
             $this->initPackageClassTestPhp();
         }
 
         if (!in_array('--no-ci', $args)) {
-            #$this->initCodeclimateYml($path, $repo);
-            #$this->initTravisYml($path, $repo);
+            //$this->initCodeclimateYml($path, $repo);
+            //$this->initTravisYml($path, $repo);
         }
     }
 
@@ -131,6 +133,9 @@ class InitCommand extends Command
 
     /**
      * Initialize sample Class.
+     *
+     * @param mixed $path
+     * @param mixed $repo
      */
     private function initPackageClassPhp($path, $repo)
     {
@@ -173,6 +178,9 @@ class InitCommand extends Command
 
     /**
      * Initialize .codeclimate.yml file.
+     *
+     * @param mixed $path
+     * @param mixed $repo
      */
     private function initCodeclimateYml($path, $repo)
     {
@@ -185,6 +193,9 @@ class InitCommand extends Command
 
     /**
      * Initialie .travis.yml file.
+     *
+     * @param mixed $path
+     * @param mixed $repo
      */
     private function initTravisYml($path, $repo)
     {
@@ -197,6 +208,8 @@ class InitCommand extends Command
 
     /**
      * Get package name by repository url.
+     *
+     * @param mixed $repo
      */
     private function getNamespace($repo)
     {
@@ -208,6 +221,8 @@ class InitCommand extends Command
 
     /**
      * Get class name by repository url.
+     *
+     * @param mixed $repo
      */
     private function getClass($repo)
     {

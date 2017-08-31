@@ -51,6 +51,8 @@ class CloneCommand extends Command
 
     /**
      * Clone repository by url.
+     *
+     * @param mixed $args
      */
     private function cloneByUrl($args)
     {
@@ -66,6 +68,7 @@ class CloneCommand extends Command
 
         if ($this->hasComposerJson($name)) {
             $pack = $this->getPackageNameByComposerJson($name);
+
             return $this->exec('clone-install', [$pack, $name]);
         }
 
@@ -76,6 +79,8 @@ class CloneCommand extends Command
 
     /**
      * Clone repository by package name.
+     *
+     * @param mixed $args
      */
     private function cloneByPackageName($args)
     {
