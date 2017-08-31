@@ -15,14 +15,8 @@ namespace Javanile\Producer\Commands;
 
 class InitCommand extends Command
 {
-    /**
-     *
-     */
     private $path;
 
-    /**
-     *
-     */
     private $repo;
 
     /**
@@ -59,9 +53,6 @@ class InitCommand extends Command
         return "> Producer: malformed init command.\n";
     }
 
-    /**
-     *
-     */
     private function init($args)
     {
         echo $this->info("Init directory '{$this->path}'");
@@ -69,16 +60,16 @@ class InitCommand extends Command
         $this->repo = trim($this->exec('init-origin', [$this->path]));
 
         $this->initComposerJson();
-        #$this->initPackageClassPhp($path, $repo);
+        //$this->initPackageClassPhp($path, $repo);
 
         if (!in_array('--no-tests', $args)) {
-            #$this->initPhpUnitXml($path, $repo);
+            //$this->initPhpUnitXml($path, $repo);
             $this->initPackageClassTestPhp();
         }
 
         if (!in_array('--no-ci', $args)) {
-            #$this->initCodeclimateYml($path, $repo);
-            #$this->initTravisYml($path, $repo);
+            //$this->initCodeclimateYml($path, $repo);
+            //$this->initTravisYml($path, $repo);
         }
     }
 

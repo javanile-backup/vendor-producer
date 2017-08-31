@@ -72,9 +72,6 @@ class TestCommand extends Command
         return "> Producer: Test case class '{$args[0]}' not found.\n";
     }
 
-    /**
-     *
-     */
     private function runAllTests()
     {
         $test = 'tests';
@@ -97,9 +94,6 @@ class TestCommand extends Command
         return $this->exec('test-dox', [$name, 'tests']);
     }
 
-    /**
-     *
-     */
     private function runFileTests($name, $test, $file, $args)
     {
         $item = isset($args[1]) ? intval($args[1]) : null;
@@ -122,7 +116,7 @@ class TestCommand extends Command
             return "> Producer: Test class '{$class}' have less than '{$item}' methods.\n";
         }
 
-        $filter = "/::".$methods[$item - 1]."/";
+        $filter = '/::'.$methods[$item - 1].'/';
 
         return $this->exec('test-filter', [$name, 'tests/'.$test, $filter]);
     }

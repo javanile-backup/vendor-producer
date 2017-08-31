@@ -3,9 +3,9 @@
 namespace Javanile\Producer\Tests;
 
 use Javanile\Producer;
-use PHPUnit\Framework\TestCase;
 use Javanile\Producer\Commands\CloneCommand;
 use Javanile\Producer\Commands\PublishCommand;
+use PHPUnit\Framework\TestCase;
 
 Producer::addPsr4(['Javanile\\Producer\\Tests\\' => __DIR__]);
 

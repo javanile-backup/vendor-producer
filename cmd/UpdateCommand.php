@@ -49,9 +49,6 @@ class UpdateCommand extends Command
         return $this->exec('update', [$name]);
     }
 
-    /**
-     *
-     */
     private function updateEverything()
     {
         // update env

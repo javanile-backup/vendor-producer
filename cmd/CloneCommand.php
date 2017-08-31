@@ -49,9 +49,6 @@ class CloneCommand extends Command
         return "> Producer: Malformed url or package name.\n";
     }
 
-    /**
-     *
-     */
     private function cloneByUrl($args)
     {
         $repo = $args[0];
@@ -66,6 +63,7 @@ class CloneCommand extends Command
 
         if ($this->hasComposerJson($name)) {
             $pack = $this->getPackageNameByComposerJson($name);
+
             return $this->exec('clone-install', [$pack, $name]);
         }
 
@@ -74,9 +72,6 @@ class CloneCommand extends Command
         return $this->exec('clone-mount', [$pack, $name]);
     }
 
-    /**
-     *
-     */
     private function cloneByPackageName($args)
     {
         $repo = $args[0];
