@@ -1,0 +1,4 @@
+preset: recommended
+
+enabled:
+- phpdoc_add_missing_param_annotation
