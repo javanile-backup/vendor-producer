@@ -1,9 +1,9 @@
 # javanile/producer
 
-[![Build Status](https://travis-ci.org/javanile-bot/producer.svg?branch=master)](https://travis-ci.org/javanile-bot/producer)
+[![StyleCI](https://styleci.io/repos/82387350/shield?branch=master)](https://styleci.io/repos/82387350)
 [![Code Climate](https://codeclimate.com/github/javanile-bot/producer/badges/gpa.svg)](https://codeclimate.com/github/javanile-bot/producer)
+[![Build Status](https://travis-ci.org/javanile-bot/producer.svg?branch=master)](https://travis-ci.org/javanile-bot/producer)
 [![Test Coverage](https://codeclimate.com/github/javanile-bot/producer/badges/coverage.svg)](https://codeclimate.com/github/javanile-bot/producer/coverage)
-- [![StyleCI](https://styleci.io/repos/82387350/shield?branch=master)](https://styleci.io/repos/82387350)
 
 Produce your vendor code everywhere
 
