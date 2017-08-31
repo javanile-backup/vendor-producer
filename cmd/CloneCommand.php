@@ -50,7 +50,7 @@ class CloneCommand extends Command
     }
 
     /**
-     *
+     * Clone repository by url.
      */
     private function cloneByUrl($args)
     {
@@ -75,7 +75,7 @@ class CloneCommand extends Command
     }
 
     /**
-     *
+     * Clone repository by package name.
      */
     private function cloneByPackageName($args)
     {

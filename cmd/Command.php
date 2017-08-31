@@ -21,7 +21,7 @@ class Command
     protected $cwd = null;
 
     /**
-     *
+     * Command base constructor.
      */
     public function __construct($cwd)
     {
@@ -53,7 +53,7 @@ class Command
     }
 
     /**
-     *
+     * Get package name by composer.json file.
      */
     protected function getPackageNameByComposerJson($name)
     {
@@ -96,7 +96,7 @@ class Command
     }
 
     /**
-     *
+     * Get an info line.
      */
     protected function info($line)
     {

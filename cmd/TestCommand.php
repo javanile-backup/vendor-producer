@@ -98,7 +98,7 @@ class TestCommand extends Command
     }
 
     /**
-     *
+     * Run test inside a test case file.
      */
     private function runFileTests($name, $test, $file, $args)
     {

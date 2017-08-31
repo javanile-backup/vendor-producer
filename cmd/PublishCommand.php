@@ -70,7 +70,7 @@ class PublishCommand extends Command
     }
 
     /**
-     *
+     * Get next version number.
      */
     private function getNextVersion($path)
     {

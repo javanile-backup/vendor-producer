@@ -16,12 +16,12 @@ namespace Javanile\Producer\Commands;
 class InitCommand extends Command
 {
     /**
-     *
+     * Base path of running command.
      */
     private $path;
 
     /**
-     *
+     * Repository name.
      */
     private $repo;
 
@@ -60,7 +60,7 @@ class InitCommand extends Command
     }
 
     /**
-     *
+     * Init script.
      */
     private function init($args)
     {

@@ -50,7 +50,7 @@ class UpdateCommand extends Command
     }
 
     /**
-     *
+     * Update everything inside working directory.
      */
     private function updateEverything()
     {
