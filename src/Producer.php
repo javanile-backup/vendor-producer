@@ -14,6 +14,7 @@
 namespace Javanile;
 
 use Composer\Autoload\ClassLoader;
+use Javanile\Producer\Commands\AutoloadCommand;
 use Javanile\Producer\Commands\CloneCommand;
 use Javanile\Producer\Commands\InitCommand;
 use Javanile\Producer\Commands\MountCommand;
@@ -70,6 +71,8 @@ class Producer
         switch (trim($args[0])) {
             case 'init':
                 return $this->runInit($args);
+            case 'autoload':
+                return $this->cmdAutoload($args);
             case 'test':
                 return $this->cmdTest($args);
             case 'clone':
@@ -103,6 +106,18 @@ class Producer
     private function runInit($args)
     {
         $cmd = new InitCommand($this->cwd);
+
+        return $cmd->run(array_slice($args, 1));
+    }
+
+    /**
+     * Autoload command.
+     *
+     * @param mixed $args
+     */
+    private function cmdAutoload($args)
+    {
+        $cmd = new AutoloadCommand($this->cwd);
 
         return $cmd->run(array_slice($args, 1));
     }
