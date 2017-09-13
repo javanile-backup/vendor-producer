@@ -7,7 +7,7 @@
 # $4 -
 
 ##
-cd $1/repository/$2
+cd $2
 rm -fr producer.log > /dev/null 2>&1
 
 ##

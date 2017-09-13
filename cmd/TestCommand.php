@@ -22,7 +22,7 @@ class TestCommand extends Command
      */
     public function __construct($cwd)
     {
-        $this->cwd = $cwd;
+        parent::__construct($cwd);
     }
 
     /**
@@ -40,12 +40,12 @@ class TestCommand extends Command
             return "> Producer: Install phpunit via composer (not global).\n";
         }
 
-        // run all tests on all repository projects
+        // run all tests of root project
         if (!isset($args[0]) || !$args[0]) {
-            return $this->rulAllTests();
+            return $this->runRootTests();
         }
 
-        // run all tests on one project
+        // run all tests of one project
         if (is_dir($this->cwd.'/repository/'.$args[0])) {
             return $this->runProjectTests($args);
         }
@@ -55,16 +55,16 @@ class TestCommand extends Command
 
         // run root-project test file if exist
         if (file_exists($file = $this->cwd.'/tests/'.$test.'.php')) {
-            return $this->runFileTests($file, $args);
+            return $this->runFileTests($this->cwd, $test, $file, $args);
         }
 
         // run single unit test throught repository projects
-        $path = $this->cwd.'/repository/';
-        foreach (scandir($path) as $name) {
-            if ($name[0] == '.' || !is_dir($path.'/'.$name)) {
+        $base = $this->cwd.'/repository/';
+        foreach (scandir($base) as $name) {
+            if ($name[0] == '.' || !is_dir($base.'/'.$name)) {
                 continue;
             }
-            if (file_exists($file = $path.'/'.$name.'/tests/'.$test.'.php')) {
+            if (file_exists($file = $base.'/'.$name.'/tests/'.$test.'.php')) {
                 return $this->runFileTests($name, $test, $file, $args);
             }
         }
@@ -72,16 +72,14 @@ class TestCommand extends Command
         return "> Producer: Test case class '{$args[0]}' not found.\n";
     }
 
-    private function runAllTests()
+    /**
+     * Run project tests.
+     *
+     * @param mixed $args
+     */
+    private function runRootTests()
     {
-        $test = 'tests';
-        $path = $this->cwd.'/repository';
-
-        foreach (scandir($path) as $name) {
-            if ($name[0] != '.' && is_dir($path.'/'.$name)) {
-                echo shell_exec(__DIR__.'/../exec/test-dox.sh '.$this->cwd.' '.$name.' '.$test);
-            }
-        }
+        return $this->exec('test', [$this->cwd, 'tests']);
     }
 
     /**
@@ -92,8 +90,9 @@ class TestCommand extends Command
     private function runProjectTests($args)
     {
         $name = $args[0];
+        $path = $this->cwd.'/repository/'.$name;
 
-        return $this->exec('test-dox', [$name, 'tests']);
+        return $this->exec('test', [$path, 'tests']);
     }
 
     /**
@@ -104,30 +103,33 @@ class TestCommand extends Command
      * @param mixed $file
      * @param mixed $args
      */
-    private function runFileTests($name, $test, $file, $args)
+    private function runFileTests($path, $test, $file, $args)
     {
         $item = isset($args[1]) ? intval($args[1]) : null;
 
         if (!$item) {
-            return $this->exec('test-dox', [$name, 'tests/'.$test]);
+            return $this->exec('test', [$path, 'tests/'.$test]);
         }
 
         $classes = get_declared_classes();
         require_once $file;
         $diff = array_diff(get_declared_classes(), $classes);
         $class = array_pop($diff);
+
         if (!class_exists($class)) {
             return "> Producer: Test class '{$class}' not found.\n";
         }
+
         $methods = array_filter(get_class_methods($class), function ($method) {
             return preg_match('/^test[A-Z]/', $method);
         });
+
         if (!isset($methods[$item - 1])) {
             return "> Producer: Test class '{$class}' have less than '{$item}' methods.\n";
         }
 
         $filter = '/::'.$methods[$item - 1].'/';
 
-        return $this->exec('test-filter', [$name, 'tests/'.$test, $filter]);
+        return $this->exec('test-filter', [$path, 'tests/'.$test, $filter]);
     }
 }
