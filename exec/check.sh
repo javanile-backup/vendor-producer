@@ -8,4 +8,6 @@
 cd $1
 
 ##
-$1/vendor/bin/phpcs --report=emacs *.php | sed -e "s@^$1/@@g"
+$1/vendor/bin/phpcs \
+    --ignore=*/tests/*,*/vendor/* \
+    --report=emacs . | sed -e "s@^$1/@@g"
