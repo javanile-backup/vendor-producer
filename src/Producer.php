@@ -22,6 +22,7 @@ use Javanile\Producer\Commands\PublishCommand;
 use Javanile\Producer\Commands\PurgeCommand;
 use Javanile\Producer\Commands\ResetCommand;
 use Javanile\Producer\Commands\TestCommand;
+use Javanile\Producer\Commands\CheckCommand;
 use Javanile\Producer\Commands\UpdateCommand;
 
 /**
@@ -73,6 +74,8 @@ class Producer
                 return $this->runInit($args);
             case 'autoload':
                 return $this->cmdAutoload($args);
+            case 'check':
+                return $this->cmdCheck($args);
             case 'test':
                 return $this->cmdTest($args);
             case 'clone':
@@ -118,6 +121,18 @@ class Producer
     private function cmdAutoload($args)
     {
         $cmd = new AutoloadCommand($this->cwd);
+
+        return $cmd->run(array_slice($args, 1));
+    }
+
+    /**
+     * Autoload command.
+     *
+     * @param mixed $args
+     */
+    private function cmdCheck($args)
+    {
+        $cmd = new CheckCommand($this->cwd);
 
         return $cmd->run(array_slice($args, 1));
     }
