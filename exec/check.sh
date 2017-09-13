@@ -10,4 +10,5 @@ cd $1
 ##
 $1/vendor/bin/phpcs \
     --ignore=*/tests/*,*/vendor/* \
-    --report=emacs . | sed -e "s@^$1/@@g"
+    --standard=$1/vendor/javanile/producer/ruleset.xml \
+    --report=emacs . | sed -e "s@^$1/@@g" | tail -n 5
