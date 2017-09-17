@@ -19,6 +19,14 @@ $ composer require javanile/producer && ./vendor/bin/producer install
 
 Producer provide to different macro/task ready for development process
 
+### Init repository
+
+You can init a repository and mount it as vendor code
+
+```bash
+$ php producer init <<https://repository.url/vendor/project>>
+```
+
 ### Clone repository
 
 You can clone a repository and mount it as vendor code, 
@@ -26,5 +34,5 @@ but you continue to develop it without
 switch between diffent projects
 
 ```bash
-$ php producer clone https://github.com/javanile/urlman
+$ php producer clone <<https://repository.url/vendor/project>>
 ```
