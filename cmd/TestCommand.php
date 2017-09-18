@@ -65,7 +65,7 @@ class TestCommand extends Command
                 continue;
             }
             if (file_exists($file = $base.'/'.$name.'/tests/'.$test.'.php')) {
-                return $this->runFileTests($name, $test, $file, $args);
+                return $this->runFileTests($base.'/'.$name, $test, $file, $args);
             }
         }
 

@@ -4,18 +4,15 @@
  *
  * PHP version 5
  *
- * @category   -
+ * @category -
  *
- * @author     -
- * @license    -
- * @copyright  -
+ * @author    -
+ * @copyright -
+ * @license   -
  */
 
 namespace %%NAMESPACE%%;
 
-/**
- * Class description.
- */
 class %%CLASS%%
 {
     /**

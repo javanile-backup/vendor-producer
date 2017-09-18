@@ -13,6 +13,8 @@
 
 namespace Javanile\Producer\Commands;
 
+use Stringy\Stringy as S;
+
 class Command
 {
     /**
@@ -89,6 +91,18 @@ class Command
         $vendor = trim(basename(dirname($url), '.git'));
 
         return strtolower($vendor.'/'.$package);
+    }
+
+    /**
+     * Get project name by repository url.
+     *
+     * @param mixed $url
+     */
+    protected function getProjectNameByUrl($url)
+    {
+        $name = trim(basename($url, '.git'));
+
+        return strtolower($name);
     }
 
     /**

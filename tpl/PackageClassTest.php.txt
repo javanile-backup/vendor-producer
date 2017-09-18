@@ -13,10 +13,10 @@ Producer::addPsr4([
 
 final class %%CLASS%%Test extends TestCase
 {
-    public function testCliStaticMethod()
+    public function testCreateAnInstance()
     {
         $object = new %%CLASS%%();
-        $this->assertInstanceOf('%%NAMESPACE%%\\%%CLASS%%', $object);
+        $this->assertInstanceOf('%%NAMESPACE%%\%%CLASS%%', $object);
 
         $output = "Hello World!";
         $this->assertRegexp('/World/i', $output);

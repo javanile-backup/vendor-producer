@@ -13,18 +13,10 @@
 
 namespace Javanile\Producer\Commands;
 
+use Stringy\Stringy as S;
+
 class InitCommand extends Command
 {
-    /**
-     * Base path of running command.
-     */
-    private $path;
-
-    /**
-     * Repository name.
-     */
-    private $repo;
-
     /**
      * InitCommand constructor.
      *
@@ -33,8 +25,6 @@ class InitCommand extends Command
     public function __construct($cwd)
     {
         parent::__construct($cwd);
-
-        $this->path = $this->cwd;
     }
 
     /**
@@ -48,12 +38,25 @@ class InitCommand extends Command
     {
         // init root project
         if (!isset($args[0]) || !$args[0]) {
-            return $this->init($args);
+            $path = $this->cwd;
+
+            return $this->initPath($path);
+        }
+
+        // init remote repositiry
+        if ($this->isUrl($args[0])) {
+            $url = $args[0];
+            $clone = new CloneCommand($this->cwd);
+            $clone->run([$url]);
+            $name = $this->getProjectNameByUrl($url);
+            $path = $this->cwd.'/repository/'.$name;
+
+            return $this->initPath($path, $args);
         }
 
         // init repo project
-        if (is_dir($this->path = $this->cwd.'/repository/'.$args[0])) {
-            return $this->init($args);
+        if (is_dir($path = $this->cwd.'/repository/'.$args[0])) {
+            return $this->initPath($path, $args);
         }
 
         return "> Producer: malformed init command.\n";
@@ -64,18 +67,18 @@ class InitCommand extends Command
      *
      * @param mixed $args
      */
-    private function init($args)
+    private function initPath($path, $args = null)
     {
-        echo $this->info("Init directory '{$this->path}'");
+        echo $this->info("Init directory '{$path}'");
 
-        $this->repo = trim($this->exec('init-origin', [$this->path]));
+        $repo = trim($this->exec('init-origin', [$path]));
 
-        $this->initComposerJson();
-        //$this->initPackageClassPhp($path, $repo);
+        $this->initComposerJson($path, $repo);
+        $this->initPackageClassPhp($path, $repo);
 
         if (!in_array('--no-tests', $args)) {
-            //$this->initPhpUnitXml($path, $repo);
-            $this->initPackageClassTestPhp();
+            $this->initPhpUnitXml($path);
+            $this->initPackageClassTestPhp($path, $repo);
         }
 
         if (!in_array('--no-ci', $args)) {
@@ -87,11 +90,11 @@ class InitCommand extends Command
     /**
      * Initialize composer.json file.
      */
-    private function initComposerJson()
+    private function initComposerJson($path, $repo)
     {
         $json = [];
-        $file = $this->path.'/composer.json';
-        $pack = $this->getPackageNameByUrl($this->repo);
+        $file = $path.'/composer.json';
+        $pack = $this->getPackageNameByUrl($repo);
 
         if (file_exists($file)) {
             $json = (array) json_decode(file_get_contents($file));
@@ -106,7 +109,7 @@ class InitCommand extends Command
         }
 
         if (!isset($json['repositories'])) {
-            $json['repositories'] = [['type' => 'git', 'url' => $this->repo]];
+            $json['repositories'] = [['type' => 'git', 'url' => $repo]];
         }
 
         $size = file_put_contents(
@@ -122,9 +125,9 @@ class InitCommand extends Command
     /**
      * Initialize phpunit.xml file.
      */
-    private function initPhpUnitXml()
+    private function initPhpUnitXml($path)
     {
-        $file = $this->path.'/phpunit.xml';
+        $file = $path.'/phpunit.xml';
 
         if (!file_exists($file)) {
             copy(__DIR__.'/../tpl/phpunit.xml.txt', $file);
@@ -156,20 +159,20 @@ class InitCommand extends Command
     /**
      * Initialize sample Test.
      */
-    private function initPackageClassTestPhp()
+    private function initPackageClassTestPhp($path, $repo)
     {
-        $class = $this->getClass($this->repo);
-        $namespace = $this->getNamespace($this->repo);
+        $class = $this->getClass($repo);
+        $namespace = $this->getNamespace($repo);
 
-        if (!file_exists($file = $this->path.'/tests/'.$class.'Test.php')) {
+        if (!file_exists($file = $path.'/tests/'.$class.'Test.php')) {
             $code = str_replace(
                 ['%%CLASS%%', '%%NAMESPACE%%'],
                 [$class, $namespace],
                 file_get_contents(__DIR__.'/../tpl/PackageClassTest.php.txt')
             );
 
-            if (!is_dir($this->path.'/tests')) {
-                mkdir($this->path.'/tests');
+            if (!is_dir($path.'/tests')) {
+                mkdir($path.'/tests');
             }
 
             $size = file_put_contents($file, $code);
@@ -213,8 +216,8 @@ class InitCommand extends Command
      */
     private function getNamespace($repo)
     {
-        $package = trim(ucfirst(basename($repo, '.git')));
-        $vendor = trim(ucfirst(basename(dirname($repo), '.git')));
+        $package = trim(ucfirst(S::create(basename($repo, '.git'))->camelize()));
+        $vendor = trim(ucfirst(S::create(basename(dirname($repo), '.git'))->camelize()));
 
         return $vendor.'\\'.$package;
     }
@@ -226,7 +229,8 @@ class InitCommand extends Command
      */
     private function getClass($repo)
     {
-        $class = basename($repo, '.git');
+        $name = basename($repo, '.git');
+        $class = S::create($name)->camelize();
 
         return ucfirst(trim($class));
     }

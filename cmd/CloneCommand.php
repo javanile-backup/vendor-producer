@@ -57,7 +57,7 @@ class CloneCommand extends Command
     private function cloneByUrl($args)
     {
         $repo = $args[0];
-        $name = isset($args[1]) ? $args[1] : basename($args[0], '.git');
+        $name = isset($args[1]) ? $args[1] : $this->getProjectNameByUrl($repo);
 
         if (is_dir($this->cwd.'/repository/') && in_array($name, scandir($this->cwd.'/repository/'))) {
             return "> Producer: Project 'repository/{$name}' already exists during clone.\n";
