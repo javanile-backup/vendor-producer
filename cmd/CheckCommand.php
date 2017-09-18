@@ -34,6 +34,15 @@ class CheckCommand extends Command
      */
     public function run($args)
     {
-        return $this->exec('check', []);
+        if (!isset($args[0]) || !$args[0]) {
+            return $this->exec('check', [$this->cwd]);
+        }
+
+        $name = trim($args[0]);
+        if (is_dir($path = $this->cwd.'/repository/'.$name)) {
+            return $this->exec('check', [$path]);
+        }
+
+        return $this->error("Required project name.");
     }
 }

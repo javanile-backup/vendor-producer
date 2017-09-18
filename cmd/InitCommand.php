@@ -82,8 +82,9 @@ class InitCommand extends Command
         }
 
         if (!in_array('--no-ci', $args)) {
-            //$this->initCodeclimateYml($path, $repo);
-            //$this->initTravisYml($path, $repo);
+            $this->initCodeclimateYml($path, $repo);
+            $this->initTravisYml($path, $repo);
+            $this->initStyleCiYml($path, $repo);
         }
     }
 
@@ -207,6 +208,21 @@ class InitCommand extends Command
             return;
         }
         copy(__DIR__.'/../tpl/.travis.yml.txt', $file);
+    }
+
+    /**
+     * Initialie .styleci.yml file.
+     *
+     * @param mixed $path
+     * @param mixed $repo
+     */
+    private function initStyleCiYml($path, $repo)
+    {
+        $file = $path.'/.styleci.yml';
+        if (file_exists($file)) {
+            return;
+        }
+        copy(__DIR__.'/../tpl/.styleci.yml.txt', $file);
     }
 
     /**

@@ -5,10 +5,10 @@
 # $2 - package name
 
 ##
-cd $1
+cd $2
 
 ##
 $1/vendor/bin/phpcs \
     --ignore=*/tests/*,*/vendor/* \
     --standard=$1/vendor/javanile/producer/ruleset.xml \
-    --report=emacs . | sed -e "s@^$1/@@g" | tail -n 5
+    --report=emacs . | sed -e "s@^$2/@@g" | tail -n 5
