@@ -299,4 +299,19 @@ class Producer
             file_put_contents($log, '>  '.trim($msg)."\n", FILE_APPEND);
         }
     }
+
+    /**
+     * Log messages on 'producer.log' file.
+     *
+     * @param mixed $object
+     */
+    public static function read($file)
+    {
+        $cwd = getcwd();
+        $log = $cwd.'/producer.log';
+
+        if (file_exists($file)) {
+            file_put_contents($log, file_get_contents($file), FILE_APPEND);
+        }
+    }
 }
