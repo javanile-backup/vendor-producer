@@ -9,6 +9,7 @@
 
 ## Move in project directory
 cd $2
+rm -fr producer.log > /dev/null 2>&1
 
 ## Run php unit installed on working directory
 $1/vendor/bin/phpunit \
@@ -16,3 +17,6 @@ $1/vendor/bin/phpunit \
     --bootstrap $1/vendor/autoload.php \
     --testdox \
     $3
+
+##
+[ -f producer.log ] && cat producer.log
