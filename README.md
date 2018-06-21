@@ -12,7 +12,7 @@ Produce your vendor code everywhere
 Install via composer copy and paste the follow commands into console
 
 ```
-$ composer require javanile/producer && ./vendor/bin/producer install
+$ composer require javanile/producer --dev && ./vendor/bin/producer install
 ```
 
 ## Working with Producer
