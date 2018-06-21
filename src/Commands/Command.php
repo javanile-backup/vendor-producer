@@ -141,7 +141,7 @@ class Command
      */
     protected function exec($exec, $args = null)
     {
-        $script = __DIR__.'/../exec/'.$exec.'.sh';
+        $script = __DIR__.'/../../exec/'.$exec.'.sh';
         $params = '';
 
         if ($args && count($args) > 0) {
