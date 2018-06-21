@@ -22,11 +22,8 @@
         }
     },
     "autoload": {
-        "classmap": [
-            "src/Producer.php"
-        ],
         "psr-4": {
-            "Javanile\\Producer\\Commands\\": "cmd"
+            "Javanile\\Producer\\": "src"
         }
     },
     "require": {

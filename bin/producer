@@ -12,20 +12,8 @@
  * @copyright  2015-2017 Javanile.org
  */
 
-// install
-global $argv;
-if (isset($argv[1]) && $argv[1] == 'install') {
-    file_put_contents(
-        "producer",
-        "<?php global \$argv;\n".
-        "require_once 'vendor/autoload.php';\n".
-        "echo Javanile\\Producer::cli(\$argv);"
-    );
-}
-
 // include vendor autoload
 require_once __DIR__.'/../../../autoload.php';
 
 // run command-line interface
 echo Javanile\Producer::cli($argv);
-

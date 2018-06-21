@@ -11,7 +11,7 @@
  * @copyright  2015-2017 Javanile.org
  */
 
-namespace Javanile;
+namespace Javanile\Producer;
 
 use Composer\Autoload\ClassLoader;
 use Javanile\Producer\Commands\AutoloadCommand;

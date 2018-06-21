@@ -16,6 +16,13 @@ namespace Javanile\Producer\Commands;
 class CloneCommand extends Command
 {
     /**
+     * @var array
+     */
+    public $devPackages = [
+        'javanile/producer',
+    ];
+
+    /**
      * CloneCommand constructor.
      *
      * @param $cwd
@@ -86,14 +93,19 @@ class CloneCommand extends Command
     {
         $repo = $args[0];
 
-        echo shell_exec(__DIR__.'/../exec/clone-require.sh '.$this->cwd.' '.$repo);
+        $dev = in_array($repo, $this->devPackages) ? '--dev' : '';
+
+        $this->exec('clone-require', [$repo, $dev]);
+
         $comp = $this->cwd.'/vendor/'.$repo.'/composer.json';
         if (!file_exists($comp)) {
             return "> Producer: Package not found.\n";
         }
+
         $json = json_decode(file_get_contents($comp));
         $pack = $repo;
         $repo = null;
+
         if (isset($json->repositories)) {
             foreach ($json->repositories as $item) {
                 if ($item->type == 'git') {
@@ -102,8 +114,8 @@ class CloneCommand extends Command
                 }
             }
         }
+
         if ($repo) {
-            //
             $name = isset($args[1]) ? $args[1] : basename($repo, '.git');
 
             //
@@ -111,7 +123,7 @@ class CloneCommand extends Command
                 return "> Producer: Project directory 'repository/{$name}' already exists.\n";
             }
 
-            return shell_exec(__DIR__.'/../exec/clone-complete.sh '.$this->cwd.' '.$repo.' '.$name.' '.$pack);
+            return $this->exec('clone-complete', [$repo, $name, $pack);
         } else {
             return "> Producer: Repository not found on composer.json.\n";
         }
