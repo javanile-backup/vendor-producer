@@ -3,5 +3,5 @@ vendor/
 node_modules/
 composer.lock
 producer.log
-/tests/cwd/*
-!tests/cwd/.gitkeep
+/tests/temp/*
+!tests/temp/.gitkeep

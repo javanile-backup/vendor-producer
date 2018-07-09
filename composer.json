@@ -1,9 +1,9 @@
 {
     "name": "javanile/producer",
     "description": "Produce your vendor code everywhere",
-    "version": "0.2.1",
+    "version": "0.3.1",
     "license": "MIT",
-    "type": "application",
+    "type": "project",
     "authors": [
         {
             "name": "Francesco Bianco",
@@ -16,16 +16,9 @@
             "url": "https://github.com/javanile/producer"
         }
     ],
-    "autoload-dev": {
-        "psr-4": {
-            "Javanile\\Producer\\Tests\\": "tests"
-        }
-    },
-    "autoload": {
-        "psr-4": {
-            "Javanile\\Producer\\": "src"
-        }
-    },
+    "bin": [
+        "bin/producer"
+    ],
     "require": {
         "php": "^5.3.6 || >=7.0 <7.2",
         "danielstjules/stringy": "~3.0.1"
@@ -35,7 +28,14 @@
         "squizlabs/php_codesniffer": "3.*",
         "codeclimate/php-test-reporter": "dev-master"
     },
-    "bin": [
-        "bin/producer"
-    ]
+    "autoload": {
+        "psr-4": {
+            "Javanile\\Producer\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Javanile\\Producer\\Tests\\": "tests"
+        }
+    }
 }
