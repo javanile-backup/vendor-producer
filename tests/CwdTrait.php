@@ -2,9 +2,9 @@
 
 namespace Javanile\Producer\Tests;
 
-use Javanile\Producer;
+//use Javanile\Producer;
 
-Producer::addPsr4(['Javanile\\Producer\\Tests\\' => __DIR__]);
+//Producer::addPsr4(['Javanile\\Producer\\Tests\\' => __DIR__]);
 
 trait CwdTrait
 {
@@ -13,7 +13,7 @@ trait CwdTrait
         $this->gitUser = getenv('PRODUCER_GIT_USER');
         $this->gitPass = getenv('PRODUCER_GIT_PASS');
 
-        $files = __DIR__.'/cwd/*';
+        $files = __DIR__.'/temp/*';
         shell_exec("rm -fr {$files}");
     }
 }

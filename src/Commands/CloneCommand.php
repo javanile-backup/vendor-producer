@@ -123,7 +123,7 @@ class CloneCommand extends Command
                 return "> Producer: Project directory 'repository/{$name}' already exists.\n";
             }
 
-            return $this->exec('clone-complete', [$repo, $name, $pack);
+            return $this->exec('clone-complete', [$repo, $name, $pack]);
         } else {
             return "> Producer: Repository not found on composer.json.\n";
         }

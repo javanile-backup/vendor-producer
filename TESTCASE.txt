@@ -1,2 +1,2 @@
 -- Clone Command --
-./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testCloneGitHubProject$/'
+./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testCloneGitHubProject$/' tests/Commands/CloneCommandTest.php

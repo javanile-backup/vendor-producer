@@ -1,8 +1,9 @@
 <?php
 
-namespace Javanile\Producer\Tests;
+namespace Javanile\Producer\Tests\Commands;
 
 use Javanile\Producer\Commands\CloneCommand;
+use Javanile\Producer\Tests\CwdTrait;
 use PHPUnit\Framework\TestCase;
 
 //Producer::addPsr4(['Javanile\\Producer\\Tests\\' => __DIR__]);
