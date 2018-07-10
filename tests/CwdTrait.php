@@ -16,4 +16,9 @@ trait CwdTrait
         $files = __DIR__.'/temp/*';
         shell_exec("rm -fr {$files}");
     }
+
+    public function getCwd()
+    {
+        return __DIR__.'/temp';
+    }
 }

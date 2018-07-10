@@ -12,19 +12,19 @@ final class CloneCommandTest extends TestCase
 {
     use CwdTrait;
 
-    public function testCloneGitHubProject()
+    public function testCloneByRepository()
     {
-        $clone = new CloneCommand(__DIR__.'/temp');
-        //$clone->run(['https://github.com/javanile/urlman']);
-        //$this->assertDirectoryExists(__DIR__.'/cwd/repository/urlman');
-        //$this->assertDirectoryExists(__DIR__.'/cwd/vendor/javanile/urlman');
+        $clone = new CloneCommand($this->getCwd());
+        $clone->run(['https://github.com/php-code-samples/simple-psr-1']);
+        $this->assertDirectoryExists(__DIR__.'/cwd/packages/simple-psr-1');
+        $this->assertDirectoryExists(__DIR__.'/cwd/vendor/php-source-code/simple-psr-1');
     }
 
-    public function testCloneGitHubEmptyProject()
+    public function testCloneByPackageName()
     {
-        $clone = new CloneCommand(__DIR__.'/temp');
-        $clone->run(['https://github.com/php-source-code/simple-psr-1']);
-        $this->assertDirectoryExists(__DIR__.'/cwd/repository/simple-psr-1');
+        $clone = new CloneCommand($this->getCwd());
+        $clone->run(['php-code-samples/simple-psr-1']);
+        $this->assertDirectoryExists(__DIR__.'/cwd/packages/simple-psr-1');
         $this->assertDirectoryExists(__DIR__.'/cwd/vendor/php-source-code/simple-psr-1');
     }
 }
