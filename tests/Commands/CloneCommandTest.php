@@ -14,6 +14,7 @@ final class CloneCommandTest extends TestCase
 
     public function testCloneByRepository()
     {
+        // Testing
         $clone = new CloneCommand($this->getCwd());
         $clone->run(['https://github.com/php-code-samples/simple-psr-1']);
         $this->assertDirectoryExists(__DIR__.'/cwd/packages/simple-psr-1');
