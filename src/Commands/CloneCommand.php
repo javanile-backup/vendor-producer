@@ -46,7 +46,7 @@ class CloneCommand extends Command
         }
 
         if ($this->isUrl($args[0])) {
-            return $this->cloneByUrl($args);
+            return $this->cloneByRepositoryUrl($args);
         }
 
         if ($this->isPackageName($args[0])) {
@@ -61,20 +61,20 @@ class CloneCommand extends Command
      *
      * @param mixed $args
      */
-    private function cloneByUrl($args)
+    private function cloneByRepositoryUrl($args)
     {
-        $repo = $args[0];
-        $name = isset($args[1]) ? $args[1] : $this->getProjectNameByUrl($repo);
+        $repositoryUrl = $args[0];
+        $projectName = isset($args[1]) ? $args[1] : $this->getProjectNameByUrl($repo);
 
-        if (is_dir($this->cwd.'/repository/') && in_array($name, scandir($this->cwd.'/repository/'))) {
-            return "> Producer: Project 'repository/{$name}' already exists during clone.\n";
+        if (is_dir($this->cwd.'/packages/') && in_array($projectName, scandir($this->cwd.'/packages/'))) {
+            return "> Producer: Project 'packages/{$projectName}' already exists during clone.\n";
         }
 
-        echo $this->info("Clone by url '{$repo}'");
-        echo $this->exec('clone-url', [$repo, $name]);
+        echo $this->info("Clone by url '{$repositoryUrl}'");
+        echo $this->exec('clone-by-repository-url', [$repositoryUrl, $projectName]);
 
-        if ($this->hasComposerJson($name)) {
-            $pack = $this->getPackageNameByComposerJson($name);
+        if ($this->hasComposerJson($projectName)) {
+            $packageName = $this->getPackageNameByComposerJson($projectName);
 
             return $this->exec('clone-install', [$pack, $name]);
         }

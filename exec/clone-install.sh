@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 ##
-# $1 - working directory
-# $2 - required package
-# $3 - repository short name
-# $4 - composer addictional arguments
+# $1 - Working directory
+# $2 - Require package name
+# $3 - Project name
+# $4 - Composer addictional arguments
 
 ##
 cd $1

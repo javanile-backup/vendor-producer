@@ -10,7 +10,7 @@ final class CloneCommandTest extends TestCase
 {
     use CwdTrait;
 
-    public function testCloneByRepository()
+    public function testCloneByRepositoryUrl()
     {
         $clone = new CloneCommand($this->getCwd());
         $clone->run(['https://github.com/php-code-samples/package-skeleton']);

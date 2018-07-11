@@ -53,13 +53,14 @@ class Command
     }
 
     /**
-     * Test if progect has composer.json file.
+     * Test if project has composer.json file.
      *
      * @param mixed $name
      */
-    protected function hasComposerJson($name)
+    protected function hasComposerJson($project)
     {
-        return file_exists($this->cwd.'/repository/'.$name.'/composer.json');
+        return is_dir($this->cwd.'/packages/'.$project)
+            && file_exists($this->cwd.'/packages/'.$project.'/composer.json');
     }
 
     /**
