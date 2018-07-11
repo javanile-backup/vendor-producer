@@ -73,6 +73,10 @@ class CloneCommand extends Command
         echo $this->info("Clone by url '{$repositoryUrl}'");
         echo $this->exec('clone-by-repository-url', [$repositoryUrl, $projectName]);
 
+        if (is_array('--no-mount', $args)) {
+            return;
+        }
+
         if ($this->hasComposerJson($projectName)) {
             $packageName = $this->getPackageNameByComposerJson($projectName);
 

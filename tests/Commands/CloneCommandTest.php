@@ -18,6 +18,17 @@ final class CloneCommandTest extends TestCase
         $this->assertDirectoryExists(__DIR__.'/cwd/vendor/php-code-samples/package-skeleton');
     }
 
+    public function testCloneByRepositoryUrlNoMount()
+    {
+        $clone = new CloneCommand($this->getCwd());
+        $clone->run([
+            'https://github.com/php-code-samples/package-skeleton',
+            '--no-mount',
+        ]);
+        $this->assertDirectoryExists(__DIR__.'/cwd/packages/package-skeleton');
+        $this->assertDirectoryExists(__DIR__.'/cwd/vendor/php-code-samples/package-skeleton');
+    }
+
     public function testCloneByPackageName()
     {
         $clone = new CloneCommand($this->getCwd());

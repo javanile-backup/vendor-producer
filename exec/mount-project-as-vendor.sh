@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-
-
 ##
 cd $1
 mkdir -p vendor/$2 > /dev/null 2>&1
