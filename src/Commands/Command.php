@@ -188,9 +188,9 @@ class Command
      * @param mixed      $exec
      * @param null|mixed $args
      */
-    protected function exec($exec, $args = null)
+    protected function exec($cmd, $task, $args = null)
     {
-        $script = __DIR__.'/../../exec/'.$exec.'.sh';
+        $script = __DIR__.'/../../exec/'.$cmd.'/'.$task.'.sh';
         $params = '';
 
         if ($args && count($args) > 0) {
@@ -202,9 +202,9 @@ class Command
         }
 
         $cwd = '"' . $this->cwd . '"';
-        $cmd = $script . ' ' . $cwd . ' ' . $params;
+        $rawCommand = $script . ' ' . $cwd . ' ' . $params;
 
-        $output = shell_exec($cmd);
+        $output = shell_exec($rawCommand);
 
         if (!$this->silent) {
             echo $output;

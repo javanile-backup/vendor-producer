@@ -84,7 +84,7 @@ class CloneCommand extends Command
         }
 
         $this->info("Clone by url '{$repositoryUrl}'");
-        $this->exec('clone-by-repository-url', [$repositoryUrl, $projectName]);
+        $this->exec('clone', 'clone-repository-url', [$repositoryUrl, $projectName]);
 
         if ($this->noMount) {
             return;
