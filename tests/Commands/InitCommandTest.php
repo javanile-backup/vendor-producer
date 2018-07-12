@@ -7,9 +7,10 @@ use Javanile\Producer\Commands\CloneCommand;
 use Javanile\Producer\Tests\CwdTrait;
 use PHPUnit\Framework\TestCase;
 
-
 final class InitCommandTest extends TestCase
 {
+    use CwdTrait;
+
     public function testInitRootProject()
     {
         $init = new InitCommand($this->getCwd());

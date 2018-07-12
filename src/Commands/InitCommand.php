@@ -83,34 +83,34 @@ class InitCommand extends Command
     {
         $this->info("Init directory '{$path}'");
 
-        $this->initComposerJson($path, $repo);
-        $this->initPackageClassPhp($path, $repo);
+        $repositoryUrl = trim(shell_exec("cd {$path} && git config --get remote.origin.url"));
+        $packageName = $this->getPackageNameByRepositoryUrl($repositoryUrl);
+
+        $this->initComposerJson($path, $repositoryUrl, $packageName);
+        $this->initPackageClassPhp($path, $packageName);
 
         if (!$this->noTests) {
             $this->initPhpUnitXml($path);
-            $this->initPackageClassTestPhp($path, $repo);
+            $this->initPackageClassTestPhp($path, $packageName);
         }
 
         if (!$this->noCi) {
-            $this->initCodeclimateYml($path, $repo);
-            $this->initTravisYml($path, $repo);
-            $this->initStyleCiYml($path, $repo);
+            $this->initCodeclimateYml($path);
+            $this->initTravisYml($path);
+            $this->initStyleCiYml($path);
         }
     }
 
     /**
      * Initialize composer.json file.
      */
-    private function initComposerJson($path)
+    private function initComposerJson($path, $repositoryUrl, $packageName)
     {
         $json = [];
         $composerJson = $path . '/composer.json';
         if (file_exists($composerJson)) {
             $json = json_decode(file_get_contents($composerJson), true);
         }
-
-        $repositoryUrl = trim(shell_exec("cd {$path} && git config --get remote.origin.url"));
-        $packageName = $this->getPackageNameByRepositoryUrl($repositoryUrl);
 
         if (!isset($json['name'])) {
             $json['name'] = $packageName;
@@ -156,7 +156,7 @@ class InitCommand extends Command
         $file = $path.'/phpunit.xml';
 
         if (!file_exists($file)) {
-            copy(__DIR__.'/../tpl/phpunit.xml.txt', $file);
+            copy(__DIR__.'/../../tpl/phpunit.xml.txt', $file);
         }
     }
 
@@ -166,15 +166,15 @@ class InitCommand extends Command
      * @param mixed $path
      * @param mixed $repo
      */
-    private function initPackageClassPhp($path, $repo)
+    private function initPackageClassPhp($path, $packageName)
     {
-        $class = $this->getClass($repo);
-        $namespace = $this->getNamespace($repo);
-        $file = $path.'/src/'.$class.'.php';
+        $class = $this->getClass($packageName);
+        $namespace = $this->getNamespace($packageName);
+        $file = $path . '/src/' . $class . '.php';
         if (file_exists($file)) {
             return;
         }
-        $code = file_get_contents(__DIR__.'/../tpl/PackageClass.php.txt');
+        $code = file_get_contents(__DIR__.'/../../tpl/PackageClass.php.txt');
         $code = str_replace(['%%CLASS%%', '%%NAMESPACE%%'], [$class, $namespace], $code);
         if (!is_dir($path.'/src')) {
             mkdir($path.'/src');
@@ -185,16 +185,16 @@ class InitCommand extends Command
     /**
      * Initialize sample Test.
      */
-    private function initPackageClassTestPhp($path, $repo)
+    private function initPackageClassTestPhp($path, $packageName)
     {
-        $class = $this->getClass($repo);
-        $namespace = $this->getNamespace($repo);
+        $class = $this->getClass($packageName);
+        $namespace = $this->getNamespace($packageName);
 
-        if (!file_exists($file = $path.'/tests/'.$class.'Test.php')) {
+        if (!file_exists($file = $path . '/tests/' . $class . 'Test.php')) {
             $code = str_replace(
                 ['%%CLASS%%', '%%NAMESPACE%%'],
                 [$class, $namespace],
-                file_get_contents(__DIR__.'/../tpl/PackageClassTest.php.txt')
+                file_get_contents(__DIR__.'/../../tpl/PackageClassTest.php.txt')
             );
 
             if (!is_dir($path.'/tests')) {
@@ -211,13 +211,13 @@ class InitCommand extends Command
      * @param mixed $path
      * @param mixed $repo
      */
-    private function initCodeclimateYml($path, $repo)
+    private function initCodeclimateYml($path)
     {
         $file = $path.'/.codeclimate.yml';
         if (file_exists($file)) {
             return;
         }
-        copy(__DIR__.'/../tpl/.codeclimate.yml.txt', $file);
+        copy(__DIR__.'/../../tpl/.codeclimate.yml.txt', $file);
     }
 
     /**
@@ -226,13 +226,13 @@ class InitCommand extends Command
      * @param mixed $path
      * @param mixed $repo
      */
-    private function initTravisYml($path, $repo)
+    private function initTravisYml($path)
     {
         $file = $path.'/.travis.yml';
         if (file_exists($file)) {
             return;
         }
-        copy(__DIR__.'/../tpl/.travis.yml.txt', $file);
+        copy(__DIR__.'/../../tpl/.travis.yml.txt', $file);
     }
 
     /**
@@ -241,13 +241,13 @@ class InitCommand extends Command
      * @param mixed $path
      * @param mixed $repo
      */
-    private function initStyleCiYml($path, $repo)
+    private function initStyleCiYml($path)
     {
         $file = $path.'/.styleci.yml';
         if (file_exists($file)) {
             return;
         }
-        copy(__DIR__.'/../tpl/.styleci.yml.txt', $file);
+        copy(__DIR__.'/../../tpl/.styleci.yml.txt', $file);
     }
 
     /**
