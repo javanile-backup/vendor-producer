@@ -91,14 +91,14 @@ class CloneCommand extends Command
 
         $packageName = $this->getProjectPackageName($projectName, $repositoryUrl);
         if (!$this->existsPackageName($packageName)) {
-            return $this->exec('clone', 'mount-unknown-package-to-project', [$packageName, $projectName]);
+            return $this->exec('clone', 'mount-unknown-package-as-project', [$packageName, $projectName]);
         }
 
         if (!$this->existsRootComposerJson()) {
             $this->createRootComposerJson();
         }
 
-        return $this->exec('clone', 'mount-require-package-to-project', [$packageName, $projectName]);
+        return $this->exec('clone', 'mount-require-package-as-project', [$packageName, $projectName]);
     }
 
     /**
