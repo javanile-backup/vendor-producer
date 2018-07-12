@@ -89,24 +89,16 @@ class CloneCommand extends Command
             return;
         }
 
-        if ($this->hasComposerJson($projectName)) {
-            $packageName = $this->getPackageNameByComposerJson($projectName);
-            if (!$this->existsPackageName($packageName)) {
-                return $this->error('&package-name-not-exists', ['packageName' => $packageName]);
-            }
-            if (!$this->existsRootComposerJson()) {
-                $this->createRootComposerJson();
-            }
-
-            return $this->exec('clone', 'mount-package-to-project', [$packageName, $projectName]);
-        }
-
-        $packageName = $this->getPackageNameByUrl($repositoryUrl);
+        $packageName = $this->getProjectPackageName($projectName, $repositoryUrl);
         if (!$this->existsPackageName($packageName)) {
-            return $this->error('&package-name-not-exists', ['packageName' => $packageName]);
+            return $this->exec('clone', 'mount-unknown-package-to-project', [$packageName, $projectName]);
         }
 
-        return $this->exec('clone-mount', [$packageName, $projectName]);
+        if (!$this->existsRootComposerJson()) {
+            $this->createRootComposerJson();
+        }
+
+        return $this->exec('clone', 'mount-require-package-to-project', [$packageName, $projectName]);
     }
 
     /**

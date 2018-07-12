@@ -147,6 +147,22 @@ class Command
     }
 
     /**
+     * Get project name by repository url.
+     *
+     * @param mixed $url
+     */
+    protected function getProjectPackageName($projectName, $repositoryUrl)
+    {
+        $packageName = null;
+
+        if ($this->hasComposerJson($projectName)) {
+            $packageName = $this->getPackageNameByComposerJson($projectName);
+        }
+
+        return $packageName ?: $this->getPackageNameByRepositoryUrl($repositoryUrl);
+    }
+
+    /**
      * Get package name by composer.json file.
      *
      * @param mixed $name
