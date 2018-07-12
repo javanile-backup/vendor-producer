@@ -18,6 +18,24 @@ use Stringy\Stringy as S;
 class InitCommand extends Command
 {
     /**
+     * @var array
+     */
+    protected $options = [
+        '--no-ci' => 'noCi',
+        '--no-tests' => 'noTests',
+    ];
+
+    /**
+     * @var boolean
+     */
+    protected $noCi = false;
+
+    /**
+     * @var boolean
+     */
+    protected $noTests = false;
+
+    /**
      * InitCommand constructor.
      *
      * @param $cwd
@@ -37,19 +55,23 @@ class InitCommand extends Command
     public function run($args)
     {
         $args = $this->parseArgs($args);
+        foreach ($this->options as $argument => $attribute) {
+            $this->{$attribute} = in_array($argument, $args);
+            if ($this->{$attribute}) {
+                $args = array_values(array_diff($args, [$argument]));
+            }
+        }
 
-        // init root project
         if (!isset($args[0]) || !$args[0]) {
             return $this->initPath($this->cwd);
         }
 
         $projectName = $args[0];
-
         if (!$this->existsProjectName($projectName)) {
             return "> Producer: Project '{$this->projectsDir}/{$projectName}' not found.\n";
         }
 
-        return $this->initPath($this->getProjectDir($projectName), $args);
+        return $this->initPath($this->getProjectDir($projectName));
     }
 
     /**
@@ -59,19 +81,17 @@ class InitCommand extends Command
      */
     private function initPath($path, $args = null)
     {
-        echo $this->info("Init directory '{$path}'");
-
-        $repo = trim($this->exec('init-origin', [$path]));
+        $this->info("Init directory '{$path}'");
 
         $this->initComposerJson($path, $repo);
         $this->initPackageClassPhp($path, $repo);
 
-        if (!in_array('--no-tests', $args)) {
+        if (!$this->noTests) {
             $this->initPhpUnitXml($path);
             $this->initPackageClassTestPhp($path, $repo);
         }
 
-        if (!in_array('--no-ci', $args)) {
+        if (!$this->noCi) {
             $this->initCodeclimateYml($path, $repo);
             $this->initTravisYml($path, $repo);
             $this->initStyleCiYml($path, $repo);
@@ -81,18 +101,19 @@ class InitCommand extends Command
     /**
      * Initialize composer.json file.
      */
-    private function initComposerJson($path, $repo)
+    private function initComposerJson($path)
     {
         $json = [];
-        $file = $path.'/composer.json';
-        $pack = $this->getPackageNameByUrl($repo);
-
-        if (file_exists($file)) {
-            $json = (array) json_decode(file_get_contents($file));
+        $composerJson = $path . '/composer.json';
+        if (file_exists($composerJson)) {
+            $json = json_decode(file_get_contents($composerJson), true);
         }
 
+        $repositoryUrl = trim(shell_exec("cd {$path} && git config --get remote.origin.url"));
+        $packageName = $this->getPackageNameByRepositoryUrl($repositoryUrl);
+
         if (!isset($json['name'])) {
-            $json['name'] = $pack;
+            $json['name'] = $packageName;
         }
 
         if (!isset($json['version'])) {
@@ -100,16 +121,30 @@ class InitCommand extends Command
         }
 
         if (!isset($json['repositories'])) {
-            $json['repositories'] = [['type' => 'git', 'url' => $repo]];
+            $json['repositories'] = [['type' => 'git', 'url' => $repositoryUrl]];
+        } else {
+            $hasRepositoryUrl = false;
+            foreach ($json['repositories'] as $item) {
+                if ($item['type'] == 'git') {
+                    $hasRepositoryUrl = true;
+                    break;
+                }
+            }
+            if (!$hasRepositoryUrl) {
+                $json['repositories'][] = ['type' => 'git', 'url' => $repositoryUrl];
+            }
         }
 
         $size = file_put_contents(
-            $file,
-            json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
+            $composerJson,
+            json_encode(
+                $json,
+                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
+            )
         );
 
         if (!$size) {
-            $this->error("Error to write file '{$file}'.");
+            $this->error("Error to write file '{$composerJson}'.");
         }
     }
 

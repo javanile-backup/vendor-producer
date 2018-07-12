@@ -71,8 +71,6 @@ final class CloneCommandTest extends TestCase
             '--silent',
         ]);
 
-        var_dump($output);
-
         $this->assertDirectoryExists($this->getCwd('packages/package-skeleton'));
         $this->assertDirectoryExists($this->getCwd('vendor/php-code-samples/package-skeleton'));
     }
