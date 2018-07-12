@@ -23,6 +23,11 @@ class Command
     protected $cwd = null;
 
     /**
+     * Silent mode suppress standard output.
+     */
+    protected $silent = false;
+
+    /**
      * Command base constructor.
      *
      * @param mixed $cwd
@@ -131,7 +136,30 @@ class Command
      */
     protected function info($line)
     {
-        return '> Producer: '.$line."\n";
+        $output = '> Producer: '.$line."\n";
+
+        if (!$this->silent) {
+            echo $output;
+        }
+    }
+
+    /**
+     * Get an info line.
+     *
+     * @param mixed $line
+     */
+    protected function parseArgs($args)
+    {
+        if (!is_array($args)) {
+            return $args;
+        }
+
+        $this->silent = in_array('--silent', $args);
+        if ($this->silent) {
+            $args = array_values(array_diff($args, ['--no-mount']));
+        }
+
+        return $args;
     }
 
     /**
@@ -156,7 +184,13 @@ class Command
         $cwd = '"'.$this->cwd.'"';
         $cmd = $script.' '.$cwd.' '.$params;
 
-        return shell_exec($cmd);
+        $output = shell_exec($cmd);
+
+        if (!$this->silent) {
+            echo $output;
+        }
+
+        return;
     }
 
     /**

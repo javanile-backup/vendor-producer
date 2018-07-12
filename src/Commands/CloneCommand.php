@@ -16,9 +16,14 @@ namespace Javanile\Producer\Commands;
 class CloneCommand extends Command
 {
     /**
+     * @var boolean
+     */
+    protected $noMount = false;
+
+    /**
      * @var array
      */
-    public $devPackages = [
+    protected $devPackages = [
         'javanile/producer',
     ];
 
@@ -45,11 +50,18 @@ class CloneCommand extends Command
             return $this->error('&require-package-or-repository');
         }
 
-        if ($this->isUrl($args[0])) {
+        $args = $this->parseArgs($args);
+
+        $this->noMount = in_array('--no-mount', $args);
+        if ($this->noMount) {
+            $args = array_values(array_diff($args, ['--no-mount']));
+        }
+
+        if (isset($args[0]) && $this->isUrl($args[0])) {
             return $this->cloneByRepositoryUrl($args);
         }
 
-        if ($this->isPackageName($args[0])) {
+        if (isset($args[0]) && $this->isPackageName($args[0])) {
             return $this->cloneByPackageName($args);
         }
 
@@ -64,28 +76,28 @@ class CloneCommand extends Command
     private function cloneByRepositoryUrl($args)
     {
         $repositoryUrl = $args[0];
-        $projectName = isset($args[1]) ? $args[1] : $this->getProjectNameByUrl($repo);
+        $projectName = isset($args[1]) ? $args[1] : $this->getProjectNameByUrl($repositoryUrl);
+        $projectsDir = $this->cwd.'/packages/';
 
-        if (is_dir($this->cwd.'/packages/') && in_array($projectName, scandir($this->cwd.'/packages/'))) {
+        if (is_dir($projectsDir) && in_array($projectName, scandir($projectsDir))) {
             return "> Producer: Project 'packages/{$projectName}' already exists during clone.\n";
         }
 
-        echo $this->info("Clone by url '{$repositoryUrl}'");
-        echo $this->exec('clone-by-repository-url', [$repositoryUrl, $projectName]);
+        $this->info("Clone by url '{$repositoryUrl}'");
+        $this->exec('clone-by-repository-url', [$repositoryUrl, $projectName]);
 
-        if (is_array('--no-mount', $args)) {
+        if ($this->noMount) {
             return;
         }
 
         if ($this->hasComposerJson($projectName)) {
             $packageName = $this->getPackageNameByComposerJson($projectName);
-
-            return $this->exec('clone-install', [$pack, $name]);
+            return $this->exec('clone-install', [$packageName, $projectName]);
         }
 
-        $pack = $this->getPackageNameByUrl($repo);
+        $packageName = $this->getPackageNameByUrl($repositoryUrl);
 
-        return $this->exec('clone-mount', [$pack, $name]);
+        return $this->exec('clone-mount', [$packageName, $projectName]);
     }
 
     /**
