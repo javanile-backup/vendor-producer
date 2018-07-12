@@ -83,7 +83,6 @@ class Command
      */
     protected function hasComposerJson($projectName)
     {
-        var_dump($projectName);
         return is_dir($this->cwd. '/' . $this->projectsDir . '/' . $projectName)
             && file_exists($this->cwd . '/' . $this->projectsDir . '/' .$projectName . '/composer.json');
     }
