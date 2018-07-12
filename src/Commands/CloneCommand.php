@@ -77,9 +77,8 @@ class CloneCommand extends Command
     {
         $repositoryUrl = $args[0];
         $projectName = isset($args[1]) ? $args[1] : $this->getProjectNameByUrl($repositoryUrl);
-        $projectsDir = $this->cwd.'/packages/';
 
-        if (is_dir($projectsDir) && in_array($projectName, scandir($projectsDir))) {
+        if ($this->existsProjectName($projectName)) {
             return "> Producer: Project 'packages/{$projectName}' already exists during clone.\n";
         }
 

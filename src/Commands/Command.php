@@ -28,6 +28,11 @@ class Command
     protected $silent = false;
 
     /**
+     * Projects dir name.
+     */
+    protected $progectsDir = 'packages';
+
+    /**
      * Command base constructor.
      *
      * @param mixed $cwd
@@ -129,6 +134,37 @@ class Command
         $exists = shell_exec('composer search --only-name ' . $packageName);
 
         return (boolean) $exists;
+    }
+
+    /**
+     * Get package name by composer.json file.
+     *
+     * @param mixed $name
+     */
+    protected function getProgectsDir()
+    {
+        return $this->cwd . '/' . $this->projectsDir;
+    }
+
+    /**
+     * Get package name by composer.json file.
+     *
+     * @param mixed $name
+     */
+    protected function existsProgectsDir()
+    {
+        return is_dir($this->cwd . '/' . $this->projectsDir);
+    }
+
+    /**
+     * Get package name by composer.json file.
+     *
+     * @param mixed $name
+     */
+    protected function existsProgectName($projectName)
+    {
+        return $this->existsProjectsDir()
+            && in_array($projectName, scandir($this->getProgectsDir()));
     }
 
     /**
