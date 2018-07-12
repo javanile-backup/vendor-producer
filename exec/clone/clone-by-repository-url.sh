@@ -2,11 +2,12 @@
 
 # Clone a repository by url
 # $1 - Working directory
-# $2 - Repository url to clone
-# $3 - Name of package folder
+# $2 - Projects directory
+# $3 - Repository url to clone
+# $4 - Project name
 
 ##
 cd $1
-mkdir packages > /dev/null 2>&1
-cd packages
-git clone $2 $3
+mkdir $2 > /dev/null 2>&1
+cd $2
+git clone $3 $4

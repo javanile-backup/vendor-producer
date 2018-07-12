@@ -82,8 +82,8 @@ class CloneCommand extends Command
             return "> Producer: Project 'packages/{$projectName}' already exists during clone.\n";
         }
 
-        $this->info("Clone by url '{$repositoryUrl}'");
-        $this->exec('clone', 'clone-repository-url', [$repositoryUrl, $projectName]);
+        $this->info("Clone by repository url '{$repositoryUrl}'");
+        $this->exec('clone', 'clone-by-repository-url', [$repositoryUrl, $projectName]);
 
         if ($this->noMount) {
             return;
@@ -94,8 +94,11 @@ class CloneCommand extends Command
             if (!$this->existsPackageName($packageName)) {
                 return $this->error('&package-name-not-exists', ['packageName' => $packageName]);
             }
+            if (!$this->existsRootComposerJson()) {
+                $this->createRootComposerJson();
+            }
 
-            return $this->exec('mount-package-to-project', [$packageName, $projectName]);
+            return $this->exec('clone', 'mount-package-to-project', [$packageName, $projectName]);
         }
 
         $packageName = $this->getPackageNameByUrl($repositoryUrl);

@@ -30,7 +30,7 @@ class Command
     /**
      * Projects dir name.
      */
-    protected $progectsDir = 'packages';
+    protected $projectsDir = 'packages';
 
     /**
      * Command base constructor.
@@ -96,6 +96,32 @@ class Command
     }
 
     /**
+     * Get package name by composer.json file.
+     *
+     * @param mixed $name
+     */
+    protected function existsRootComposerJson()
+    {
+        return file_exists($this->cwd . '/composer.json');
+    }
+
+    /**
+     * Get package name by composer.json file.
+     *
+     * @param mixed $name
+     */
+    protected function createRootComposerJson()
+    {
+        $json = [
+            'require' => [
+                'php' => '*'
+            ]
+        ];
+
+        file_put_contents($this->cwd . '/composer.json', json_encode($json, JSON_PRETTY_PRINT));
+    }
+
+    /**
      * Get package name by repository url.
      *
      * @param mixed $url
@@ -141,7 +167,7 @@ class Command
      *
      * @param mixed $name
      */
-    protected function getProgectsDir()
+    protected function getProjectsDir()
     {
         return $this->cwd . '/' . $this->projectsDir;
     }
@@ -151,9 +177,9 @@ class Command
      *
      * @param mixed $name
      */
-    protected function existsProgectsDir()
+    protected function existsProjectsDir()
     {
-        return is_dir($this->cwd . '/' . $this->projectsDir);
+        return is_dir($this->getProjectsDir());
     }
 
     /**
@@ -161,7 +187,7 @@ class Command
      *
      * @param mixed $name
      */
-    protected function existsProgectName($projectName)
+    protected function existsProjectName($projectName)
     {
         return $this->existsProjectsDir()
             && in_array($projectName, scandir($this->getProgectsDir()));
@@ -219,6 +245,15 @@ class Command
     }
 
     /**
+     * @param $param
+     * @return string
+     */
+    protected function escapeParam($param)
+    {
+        return '"' . $param . '"';
+    }
+
+    /**
      * Exec specific script.
      *
      * @param mixed      $exec
@@ -231,14 +266,15 @@ class Command
 
         if ($args && count($args) > 0) {
             foreach ($args as &$value) {
-                $value = '"' . trim($value) . '"';
+                $value = $this->escapeParam($value);
             }
 
             $params = implode(' ', $args);
         }
 
-        $cwd = '"' . $this->cwd . '"';
-        $rawCommand = $script . ' ' . $cwd . ' ' . $params;
+        $rawCommand = $script . ' '
+            . $this->escapeParam($this->cwd) . ' '
+            . $this->escapeParam($this->projectsDir) . ' ' . $params;
 
         $output = shell_exec($rawCommand);
 
