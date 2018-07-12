@@ -5,11 +5,9 @@ namespace Javanile\Producer\Tests;
 use Javanile\Producer;
 use PHPUnit\Framework\TestCase;
 
-Producer::addPsr4(['Javanile\\Producer\\Tests\\' => __DIR__]);
-
 final class InitCommandTest extends TestCase
 {
-    public function testCloneGitHubProject()
+    public function testInit()
     {
         // test clone
         $cli = new ProducerMock(__DIR__);

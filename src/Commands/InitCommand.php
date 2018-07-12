@@ -36,30 +36,20 @@ class InitCommand extends Command
      */
     public function run($args)
     {
+        $args = $this->parseArgs($args);
+
         // init root project
         if (!isset($args[0]) || !$args[0]) {
-            $path = $this->cwd;
-
-            return $this->initPath($path);
+            return $this->initPath($this->cwd);
         }
 
-        // init remote repositiry
-        if ($this->isUrl($args[0])) {
-            $url = $args[0];
-            $clone = new CloneCommand($this->cwd);
-            $clone->run([$url]);
-            $name = $this->getProjectNameByUrl($url);
-            $path = $this->cwd.'/repository/'.$name;
+        $projectName = $args[0];
 
-            return $this->initPath($path, $args);
+        if (!$this->existsProjectName($projectName)) {
+            return "> Producer: Project '{$this->projectsDir}/{$projectName}' not found.\n";
         }
 
-        // init repo project
-        if (is_dir($path = $this->cwd.'/repository/'.$args[0])) {
-            return $this->initPath($path, $args);
-        }
-
-        return "> Producer: malformed init command.\n";
+        return $this->initPath($this->getProjectDir($projectName), $args);
     }
 
     /**

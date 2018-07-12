@@ -206,6 +206,16 @@ class Command
      *
      * @param mixed $name
      */
+    protected function getProjectDir($projectName)
+    {
+        return $this->cwd . '/' . $this->projectsDir . '/' . $projectName;
+    }
+
+    /**
+     * Get package name by composer.json file.
+     *
+     * @param mixed $name
+     */
     protected function existsProjectsDir()
     {
         return is_dir($this->getProjectsDir());

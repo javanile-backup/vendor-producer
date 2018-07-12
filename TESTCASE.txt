@@ -10,4 +10,6 @@
  ./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testCloneByPackageName$/' tests/Commands/CloneCommandTest.php
 
 
-## ##
+## Init ##
+
+ ./vendor/bin/phpunit --configuration phpunit.xml tests/Commands/InitCommandTest.php
