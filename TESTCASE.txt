@@ -1,6 +1,13 @@
 
--- Clone Command --
-./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testCloneByRepositoryUrl$/' tests/Commands/CloneCommandTest.php
-./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testCloneByRepositoryUrlNoMount$/' tests/Commands/CloneCommandTest.php
-./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testCloneByRepositoryUrlUnknownPackageName$/' tests/Commands/CloneCommandTest.php
+## Clone ##
 
+ ./vendor/bin/phpunit --configuration phpunit.xml tests/Commands/CloneCommandTest.php
+
+ ./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testCloneByRepositoryUrl$/' tests/Commands/CloneCommandTest.php
+ ./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testCloneByRepositoryUrlNoMount$/' tests/Commands/CloneCommandTest.php
+ ./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testCloneByRepositoryUrlUnknownPackageName$/' tests/Commands/CloneCommandTest.php
+
+ ./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testCloneByPackageName$/' tests/Commands/CloneCommandTest.php
+
+
+## ##

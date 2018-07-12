@@ -53,6 +53,20 @@ class Command
     }
 
     /**
+     * @param $repositoryUrl
+     * @return bool
+     */
+    public function existsRepositoryUrl($repositoryUrl)
+    {
+        $headers = @get_headers($repositoryUrl);
+        if (!$headers || $headers[0] == 'HTTP/1.1 404 Not Found') {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Test is package name.
      *
      * @param mixed $repo
@@ -138,7 +152,7 @@ class Command
      *
      * @param mixed $url
      */
-    protected function getProjectNameByUrl($url)
+    protected function getProjectNameByRepositoryUrl($url)
     {
         $name = trim(basename($url, '.git'));
 

@@ -56,7 +56,7 @@ final class CloneCommandTest extends TestCase
         ]);
 
         $this->assertDirectoryExists($this->getCwd('packages/messy-package'));
-        $this->assertDirectoryNotExists($this->getCwd('vendor/php-code-samples/messy-package'));
+        $this->assertDirectoryExists($this->getCwd('vendor/php-code-samples/messy-package'));
     }
 
     public function testCloneByPackageName()

@@ -76,10 +76,14 @@ class CloneCommand extends Command
     private function cloneByRepositoryUrl($args)
     {
         $repositoryUrl = $args[0];
-        $projectName = isset($args[1]) ? $args[1] : $this->getProjectNameByUrl($repositoryUrl);
+        $projectName = isset($args[1]) ? $args[1] : $this->getProjectNameByRepositoryUrl($repositoryUrl);
+
+        if (!$this->existsRepositoryUrl($repositoryUrl)) {
+            return "Repository url not exists!";
+        }
 
         if ($this->existsProjectName($projectName)) {
-            return "> Producer: Project 'packages/{$projectName}' already exists during clone.\n";
+            return "> Producer: Project '{$this->projectsDir}/{$projectName}' already exists during clone.\n";
         }
 
         $this->info("Clone by repository url '{$repositoryUrl}'");
@@ -109,41 +113,44 @@ class CloneCommand extends Command
      */
     private function cloneByPackageName($args)
     {
-        $repo = $args[0];
+        $packageName = $args[0];
+        if (!existsPackageName($packageName)) {
+            $args[0] = 'https://github.com/' . $packageName;
+            return $this->cloneByRepositoryUrl($args);
+        }
 
-        $dev = in_array($repo, $this->devPackages) ? '--dev' : '';
+        $projectName = isset($args[1]) ? $args[1] : $this->getProjectNameByPackageName($packageName);
+        if ($this->existsProjectName($projectName)) {
+            return "> Producer: Project directory '{$this->projectsDir}/{$projectName}' already exists.\n";
+        }
 
-        $this->exec('clone-require', [$repo, $dev]);
+        $devFlag = in_array($packageName, $this->devPackages) ? '--dev' : '';
+        $this->exec('clone', 'require-package', [$packageName, $devFlag]);
 
-        $comp = $this->cwd.'/vendor/'.$repo.'/composer.json';
-        if (!file_exists($comp)) {
+        $composerJson = $this->cwd . '/vendor/' . $packageName . '/composer.json';
+        if (!file_exists($composerJson)) {
             return "> Producer: Package not found.\n";
         }
 
-        $json = json_decode(file_get_contents($comp));
-        $pack = $repo;
-        $repo = null;
-
+        $json = json_decode(file_get_contents($composerJson));
+        $repositoryUrl = null;
         if (isset($json->repositories)) {
             foreach ($json->repositories as $item) {
                 if ($item->type == 'git') {
-                    $repo = $item->url;
+                    $repositoryUrl = $item->url;
                     break;
                 }
             }
         }
 
-        if ($repo) {
-            $name = isset($args[1]) ? $args[1] : basename($repo, '.git');
-
-            //
-            if (is_dir($this->cwd.'/repository/'.$name)) {
-                return "> Producer: Project directory 'repository/{$name}' already exists.\n";
-            }
-
-            return $this->exec('clone-complete', [$repo, $name, $pack]);
-        } else {
+        if (!$repositoryUrl) {
             return "> Producer: Repository not found on composer.json.\n";
         }
+
+        if (!$this->existsRepositoryUrl($repositoryUrl)) {
+            return "Repository url not exists!";
+        }
+
+        return $this->exec('clone', 'clone', [$repositoryUrl, $packageName, $projectName]);
     }
 }
