@@ -38,25 +38,23 @@ class PurgeCommand extends Command
             return "> Producer: Project directory required.\n";
         }
 
-        $name = trim($args[0]);
-
-        if (!is_dir($this->cwd.'/repository/'.$name)) {
-            return "> Producer: Project directory 'repository/{$name}' not found.\n";
+        $projectName = trim($args[0]);
+        if (!$this->existsProjectName($projectName)) {
+            return "> Producer: Project directory '{$this->projectsDir}/{$projectName}' not found.\n";
         }
 
-        echo $this->info("Purge project '{$name}'");
+        $this->info("Purge project '{$projectName}'");
 
         $json = null;
-        $comp = $this->cwd.'/repository/'.$name.'/composer.json';
-
-        if (file_exists($comp)) {
-            $json = json_decode(file_get_contents($comp));
+        $composerJson = $this->cwd . '/' . $this->projectsDir . '/' . $projectName . '/composer.json';
+        if (file_exists($composerJson)) {
+            $json = json_decode(file_get_contents($composerJson), true);
         }
 
-        if (isset($json->name)) {
-            echo shell_exec(__DIR__.'/../exec/purge-remove.sh '.$this->cwd.' '.$json->name);
+        if (isset($json['name']) && $this->existsPackageName($json['name'])) {
+            $this->exec('purge', 'remove-package', [$json['name']]);
         }
 
-        echo shell_exec(__DIR__.'/../exec/purge-rm.sh '.$this->cwd.' '.$name);
+        return $this->exec('purge', 'remove-project', [$projectName]);
     }
 }
