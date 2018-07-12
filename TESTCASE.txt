@@ -14,3 +14,8 @@
 
  ./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testInitRootProject$/' tests/Commands/InitCommandTest.php
  ./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testInitProject$/' tests/Commands/InitCommandTest.php
+
+
+## Purge ##
+
+ ./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testPurgeProject$/' tests/Commands/PurgeCommandTest.php

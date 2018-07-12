@@ -34,6 +34,8 @@ class PurgeCommand extends Command
      */
     public function run($args)
     {
+        $args = $this->parseArgs($args);
+
         if (!isset($args[0]) || !$args[0]) {
             return "> Producer: Project directory required.\n";
         }
