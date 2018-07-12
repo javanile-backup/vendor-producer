@@ -67,10 +67,11 @@ class Command
      *
      * @param mixed $name
      */
-    protected function hasComposerJson($project)
+    protected function hasComposerJson($projectName)
     {
-        return is_dir($this->cwd.'/packages/'.$project)
-            && file_exists($this->cwd.'/packages/'.$project.'/composer.json');
+        var_dump($projectName);
+        return is_dir($this->cwd. '/' . $this->projectsDir . '/' . $projectName)
+            && file_exists($this->cwd . '/' . $this->projectsDir . '/' .$projectName . '/composer.json');
     }
 
     /**
@@ -80,16 +81,14 @@ class Command
      */
     protected function getPackageNameByComposerJson($projectName)
     {
-        $file = $this->cwd . '/packages/' . $projectName . '/composer.json';
+        $file = $this->cwd . '/' . $this->projectsDir . '/' . $projectName . '/composer.json';
         if (!file_exists($file)) {
-            $this->error("Missing file '{$file}'.");
-            exit(1);
+            return null;
         }
 
         $json = json_decode(file_get_contents($file));
         if (!isset($json->name) || !$this->isPackageName($json->name)) {
-            $this->error("Package name not found or malformed into '{$file}'.");
-            exit(1);
+            return null;
         }
 
         return $json->name;
@@ -126,7 +125,7 @@ class Command
      *
      * @param mixed $url
      */
-    protected function getPackageNameByUrl($url)
+    protected function getPackageNameByRepositoryUrl($url)
     {
         $package = trim(basename($url, '.git'));
         $vendor = trim(basename(dirname($url), '.git'));
@@ -159,7 +158,7 @@ class Command
             $packageName = $this->getPackageNameByComposerJson($projectName);
         }
 
-        return $packageName ?: $this->getPackageNameByRepositoryUrl($repositoryUrl);
+        return $packageName ? $packageName : $this->getPackageNameByRepositoryUrl($repositoryUrl);
     }
 
     /**
@@ -278,6 +277,10 @@ class Command
     protected function exec($cmd, $task, $args = null)
     {
         $script = __DIR__.'/../../exec/'.$cmd.'/'.$task.'.sh';
+        if (!file_exists($script)) {
+            die("Producer >  INTERNAL ERROR MISSING SCRIPT");
+        }
+
         $params = '';
 
         if ($args && count($args) > 0) {

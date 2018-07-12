@@ -90,6 +90,7 @@ class CloneCommand extends Command
         }
 
         $packageName = $this->getProjectPackageName($projectName, $repositoryUrl);
+
         if (!$this->existsPackageName($packageName)) {
             return $this->exec('clone', 'mount-unknown-package-as-project', [$packageName, $projectName]);
         }

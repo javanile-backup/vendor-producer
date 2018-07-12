@@ -43,21 +43,20 @@ final class CloneCommandTest extends TestCase
         $this->assertDirectoryNotExists($this->getCwd('vendor/php-code-samples/package-skeleton'));
     }
 
-    public function testCloneByRepositoryUrlUknownPackageName()
+    public function testCloneByRepositoryUrlUnknownPackageName()
     {
         $clone = new CloneCommand($this->getCwd());
 
-        $this->assertDirectoryNotExists($this->getCwd('packages/package-skeleton'));
-        $this->assertDirectoryNotExists($this->getCwd('vendor/php-code-samples/package-skeleton'));
+        $this->assertDirectoryNotExists($this->getCwd('packages/messy-package'));
+        $this->assertDirectoryNotExists($this->getCwd('vendor/php-code-samples/messy-package'));
 
         $clone->run([
             '--silent',
-            'https://github.com/php-code-samples/package-skeleton',
-            '--no-mount',
+            'https://github.com/php-code-samples/messy-package',
         ]);
 
-        $this->assertDirectoryExists($this->getCwd('packages/package-skeleton'));
-        $this->assertDirectoryNotExists($this->getCwd('vendor/php-code-samples/package-skeleton'));
+        $this->assertDirectoryExists($this->getCwd('packages/messy-package'));
+        $this->assertDirectoryNotExists($this->getCwd('vendor/php-code-samples/messy-package'));
     }
 
     public function testCloneByPackageName()
