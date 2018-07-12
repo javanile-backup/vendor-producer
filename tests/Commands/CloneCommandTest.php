@@ -18,7 +18,7 @@ final class CloneCommandTest extends TestCase
         $this->assertDirectoryNotExists($this->getCwd('vendor/php-code-samples/package-skeleton'));
 
         $clone->run([
-            '--silent'
+            '--silent',
             'https://github.com/php-code-samples/package-skeleton',
         ]);
 
@@ -34,6 +34,7 @@ final class CloneCommandTest extends TestCase
         $this->assertDirectoryNotExists($this->getCwd('vendor/php-code-samples/package-skeleton'));
 
         $clone->run([
+            '--silent',
             'https://github.com/php-code-samples/package-skeleton',
             '--no-mount',
         ]);

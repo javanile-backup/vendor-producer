@@ -52,9 +52,9 @@ class Command
      *
      * @param mixed $repo
      */
-    public function isPackageName($repo)
+    public function isPackageName($packageName)
     {
-        return preg_match('/^[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*$/', $repo);
+        return preg_match('/^[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*$/', $packageName);
     }
 
     /**
@@ -73,11 +73,15 @@ class Command
      *
      * @param mixed $name
      */
-    protected function getPackageNameByComposerJson($name)
+    protected function getPackageNameByComposerJson($projectName)
     {
-        $file = $this->cwd.'/repository/'.$name.'/composer.json';
-        $json = json_decode(file_get_contents($file));
+        $file = $this->cwd . '/packages/' . $projectName . '/composer.json';
+        if (!file_exists($file)) {
+            $this->error("Missing file '{$file}'.");
+            exit(1);
+        }
 
+        $json = json_decode(file_get_contents($file));
         if (!isset($json->name) || !$this->isPackageName($json->name)) {
             $this->error("Package name not found or malformed into '{$file}'.");
             exit(1);
@@ -109,6 +113,22 @@ class Command
         $name = trim(basename($url, '.git'));
 
         return strtolower($name);
+    }
+
+    /**
+     * Get package name by composer.json file.
+     *
+     * @param mixed $name
+     */
+    protected function existsPackageName($packageName)
+    {
+        if (!$packageName || !$this->isPackageName($packageName)) {
+            return false;
+        }
+
+        $exists = shell_exec('composer search --only-name ' . $packageName);
+
+        return (boolean) $exists;
     }
 
     /**
@@ -156,7 +176,7 @@ class Command
 
         $this->silent = in_array('--silent', $args);
         if ($this->silent) {
-            $args = array_values(array_diff($args, ['--no-mount']));
+            $args = array_values(array_diff($args, ['--silent']));
         }
 
         return $args;
@@ -175,14 +195,14 @@ class Command
 
         if ($args && count($args) > 0) {
             foreach ($args as &$value) {
-                $value = '"'.trim($value).'"';
+                $value = '"' . trim($value) . '"';
             }
 
             $params = implode(' ', $args);
         }
 
-        $cwd = '"'.$this->cwd.'"';
-        $cmd = $script.' '.$cwd.' '.$params;
+        $cwd = '"' . $this->cwd . '"';
+        $cmd = $script . ' ' . $cwd . ' ' . $params;
 
         $output = shell_exec($cmd);
 

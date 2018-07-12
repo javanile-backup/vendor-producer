@@ -92,10 +92,17 @@ class CloneCommand extends Command
 
         if ($this->hasComposerJson($projectName)) {
             $packageName = $this->getPackageNameByComposerJson($projectName);
-            return $this->exec('clone-install', [$packageName, $projectName]);
+            if (!$this->existsPackageName($packageName)) {
+                return $this->error('&package-name-not-exists', ['packageName' => $packageName]);
+            }
+
+            return $this->exec('mount-package-to-project', [$packageName, $projectName]);
         }
 
         $packageName = $this->getPackageNameByUrl($repositoryUrl);
+        if (!$this->existsPackageName($packageName)) {
+            return $this->error('&package-name-not-exists', ['packageName' => $packageName]);
+        }
 
         return $this->exec('clone-mount', [$packageName, $projectName]);
     }
