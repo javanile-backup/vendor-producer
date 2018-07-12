@@ -114,14 +114,18 @@ class CloneCommand extends Command
     private function cloneByPackageName($args)
     {
         $packageName = $args[0];
-        if (!existsPackageName($packageName)) {
+        if (!$this->existsPackageName($packageName)) {
             $args[0] = 'https://github.com/' . $packageName;
             return $this->cloneByRepositoryUrl($args);
         }
 
-        $projectName = isset($args[1]) ? $args[1] : $this->getProjectNameByPackageName($packageName);
+        $projectName = isset($args[1]) ? $args[1] : basename($packageName);
         if ($this->existsProjectName($projectName)) {
             return "> Producer: Project directory '{$this->projectsDir}/{$projectName}' already exists.\n";
+        }
+
+        if (!$this->existsRootComposerJson()) {
+            $this->createRootComposerJson();
         }
 
         $devFlag = in_array($packageName, $this->devPackages) ? '--dev' : '';
