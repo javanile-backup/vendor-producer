@@ -229,7 +229,7 @@ class Command
     protected function existsProjectName($projectName)
     {
         return $this->existsProjectsDir()
-            && in_array($projectName, scandir($this->getProgectsDir()));
+            && in_array($projectName, scandir($this->getProjectsDir()));
     }
 
     /**

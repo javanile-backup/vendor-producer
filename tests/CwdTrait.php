@@ -14,7 +14,10 @@ trait CwdTrait
         $this->gitPass = getenv('PRODUCER_GIT_PASS');
 
         $files = __DIR__.'/temp/*';
-        shell_exec("rm -fr {$files}");
+        shell_exec("rm -fr {$files} $2 > /dev/null 2>&1");
+
+        $files = __DIR__.'/temp/.*';
+        shell_exec("rm -fr {$files} $2 > /dev/null 2>&1");
     }
 
     public function getCwd($path = '')
