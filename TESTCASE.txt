@@ -19,3 +19,11 @@
 ## Purge ##
 
  ./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testPurgeProject$/' tests/Commands/PurgeCommandTest.php
+
+## Autoload ##
+
+ ./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testAutoloadPackageName$/' tests/Commands/AutoloadCommandTest.php
+
+## Mount ##
+
+ ./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testMountPackageName$/' tests/Commands/MountCommandTest.php

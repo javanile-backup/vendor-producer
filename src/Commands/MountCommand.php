@@ -34,6 +34,8 @@ class MountCommand extends Command
      */
     public function run($args)
     {
+        $args = $this->parseArgs($args);
+
         if (!isset($args[0]) || !$args[0] || !$this->isPackageName($args[0])) {
             return $this->error('&require-package');
         }
@@ -42,9 +44,9 @@ class MountCommand extends Command
             return $this->error('&package-not-found');
         }
 
-        $pack = $args[0];
-        $name = isset($args[1]) ? $args[1] : basename($args[0]);
+        $packageName = $args[0];
+        $projectName = isset($args[1]) ? $args[1] : basename($args[0]);
 
-        return $this->exec('mount', [$pack, $name]);
+        return $this->exec('mount', 'mount', [$packageName, $projectName]);
     }
 }

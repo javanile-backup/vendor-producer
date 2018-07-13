@@ -34,12 +34,12 @@ class AutoloadCommand extends Command
      */
     public function run($args)
     {
+        $args = $this->parseArgs($args);
+
         if (!isset($args[0]) || !$args[0] || !$this->isPackageName($args[0])) {
             return $this->error('&require-package');
         }
 
-        $pack = $args[0];
-
-        return $this->exec('autoload', [$pack]);
+        return $this->exec('autoload', 'autoload', [$args[0]]);
     }
 }
