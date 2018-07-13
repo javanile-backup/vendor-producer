@@ -248,6 +248,12 @@ class Command
             case '&help-not-found':
                 $message = 'Not found help for \'${command}\' command.';
                 break;
+            case '&file-not-found':
+                $message = 'File not found \'${file}\' during \'${command}\'.';
+                break;
+            case '&json-syntax-error':
+                $message = '[JSON] Syntax error on \'${file}\' during \'${command}\'.';
+                break;
             case '&project-not-found':
                 $message = 'Project into directory \'' . $this->projectsDir . '/${project}\' not found.';
                 break;
