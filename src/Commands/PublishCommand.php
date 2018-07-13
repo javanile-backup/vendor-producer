@@ -57,19 +57,19 @@ class PublishCommand extends Command
     private function publishEverything()
     {
         $root = basename($this->cwd);
-        $path = $this->cwd.'/repository';
+        $path = $this->cwd . '/' . $this->projectsDir;
         $version = $this->getNextVersion($this->cwd);
 
-        echo $this->info("Publish root project '{$root}' (git login)");
-        echo $this->exec('publish-root', [$version]);
+        $this->info("Publish root project '{$root}' (git login)");
+        $this->exec('publish', 'publish-root-project', [$version]);
 
         foreach (scandir($path) as $name) {
             if ($name[0] != '.' && is_dir($path.'/'.$name)) {
                 $version = $this->getNextVersion($path.'/'.$name);
 
                 echo "\n";
-                echo $this->info("Publish project '{$name}' (git login)");
-                echo $this->exec('publish', [$name, $version]);
+                $this->info("Publish project '{$name}' (git login)");
+                $this->exec('publish', 'publish-project', [$name, $version]);
             }
         }
     }
