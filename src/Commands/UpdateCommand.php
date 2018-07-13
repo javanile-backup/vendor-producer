@@ -34,19 +34,20 @@ class UpdateCommand extends Command
      */
     public function run($args)
     {
+        $args = $this->parseArgs($args);
+
         if (!isset($args[0]) || !$args[0]) {
             return $this->updateEverything();
         }
 
-        $name = $args[0];
-
-        if (!is_dir($this->cwd.'/repository/'.$name)) {
+        $projectName = $args[0];
+        if (!$this->existsProjectName($projectName)) {
             return $this->error('&required-project');
         }
 
-        echo $this->info("Update project '{$name}'");
+        echo $this->info("Update project '{$projectName}'");
 
-        return $this->exec('update', [$name]);
+        return $this->exec('update', 'update-project', [$projectName]);
     }
 
     /**
@@ -57,14 +58,14 @@ class UpdateCommand extends Command
         // update env
         $env = basename($this->cwd);
         echo "\n> $env\n----------------------------\n";
-        echo shell_exec(__DIR__.'/../exec/update-root.sh '.$this->cwd);
+        $this->exec('update', 'update-root-project');
 
-        // update all repositories
-        $path = $this->cwd.'/repository';
-        foreach (scandir($path) as $name) {
-            if ($name[0] != '.' && is_dir($path.'/'.$name)) {
-                echo "\n> $name\n----------------------------\n";
-                echo shell_exec(__DIR__.'/../exec/update.sh '.$this->cwd.' '.$name);
+        // update all projects
+        $path = $this->cwd . '/' . $this->projectsDir;
+        foreach (scandir($path) as $projectName) {
+            if ($name[0] != '.' && is_dir($path . '/' . $projectName)) {
+                echo "\n> $projectName\n----------------------------\n";
+                $this->exec('update', 'update-project', [$projectName]);
             }
         }
     }
