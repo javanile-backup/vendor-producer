@@ -257,8 +257,13 @@ class InitCommand extends Command
      */
     private function getNamespace($repo)
     {
-        $package = trim(ucfirst(S::create(basename($repo, '.git'))->camelize()));
-        $vendor = trim(ucfirst(S::create(basename(dirname($repo), '.git'))->camelize()));
+        $package = trim(ucfirst(S::create(
+            str_replace(['.'], ['-'], basename($repo, '.git'))
+        )->camelize()));
+
+        $vendor = trim(ucfirst(S::create(
+            str_replace(['.'], ['-'], basename(dirname($repo), '.git'))
+        )->camelize()));
 
         return $vendor.'\\'.$package;
     }
@@ -270,8 +275,9 @@ class InitCommand extends Command
      */
     private function getClass($repo)
     {
-        $name = basename($repo, '.git');
-        $class = S::create($name)->camelize();
+        $class = S::create(
+            str_replace(['.'], ['-'], basename($repo, '.git'))
+        )->camelize();
 
         return ucfirst(trim($class));
     }
