@@ -21,4 +21,4 @@
 
 ## Update ##
 ./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testUpdateEverythings$/' tests/Commands/UpdateCommandTest.php
-./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testUpdatePackageName$/' tests/Commands/UpdateCommandTest.php
+./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testUpdateProjectName$/' tests/Commands/UpdateCommandTest.php
