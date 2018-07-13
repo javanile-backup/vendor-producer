@@ -8,7 +8,9 @@
 cd $1
 
 ##
-git add .
-git add *
-git config push.default simple
-git pull
+if [ -d .git ]; then
+    git add .
+    git add *
+    git config push.default simple
+    git pull
+fi;

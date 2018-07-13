@@ -25,7 +25,7 @@ final class UpdateCommandTest extends TestCase
 
         $update = new UpdateCommand($this->getCwd());
 
-        $uppdate->run(['--silent']);
+        $update->run(['--silent']);
 
         $this->assertDirectoryExists($this->getCwd('packages/package-skeleton'));
         $this->assertDirectoryExists($this->getCwd('vendor/php-code-samples/package-skeleton'));

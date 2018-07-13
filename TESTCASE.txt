@@ -1,29 +1,24 @@
 
 ## Clone ##
-
- ./vendor/bin/phpunit --configuration phpunit.xml tests/Commands/CloneCommandTest.php
-
- ./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testCloneByRepositoryUrl$/' tests/Commands/CloneCommandTest.php
- ./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testCloneByRepositoryUrlNoMount$/' tests/Commands/CloneCommandTest.php
- ./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testCloneByRepositoryUrlUnknownPackageName$/' tests/Commands/CloneCommandTest.php
-
- ./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testCloneByPackageName$/' tests/Commands/CloneCommandTest.php
-
+./vendor/bin/phpunit --configuration phpunit.xml tests/Commands/CloneCommandTest.php
+./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testCloneByRepositoryUrl$/' tests/Commands/CloneCommandTest.php
+./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testCloneByRepositoryUrlNoMount$/' tests/Commands/CloneCommandTest.php
+./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testCloneByRepositoryUrlUnknownPackageName$/' tests/Commands/CloneCommandTest.php
+./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testCloneByPackageName$/' tests/Commands/CloneCommandTest.php
 
 ## Init ##
-
- ./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testInitRootProject$/' tests/Commands/InitCommandTest.php
- ./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testInitProject$/' tests/Commands/InitCommandTest.php
-
+./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testInitRootProject$/' tests/Commands/InitCommandTest.php
+./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testInitProject$/' tests/Commands/InitCommandTest.php
 
 ## Purge ##
-
- ./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testPurgeProject$/' tests/Commands/PurgeCommandTest.php
+./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testPurgeProject$/' tests/Commands/PurgeCommandTest.php
 
 ## Autoload ##
-
- ./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testAutoloadPackageName$/' tests/Commands/AutoloadCommandTest.php
+./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testAutoloadPackageName$/' tests/Commands/AutoloadCommandTest.php
 
 ## Mount ##
+./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testMountPackageName$/' tests/Commands/MountCommandTest.php
 
- ./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testMountPackageName$/' tests/Commands/MountCommandTest.php
+## Update ##
+./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testUpdateEverythings$/' tests/Commands/UpdateCommandTest.php
+./vendor/bin/phpunit --configuration phpunit.xml --filter '/::testUpdatePackageName$/' tests/Commands/UpdateCommandTest.php
