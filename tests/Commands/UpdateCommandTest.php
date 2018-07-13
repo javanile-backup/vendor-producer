@@ -35,19 +35,19 @@ final class UpdateCommandTest extends TestCase
     {
         $clone = new CloneCommand($this->getCwd());
 
-        $this->assertDirectoryNotExists($this->getCwd('packages/package-skeleton'));
+        $this->assertDirectoryNotExists($this->getCwd('packages/MyProj'));
         $this->assertDirectoryNotExists($this->getCwd('vendor/php-code-samples/package-skeleton'));
 
-        $clone->run(['--silent', 'https://github.com/php-code-samples/package-skeleton']);
+        $clone->run(['--silent', 'https://github.com/php-code-samples/package-skeleton', 'MyProj']);
 
-        $this->assertDirectoryExists($this->getCwd('packages/package-skeleton'));
+        $this->assertDirectoryExists($this->getCwd('packages/MyProj'));
         $this->assertDirectoryExists($this->getCwd('vendor/php-code-samples/package-skeleton'));
 
         $update = new UpdateCommand($this->getCwd());
 
-        $uppdate->run(['--silent', 'package-skeleton']);
+        $update->run(['--silent', 'MyProj']);
 
-        $this->assertDirectoryExists($this->getCwd('packages/package-skeleton'));
+        $this->assertDirectoryExists($this->getCwd('packages/MyProj'));
         $this->assertDirectoryExists($this->getCwd('vendor/php-code-samples/package-skeleton'));
     }
 }
