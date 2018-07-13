@@ -256,10 +256,10 @@ class Producer
         $file = __DIR__.'/../help/'.$help.'.txt';
 
         if (!file_exists($file)) {
-            return "> Producer: Not found help for '{$help}' command.\n";
+            return $this->error('&help-not-found');
         }
 
-        return file_get_contents(__DIR__.'/../help/'.$help.'.txt');
+        echo file_get_contents(__DIR__.'/../help/'.$help.'.txt');
     }
 
     /**

@@ -36,8 +36,8 @@ class AutoloadCommand extends Command
     {
         $args = $this->parseArgs($args);
 
-        if (!isset($args[0]) || !$args[0] || !$this->isPackageName($args[0])) {
-            return $this->error('&require-package');
+        if (!isset($args[0]) || !$args[0]) {
+            return $this->error('&require-package-or-project', ['command' => 'autoload']);
         }
 
         return $this->exec('autoload', 'autoload', [$args[0]]);

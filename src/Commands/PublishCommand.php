@@ -34,16 +34,21 @@ class PublishCommand extends Command
      */
     public function run($args)
     {
+        $args = $this->parseArgs($args);
+
         if (!isset($args[0]) || !$args[0]) {
             return $this->publishEverything();
         }
 
-        $name = $args[0];
-        $version = $this->getNextVersion($this->cwd.'/repository/'.$name);
+        if (!$this->existsProjectName($args[0])) {
+            return $this->error('&project-not-found', ['project' => $args[0]]);
+        }
 
-        echo $this->info("Publish project '{$name}' (git login)");
+        $projectName = $args[0];
+        $version = $this->getNextVersion($this->getProjectDir($projectName));
+        $this->info("Publish project '{$projectName}' (git login)");
 
-        return $this->exec('publish', [$name, $version]);
+        return $this->exec('publish', 'publish-project', [$projectName, $version]);
     }
 
     /**
@@ -76,7 +81,7 @@ class PublishCommand extends Command
      */
     private function getNextVersion($path)
     {
-        $file = $path.'/composer.json';
+        $file = $path . '/composer.json';
 
         if (!file_exists($file)) {
             return 'Initial commit';

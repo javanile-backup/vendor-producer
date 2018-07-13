@@ -34,14 +34,13 @@ class InstallCommand extends Command
      */
     public function run($args)
     {
-        // install
         file_put_contents(
             "producer",
             "<?php global \$argv;\n".
             "require_once 'vendor/autoload.php';\n".
-            "echo Javanile\\Producer\\Producer::cli(\$argv);\n"
+            "Javanile\\Producer\\Producer::cli(\$argv);\n"
         );
 
-        return "> Producer: installation complete.\n";
+        return $this->info('Installation complete.");
     }
 }

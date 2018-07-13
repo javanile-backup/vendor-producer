@@ -1,0 +1,10 @@
+> Producer: AUTOLOAD
+
+  Autoload and restore missing dependancies into composer.json
+
+  Usage: php producer autoload [<package-name>|<project-name>]
+
+  Examples:
+
+    $ php producer autoload monolog/monolog
+    $ php prodicer autoload MyProject

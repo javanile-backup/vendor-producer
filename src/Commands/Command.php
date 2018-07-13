@@ -236,17 +236,34 @@ class Command
      *
      * @param mixed $error
      */
-    public function error($error)
+    public function error($error, $tokens = null)
     {
         switch ($error) {
             case '&require-package-or-repository':
-                $message = "> Producer: Repository url or package name required.\n";
+                $message = 'Repository url or package name required.';
+                break;
+            case '&require-package-or-project':
+                $message = 'Package name or project name required, type \'php producer --help ${command}\'.';
+                break;
+            case '&help-not-found':
+                $message = 'Not found help for \'${command}\' command.';
+                break;
+            case '&project-not-found':
+                $message = 'Project into directory \'' . $this->projectsDir . '/${project}\' not found.';
                 break;
             default:
                 $message = $error;
         }
 
-        return $message;
+        if (is_array($tokens) && $tokens) {
+            foreach ($tokens as $token => $value) {
+                $message = str_replace('${'.$token.'}', $value, $message);
+            }
+        }
+
+        echo "> Producer: {$message}\n";
+
+        return $error;
     }
 
     /**

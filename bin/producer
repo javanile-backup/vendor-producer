@@ -16,4 +16,4 @@
 require_once __DIR__.'/../../../autoload.php';
 
 // run command-line interface
-echo Javanile\Producer\Producer::cli($argv);
+Javanile\Producer\Producer::cli($argv);
