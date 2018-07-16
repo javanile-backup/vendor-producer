@@ -16,7 +16,7 @@ namespace Javanile\Producer\Commands;
 class CloneCommand extends Command
 {
     /**
-     * @var boolean
+     * @var bool
      */
     protected $noMount = false;
 
@@ -79,7 +79,7 @@ class CloneCommand extends Command
         $projectName = isset($args[1]) ? $args[1] : $this->getProjectNameByRepositoryUrl($repositoryUrl);
 
         if (!$this->existsRepositoryUrl($repositoryUrl)) {
-            return "Repository url not exists!";
+            return 'Repository url not exists!';
         }
 
         if ($this->existsProjectName($projectName)) {
@@ -115,7 +115,8 @@ class CloneCommand extends Command
     {
         $packageName = $args[0];
         if (!$this->existsPackageName($packageName)) {
-            $args[0] = 'https://github.com/' . $packageName;
+            $args[0] = 'https://github.com/'.$packageName;
+
             return $this->cloneByRepositoryUrl($args);
         }
 
@@ -131,7 +132,7 @@ class CloneCommand extends Command
         $devFlag = in_array($packageName, $this->devPackages) ? '--dev' : '';
         $this->exec('clone', 'require-package', [$packageName, $devFlag]);
 
-        $composerJson = $this->cwd . '/vendor/' . $packageName . '/composer.json';
+        $composerJson = $this->cwd.'/vendor/'.$packageName.'/composer.json';
         if (!file_exists($composerJson)) {
             return "> Producer: Package not found.\n";
         }
@@ -152,7 +153,7 @@ class CloneCommand extends Command
         }
 
         if (!$this->existsRepositoryUrl($repositoryUrl)) {
-            return "Repository url not exists!";
+            return 'Repository url not exists!';
         }
 
         return $this->exec('clone', 'clone', [$repositoryUrl, $packageName, $projectName]);

@@ -57,7 +57,7 @@ class PublishCommand extends Command
     private function publishEverything()
     {
         $root = basename($this->cwd);
-        $path = $this->cwd . '/' . $this->projectsDir;
+        $path = $this->cwd.'/'.$this->projectsDir;
         $version = $this->getNextVersion($this->cwd);
 
         $this->info("Publish root project '{$root}' (git login)");
@@ -81,7 +81,7 @@ class PublishCommand extends Command
      */
     private function getNextVersion($path)
     {
-        $file = $path . '/composer.json';
+        $file = $path.'/composer.json';
 
         if (!file_exists($file)) {
             return 'Initial commit';

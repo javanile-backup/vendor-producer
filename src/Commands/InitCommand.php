@@ -21,17 +21,17 @@ class InitCommand extends Command
      * @var array
      */
     protected $options = [
-        '--no-ci' => 'noCi',
+        '--no-ci'    => 'noCi',
         '--no-tests' => 'noTests',
     ];
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $noCi = false;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $noTests = false;
 
@@ -78,6 +78,7 @@ class InitCommand extends Command
      * Init script.
      *
      * @param mixed $args
+     * @param mixed $path
      */
     private function initPath($path, $args = null)
     {
@@ -103,11 +104,15 @@ class InitCommand extends Command
 
     /**
      * Initialize composer.json file.
+     *
+     * @param mixed $path
+     * @param mixed $repositoryUrl
+     * @param mixed $packageName
      */
     private function initComposerJson($path, $repositoryUrl, $packageName)
     {
         $json = [];
-        $composerJson = $path . '/composer.json';
+        $composerJson = $path.'/composer.json';
         if (file_exists($composerJson)) {
             $json = json_decode(file_get_contents($composerJson), true);
         }
@@ -150,6 +155,8 @@ class InitCommand extends Command
 
     /**
      * Initialize phpunit.xml file.
+     *
+     * @param mixed $path
      */
     private function initPhpUnitXml($path)
     {
@@ -165,12 +172,13 @@ class InitCommand extends Command
      *
      * @param mixed $path
      * @param mixed $repo
+     * @param mixed $packageName
      */
     private function initPackageClassPhp($path, $packageName)
     {
         $class = $this->getClass($packageName);
         $namespace = $this->getNamespace($packageName);
-        $file = $path . '/src/' . $class . '.php';
+        $file = $path.'/src/'.$class.'.php';
         if (file_exists($file)) {
             return;
         }
@@ -184,13 +192,16 @@ class InitCommand extends Command
 
     /**
      * Initialize sample Test.
+     *
+     * @param mixed $path
+     * @param mixed $packageName
      */
     private function initPackageClassTestPhp($path, $packageName)
     {
         $class = $this->getClass($packageName);
         $namespace = $this->getNamespace($packageName);
 
-        if (!file_exists($file = $path . '/tests/' . $class . 'Test.php')) {
+        if (!file_exists($file = $path.'/tests/'.$class.'Test.php')) {
             $code = str_replace(
                 ['%%CLASS%%', '%%NAMESPACE%%'],
                 [$class, $namespace],

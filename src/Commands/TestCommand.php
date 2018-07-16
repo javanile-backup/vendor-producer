@@ -102,6 +102,7 @@ class TestCommand extends Command
      * @param mixed $test
      * @param mixed $file
      * @param mixed $args
+     * @param mixed $path
      */
     private function runFileTests($path, $test, $file, $args)
     {

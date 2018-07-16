@@ -2,9 +2,8 @@
 
 namespace Javanile\Producer\Tests;
 
-use Javanile\Producer\Commands\PurgeCommand;
 use Javanile\Producer\Commands\CloneCommand;
-use Javanile\Producer\Tests\CwdTrait;
+use Javanile\Producer\Commands\PurgeCommand;
 use PHPUnit\Framework\TestCase;
 
 final class PurgeCommandTest extends TestCase

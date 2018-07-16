@@ -61,9 +61,9 @@ class UpdateCommand extends Command
         $this->exec('update', 'update-root-project');
 
         // update all projects
-        $path = $this->cwd . '/' . $this->projectsDir;
+        $path = $this->cwd.'/'.$this->projectsDir;
         foreach (scandir($path) as $projectName) {
-            if ($projectName[0] != '.' && is_dir($path . '/' . $projectName)) {
+            if ($projectName[0] != '.' && is_dir($path.'/'.$projectName)) {
                 echo "\n> $projectName\n----------------------------\n";
                 $this->exec('update', 'update-project', [$projectName]);
             }

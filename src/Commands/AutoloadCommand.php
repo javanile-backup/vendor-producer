@@ -46,8 +46,8 @@ class AutoloadCommand extends Command
             }
 
             return $this->autoloadTrikyByPath(
-                $this->cwd . '/vendor/' . $args[0],
-                'vendor/' . $args[0]
+                $this->cwd.'/vendor/'.$args[0],
+                'vendor/'.$args[0]
             );
         }
 
@@ -57,18 +57,18 @@ class AutoloadCommand extends Command
 
         return $this->autoloadTrikyByPath(
             $this->getProjectDir($args[0]),
-            $this->projectsDir . '/' . $args[0]
+            $this->projectsDir.'/'.$args[0]
         );
     }
 
     protected function autoloadTrikyByPath($path, $diff)
     {
-        $from = $path . '/composer.json';
+        $from = $path.'/composer.json';
         if (!file_exists($from)) {
             return $this->error('&file-not-found', ['file' => $from, 'command' => 'autoload']);
         }
 
-        $to = $this->cwd . '/composer.json';
+        $to = $this->cwd.'/composer.json';
         if (!file_exists($to)) {
             return $this->error('&file-not-found', ['file' => $to, 'command' => 'autoload']);
         }
@@ -106,7 +106,7 @@ class AutoloadCommand extends Command
             $fromAutoload[$key] = $fromJson[$key];
             if (isset($fromAutoload[$key]['psr-4'])) {
                 foreach ($fromAutoload[$key]['psr-4'] as $namespace => $dir) {
-                    $fromAutoload[$key]['psr-4'][$namespace] = $diff . '/' . $dir;
+                    $fromAutoload[$key]['psr-4'][$namespace] = $diff.'/'.$dir;
                 }
             }
         }

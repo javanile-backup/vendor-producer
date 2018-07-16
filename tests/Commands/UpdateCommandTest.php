@@ -2,9 +2,8 @@
 
 namespace Javanile\Producer\Tests;
 
-use Javanile\Producer\Commands\UpdateCommand;
 use Javanile\Producer\Commands\CloneCommand;
-use Javanile\Producer\Tests\CwdTrait;
+use Javanile\Producer\Commands\UpdateCommand;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateCommandTest extends TestCase
