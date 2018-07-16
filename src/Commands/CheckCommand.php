@@ -43,6 +43,6 @@ class CheckCommand extends Command
             return $this->exec('check', [$path]);
         }
 
-        return $this->error("Required project name.");
+        return $this->error('Required project name.');
     }
 }

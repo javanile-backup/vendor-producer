@@ -4,10 +4,9 @@ namespace Javanile\Producer\Tests;
 
 use Javanile\Producer\Commands\AutoloadCommand;
 use Javanile\Producer\Commands\CloneCommand;
-use Javanile\Producer\Tests\CwdTrait;
 use PHPUnit\Framework\TestCase;
 
-final class PurgeCommandTest extends TestCase
+final class AutoloadCommandTest extends TestCase
 {
     use CwdTrait;
 

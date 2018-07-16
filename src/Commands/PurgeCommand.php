@@ -48,7 +48,7 @@ class PurgeCommand extends Command
         $this->info("Purge project '{$projectName}'");
 
         $json = null;
-        $composerJson = $this->cwd . '/' . $this->projectsDir . '/' . $projectName . '/composer.json';
+        $composerJson = $this->cwd.'/'.$this->projectsDir.'/'.$projectName.'/composer.json';
         if (file_exists($composerJson)) {
             $json = json_decode(file_get_contents($composerJson), true);
         }

@@ -13,8 +13,6 @@
 
 namespace Javanile\Producer\Commands;
 
-use Stringy\Stringy as S;
-
 class Command
 {
     /**
@@ -54,6 +52,7 @@ class Command
 
     /**
      * @param $repositoryUrl
+     *
      * @return bool
      */
     public function existsRepositoryUrl($repositoryUrl)
@@ -70,6 +69,7 @@ class Command
      * Test is package name.
      *
      * @param mixed $repo
+     * @param mixed $packageName
      */
     public function isPackageName($packageName)
     {
@@ -80,28 +80,30 @@ class Command
      * Test if project has composer.json file.
      *
      * @param mixed $name
+     * @param mixed $projectName
      */
     protected function hasComposerJson($projectName)
     {
-        return is_dir($this->cwd. '/' . $this->projectsDir . '/' . $projectName)
-            && file_exists($this->cwd . '/' . $this->projectsDir . '/' .$projectName . '/composer.json');
+        return is_dir($this->cwd.'/'.$this->projectsDir.'/'.$projectName)
+            && file_exists($this->cwd.'/'.$this->projectsDir.'/'.$projectName.'/composer.json');
     }
 
     /**
      * Get package name by composer.json file.
      *
      * @param mixed $name
+     * @param mixed $projectName
      */
     protected function getPackageNameByComposerJson($projectName)
     {
-        $file = $this->cwd . '/' . $this->projectsDir . '/' . $projectName . '/composer.json';
+        $file = $this->cwd.'/'.$this->projectsDir.'/'.$projectName.'/composer.json';
         if (!file_exists($file)) {
-            return null;
+            return;
         }
 
         $json = json_decode(file_get_contents($file));
         if (!isset($json->name) || !$this->isPackageName($json->name)) {
-            return null;
+            return;
         }
 
         return $json->name;
@@ -114,7 +116,7 @@ class Command
      */
     protected function existsRootComposerJson()
     {
-        return file_exists($this->cwd . '/composer.json');
+        return file_exists($this->cwd.'/composer.json');
     }
 
     /**
@@ -126,11 +128,11 @@ class Command
     {
         $json = [
             'require' => [
-                'php' => '*'
-            ]
+                'php' => '*',
+            ],
         ];
 
-        file_put_contents($this->cwd . '/composer.json', json_encode($json, JSON_PRETTY_PRINT));
+        file_put_contents($this->cwd.'/composer.json', json_encode($json, JSON_PRETTY_PRINT));
     }
 
     /**
@@ -162,6 +164,8 @@ class Command
      * Get project name by repository url.
      *
      * @param mixed $url
+     * @param mixed $projectName
+     * @param mixed $repositoryUrl
      */
     protected function getProjectPackageName($projectName, $repositoryUrl)
     {
@@ -178,6 +182,7 @@ class Command
      * Get package name by composer.json file.
      *
      * @param mixed $name
+     * @param mixed $packageName
      */
     protected function existsPackageName($packageName)
     {
@@ -185,9 +190,9 @@ class Command
             return false;
         }
 
-        $exists = shell_exec('composer search --only-name ' . $packageName);
+        $exists = shell_exec('composer search --only-name '.$packageName);
 
-        return (boolean) $exists;
+        return (bool) $exists;
     }
 
     /**
@@ -197,17 +202,18 @@ class Command
      */
     protected function getProjectsDir()
     {
-        return $this->cwd . '/' . $this->projectsDir;
+        return $this->cwd.'/'.$this->projectsDir;
     }
 
     /**
      * Get package name by composer.json file.
      *
      * @param mixed $name
+     * @param mixed $projectName
      */
     protected function getProjectDir($projectName)
     {
-        return $this->cwd . '/' . $this->projectsDir . '/' . $projectName;
+        return $this->cwd.'/'.$this->projectsDir.'/'.$projectName;
     }
 
     /**
@@ -224,6 +230,7 @@ class Command
      * Get package name by composer.json file.
      *
      * @param mixed $name
+     * @param mixed $projectName
      */
     protected function existsProjectName($projectName)
     {
@@ -234,7 +241,8 @@ class Command
     /**
      * Return error message.
      *
-     * @param mixed $error
+     * @param mixed      $error
+     * @param null|mixed $tokens
      */
     public function error($error, $tokens = null)
     {
@@ -255,7 +263,7 @@ class Command
                 $message = '[JSON] Syntax error on \'${file}\' during \'${command}\'.';
                 break;
             case '&project-not-found':
-                $message = 'Project into directory \'' . $this->projectsDir . '/${project}\' not found.';
+                $message = 'Project into directory \''.$this->projectsDir.'/${project}\' not found.';
                 break;
             default:
                 $message = $error;
@@ -290,6 +298,7 @@ class Command
      * Get an info line.
      *
      * @param mixed $line
+     * @param mixed $args
      */
     protected function parseArgs($args)
     {
@@ -307,11 +316,12 @@ class Command
 
     /**
      * @param $param
+     *
      * @return string
      */
     protected function escapeParam($param)
     {
-        return '"' . $param . '"';
+        return '"'.$param.'"';
     }
 
     /**
@@ -319,12 +329,14 @@ class Command
      *
      * @param mixed      $exec
      * @param null|mixed $args
+     * @param mixed      $cmd
+     * @param mixed      $task
      */
     protected function exec($cmd, $task, $args = null)
     {
         $script = __DIR__.'/../../exec/'.$cmd.'/'.$task.'.sh';
         if (!file_exists($script)) {
-            die("Producer >  INTERNAL ERROR MISSING SCRIPT");
+            die('Producer >  INTERNAL ERROR MISSING SCRIPT');
         }
 
         $params = '';
@@ -337,17 +349,15 @@ class Command
             $params = implode(' ', $args);
         }
 
-        $rawCommand = $script . ' '
-            . $this->escapeParam($this->cwd) . ' '
-            . $this->escapeParam($this->projectsDir) . ' ' . $params;
+        $rawCommand = $script.' '
+            .$this->escapeParam($this->cwd).' '
+            .$this->escapeParam($this->projectsDir).' '.$params;
 
         $output = shell_exec($rawCommand);
 
         if (!$this->silent) {
             echo $output;
         }
-
-        return;
     }
 
     /**

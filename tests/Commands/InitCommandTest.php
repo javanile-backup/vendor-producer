@@ -2,9 +2,8 @@
 
 namespace Javanile\Producer\Tests;
 
-use Javanile\Producer\Commands\InitCommand;
 use Javanile\Producer\Commands\CloneCommand;
-use Javanile\Producer\Tests\CwdTrait;
+use Javanile\Producer\Commands\InitCommand;
 use PHPUnit\Framework\TestCase;
 
 final class InitCommandTest extends TestCase

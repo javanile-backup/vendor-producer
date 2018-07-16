@@ -15,6 +15,7 @@ namespace Javanile\Producer;
 
 use Composer\Autoload\ClassLoader;
 use Javanile\Producer\Commands\AutoloadCommand;
+use Javanile\Producer\Commands\CheckCommand;
 use Javanile\Producer\Commands\CloneCommand;
 use Javanile\Producer\Commands\InitCommand;
 use Javanile\Producer\Commands\MountCommand;
@@ -22,7 +23,6 @@ use Javanile\Producer\Commands\PublishCommand;
 use Javanile\Producer\Commands\PurgeCommand;
 use Javanile\Producer\Commands\ResetCommand;
 use Javanile\Producer\Commands\TestCommand;
-use Javanile\Producer\Commands\CheckCommand;
 use Javanile\Producer\Commands\UpdateCommand;
 
 /**
@@ -304,6 +304,7 @@ class Producer
      * Log messages on 'producer.log' file.
      *
      * @param mixed $object
+     * @param mixed $file
      */
     public static function read($file)
     {

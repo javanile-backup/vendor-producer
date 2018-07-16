@@ -35,7 +35,7 @@ class InstallCommand extends Command
     public function run($args)
     {
         file_put_contents(
-            "producer",
+            'producer',
             "<?php global \$argv;\n".
             "require_once 'vendor/autoload.php';\n".
             "Javanile\\Producer\\Producer::cli(\$argv);\n"
