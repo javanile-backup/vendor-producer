@@ -41,6 +41,6 @@ class InstallCommand extends Command
             "Javanile\\Producer\\Producer::cli(\$argv);\n"
         );
 
-        return $this->info('Installation complete.");
+        return $this->info('Installation complete.');
     }
 }
