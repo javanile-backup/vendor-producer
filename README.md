@@ -1,4 +1,4 @@
-# javanile/producer
+# javanile/vendor-producer
 
 [![Build Status](https://travis-ci.org/javanile-bot/producer.svg?branch=master)](https://travis-ci.org/javanile-bot/producer)
 [![StyleCI](https://styleci.io/repos/82387350/shield?branch=master)](https://styleci.io/repos/82387350)
@@ -13,7 +13,7 @@ Produce your vendor code everywhere
 Install via composer copy and paste the follow commands into console
 
 ```bash
-$ composer require javanile/producer --dev && ./vendor/bin/producer install
+composer require javanile/vendor-producer --dev
 ```
 
 ## Working with Producer
